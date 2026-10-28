@@ -5,15 +5,16 @@
 ;; Planner : Fast Downward (no numeric fluents; battery is symbolic via levels)
 ;; ============================================================================
 
-(define (domain drone_emergency_model_a)
+(define (domain drone_emergency)   ; same name in both models: shared problem files
 
   ;; --------------------------------------------------------------------------
   ;; Requirements
+  ;; No :negative-preconditions: every "not yet" condition is a positive fact
+  ;; (cargo_empty, needs_inspection, next_level).
   ;; --------------------------------------------------------------------------
   (:requirements
     :strips                 ; basic add/delete effects
     :typing                 ; typed objects
-    :negative-preconditions ; used for (not (inspected ?l)), (not (max_level ?l))
     :conditional-effects    ; forall/when used to unlock locations
     :action-costs           ; total-cost as plan cost
   )
@@ -53,7 +54,8 @@
     (unlocked_by_delivery ?supply - supply ?locked_location - location)      ; delivering this supply unlocks the location
 
     ;; ---- mission ----
-    (inspected ?location - location)                          ; location has been inspected
+    (needs_inspection ?location - location)                   ; mission site not inspected yet (deleted by inspect)
+    (inspected ?location - location)                          ; location has been inspected (goal predicate)
     (needs_supply ?location - location ?supply - supply)      ; location is waiting for this specific supply
     (supply_at ?supply - supply ?location - location)         ; supply is lying at this location (not carried)
     (delivered ?supply - supply ?location - location)         ; supply has been delivered to this location
@@ -62,7 +64,7 @@
     (battery ?drone - drone ?level - level)                   ; current battery level of the drone
     (flight_cost ?from_location ?to_location - location ?cost - level) ; flying from->to costs this many levels
     (battery_after ?before - level ?cost - level ?left - level) ; before - cost = left (only listed if before >= cost)
-    (next_level ?lower_level ?higher_level - level)           ; higher = lower + 1 (not used in Model A, kept for same problem files)
+    (next_level ?lower_level ?higher_level - level)           ; higher = lower + 1 (Model A: only as "battery not full" check)
     (max_level ?level - level)                                ; full battery capacity level
   )
 
@@ -98,10 +100,11 @@
     :parameters (?drone - drone ?location - location)
     :precondition (and
       (drone_at ?drone ?location)                              ; drone is present at the location
-      (not (inspected ?location))                              ; avoid useless repeated inspections
+      (needs_inspection ?location)                             ; only mission sites, and only once
     )
     :effect (and
       (inspected ?location)                                    ; location is now inspected
+      (not (needs_inspection ?location))                       ; blocks a second inspection
       (forall (?locked_location - location)                    ; unlock every location depending on this inspection
         (when (unlocked_by_inspection ?location ?locked_location)
           (accessible ?locked_location)))
@@ -156,13 +159,14 @@
   ;; --------------------------------------------------------------------------
   (:action recharge
     :parameters (?drone - drone ?location - location
-                 ?current_level ?full_level - level)
+                 ?current_level ?higher_level ?full_level - level)
     :precondition (and
       (drone_at ?drone ?location)                              ; drone is at the location
       (has_charging_station ?location)                         ; location has a charging station
       (battery ?drone ?current_level)                          ; current battery level
+      (next_level ?current_level ?higher_level)                ; battery not already full (no next_level above the max);
+                                                               ; ?higher_level is only this check, not the new level
       (max_level ?full_level)                                  ; the full-capacity level object
-      (not (max_level ?current_level))                         ; battery not already full (avoids no-op recharges)
     )
     :effect (and
       (not (battery ?drone ?current_level))                    ; remove old level
