@@ -6,15 +6,16 @@
 ;; Only the recharge action differs from domain-A.pddl.
 ;; ============================================================================
 
-(define (domain drone_emergency_model_b)
+(define (domain drone_emergency)   ; same name in both models: shared problem files
 
   ;; --------------------------------------------------------------------------
   ;; Requirements
+  ;; No :negative-preconditions: every "not yet" condition is a positive fact
+  ;; (cargo_empty, needs_inspection, next_level).
   ;; --------------------------------------------------------------------------
   (:requirements
     :strips                 ; basic add/delete effects
     :typing                 ; typed objects
-    :negative-preconditions ; used for (not (inspected ?l))
     :conditional-effects    ; forall/when used to unlock locations
     :action-costs           ; total-cost as plan cost
   )
@@ -53,7 +54,8 @@
     (unlocked_by_delivery ?supply - supply ?locked_location - location)      ; delivering this supply unlocks the location
 
     ;; ---- mission ----
-    (inspected ?location - location)                          ; location has been inspected
+    (needs_inspection ?location - location)                   ; mission site not inspected yet (deleted by inspect)
+    (inspected ?location - location)                          ; location has been inspected (goal predicate)
     (needs_supply ?location - location ?supply - supply)      ; location is waiting for this specific supply
     (supply_at ?supply - supply ?location - location)         ; supply is lying at this location (not carried)
     (delivered ?supply - supply ?location - location)         ; supply has been delivered to this location
@@ -98,10 +100,11 @@
     :parameters (?drone - drone ?location - location)
     :precondition (and
       (drone_at ?drone ?location)                              ; drone is present at the location
-      (not (inspected ?location))                              ; avoid useless repeated inspections
+      (needs_inspection ?location)                             ; only mission sites, and only once
     )
     :effect (and
       (inspected ?location)                                    ; location is now inspected
+      (not (needs_inspection ?location))                       ; blocks a second inspection
       (forall (?locked_location - location)                    ; unlock every location depending on this inspection
         (when (unlocked_by_inspection ?location ?locked_location)
           (accessible ?locked_location)))
