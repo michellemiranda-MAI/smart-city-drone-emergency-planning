@@ -22,7 +22,7 @@ LIMITS="--overall-time-limit 5m --overall-memory-limit 4G"   # same for every ru
 
 INSTANCES="test-problem.pddl problem-small.pddl problem-medium.pddl
            problem-large.pddl problem-large-1drone.pddl
-           experiments/problem-large-clustered.pddl"
+           optional_experiments/problem-large-clustered.pddl"
 # --alias lama (anytime) only for the large variants, as the statement asks
 LAMA_INSTANCES="problem-large problem-large-1drone problem-large-clustered"
 
