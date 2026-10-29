@@ -1,0 +1,99 @@
+Type-checking fly
+...action passes type checking.
+Type-checking inspect
+...action passes type checking.
+Type-checking pick-up-supply
+...action passes type checking.
+Type-checking deliver-supply
+...action passes type checking.
+Type-checking recharge
+...action passes type checking.
+Checking plan: plans/test-problem_B_astar-lmcut.plan
+Plan to validate:
+
+Plan size: 8
+1:
+(pick-up-supply dronea kit1 port)
+ 
+2:
+(inspect droneb tower)
+ 
+3:
+(fly droneb tower plant b4 b2 b2)
+ 
+4:
+(inspect droneb plant)
+ 
+5:
+(fly dronea port charging b2 b1 b1)
+ 
+6:
+(recharge dronea charging b1 b2)
+ 
+7:
+(fly dronea charging hospital b2 b2 b0)
+ 
+8:
+(deliver-supply dronea kit1 hospital)
+ 
+
+Plan Validation details
+-----------------------
+
+Checking next happening (time 1)
+Deleting (supply_at kit1 port)
+Deleting (cargo_empty dronea)
+Adding (carrying dronea kit1)
+Updating (total-cost) (0) by 1 increase
+
+Checking next happening (time 2)
+Deleting (needs_inspection tower)
+Adding (inspected tower)
+Adding (accessible plant)
+Updating (total-cost) (1) by 1 increase
+
+Checking next happening (time 3)
+Deleting (drone_at droneb tower)
+Deleting (battery droneb b4)
+Adding (drone_at droneb plant)
+Adding (battery droneb b2)
+Updating (total-cost) (2) by 2 increase
+
+Checking next happening (time 4)
+Deleting (needs_inspection plant)
+Adding (inspected plant)
+Updating (total-cost) (4) by 1 increase
+
+Checking next happening (time 5)
+Deleting (drone_at dronea port)
+Deleting (battery dronea b2)
+Adding (drone_at dronea charging)
+Adding (battery dronea b1)
+Updating (total-cost) (5) by 1 increase
+
+Checking next happening (time 6)
+Deleting (battery dronea b1)
+Adding (battery dronea b2)
+Updating (total-cost) (6) by 1 increase
+
+Checking next happening (time 7)
+Deleting (drone_at dronea charging)
+Deleting (battery dronea b2)
+Adding (drone_at dronea hospital)
+Adding (battery dronea b0)
+Updating (total-cost) (7) by 2 increase
+
+Checking next happening (time 8)
+Deleting (carrying dronea kit1)
+Deleting (needs_supply hospital kit1)
+Adding (cargo_empty dronea)
+Adding (delivered kit1 hospital)
+Updating (total-cost) (9) by 1 increase
+Plan executed successfully - checking goal
+Plan valid
+Final value: 10 
+
+Successful plans:
+Value: 10
+ plans/test-problem_B_astar-lmcut.plan 10 
+

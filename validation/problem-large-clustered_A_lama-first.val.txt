@@ -1,0 +1,427 @@
+Type-checking fly
+...action passes type checking.
+Type-checking inspect
+...action passes type checking.
+Type-checking pick-up-supply
+...action passes type checking.
+Type-checking deliver-supply
+...action passes type checking.
+Type-checking recharge
+...action passes type checking.
+Checking plan: plans/problem-large-clustered_A_lama-first.plan
+Plan to validate:
+
+Plan size: 42
+1:
+(pick-up-supply dronea comm1 port)
+ 
+2:
+(pick-up-supply droneb water1 port)
+ 
+3:
+(fly dronea port bonavista b6 b2 b4)
+ 
+4:
+(deliver-supply dronea comm1 bonavista)
+ 
+5:
+(fly droneb port serrallo b6 b1 b5)
+ 
+6:
+(deliver-supply droneb water1 serrallo)
+ 
+7:
+(fly dronec port francoli b6 b1 b5)
+ 
+8:
+(fly dronea bonavista petrochem b4 b1 b3)
+ 
+9:
+(inspect dronea petrochem)
+ 
+10:
+(fly dronec francoli hospital b5 b2 b3)
+ 
+11:
+(fly dronec hospital campus b3 b1 b2)
+ 
+12:
+(fly dronec campus pont_diable b2 b2 b0)
+ 
+13:
+(inspect dronec pont_diable)
+ 
+14:
+(fly droneb serrallo bonavista b5 b1 b4)
+ 
+15:
+(fly droneb bonavista port b4 b2 b2)
+ 
+16:
+(fly droneb port francoli b2 b1 b1)
+ 
+17:
+(inspect droneb francoli)
+ 
+18:
+(fly droneb francoli estacio b1 b1 b0)
+ 
+19:
+(fly dronea petrochem bonavista b3 b1 b2)
+ 
+20:
+(recharge dronea bonavista b2 b3 b6)
+ 
+21:
+(fly dronea bonavista campus b6 b3 b3)
+ 
+22:
+(fly dronea campus rambla b3 b2 b1)
+ 
+23:
+(recharge dronea rambla b1 b2 b6)
+ 
+24:
+(fly dronea rambla amfiteatre b6 b1 b5)
+ 
+25:
+(inspect dronea amfiteatre)
+ 
+26:
+(fly dronea amfiteatre rambla b5 b1 b4)
+ 
+27:
+(fly dronea rambla estacio b4 b1 b3)
+ 
+28:
+(pick-up-supply dronea kit1 estacio)
+ 
+29:
+(fly dronea estacio francoli b3 b1 b2)
+ 
+30:
+(fly dronea francoli estacio b2 b1 b1)
+ 
+31:
+(fly dronea estacio rambla b1 b1 b0)
+ 
+32:
+(recharge dronea rambla b0 b1 b6)
+ 
+33:
+(fly dronea rambla part_alta b6 b2 b4)
+ 
+34:
+(deliver-supply dronea kit1 part_alta)
+ 
+35:
+(fly dronea part_alta rambla b4 b2 b2)
+ 
+36:
+(fly dronea rambla estacio b2 b1 b1)
+ 
+37:
+(pick-up-supply dronea kit2 estacio)
+ 
+38:
+(fly dronea estacio rambla b1 b1 b0)
+ 
+39:
+(recharge dronea rambla b0 b1 b6)
+ 
+40:
+(fly dronea rambla campus b6 b2 b4)
+ 
+41:
+(fly dronea campus hospital b4 b1 b3)
+ 
+42:
+(deliver-supply dronea kit2 hospital)
+ 
+
+Plan Validation details
+-----------------------
+
+Checking next happening (time 1)
+Deleting (supply_at comm1 port)
+Deleting (cargo_empty dronea)
+Adding (carrying dronea comm1)
+Updating (total-cost) (0) by 1 increase
+
+Checking next happening (time 2)
+Deleting (supply_at water1 port)
+Deleting (cargo_empty droneb)
+Adding (carrying droneb water1)
+Updating (total-cost) (1) by 1 increase
+
+Checking next happening (time 3)
+Deleting (drone_at dronea port)
+Deleting (battery dronea b6)
+Adding (drone_at dronea bonavista)
+Adding (battery dronea b4)
+Updating (total-cost) (2) by 2 increase
+
+Checking next happening (time 4)
+Deleting (carrying dronea comm1)
+Deleting (needs_supply bonavista comm1)
+Adding (cargo_empty dronea)
+Adding (delivered comm1 bonavista)
+Adding (accessible petrochem)
+Updating (total-cost) (4) by 1 increase
+
+Checking next happening (time 5)
+Deleting (drone_at droneb port)
+Deleting (battery droneb b6)
+Adding (drone_at droneb serrallo)
+Adding (battery droneb b5)
+Updating (total-cost) (5) by 1 increase
+
+Checking next happening (time 6)
+Deleting (carrying droneb water1)
+Deleting (needs_supply serrallo water1)
+Adding (cargo_empty droneb)
+Adding (delivered water1 serrallo)
+Updating (total-cost) (6) by 1 increase
+
+Checking next happening (time 7)
+Deleting (drone_at dronec port)
+Deleting (battery dronec b6)
+Adding (drone_at dronec francoli)
+Adding (battery dronec b5)
+Updating (total-cost) (7) by 1 increase
+
+Checking next happening (time 8)
+Deleting (drone_at dronea bonavista)
+Deleting (battery dronea b4)
+Adding (drone_at dronea petrochem)
+Adding (battery dronea b3)
+Updating (total-cost) (8) by 1 increase
+
+Checking next happening (time 9)
+Deleting (needs_inspection petrochem)
+Adding (inspected petrochem)
+Updating (total-cost) (9) by 1 increase
+
+Checking next happening (time 10)
+Deleting (drone_at dronec francoli)
+Deleting (battery dronec b5)
+Adding (drone_at dronec hospital)
+Adding (battery dronec b3)
+Updating (total-cost) (10) by 2 increase
+
+Checking next happening (time 11)
+Deleting (drone_at dronec hospital)
+Deleting (battery dronec b3)
+Adding (drone_at dronec campus)
+Adding (battery dronec b2)
+Updating (total-cost) (12) by 1 increase
+
+Checking next happening (time 12)
+Deleting (drone_at dronec campus)
+Deleting (battery dronec b2)
+Adding (drone_at dronec pont_diable)
+Adding (battery dronec b0)
+Updating (total-cost) (13) by 2 increase
+
+Checking next happening (time 13)
+Deleting (needs_inspection pont_diable)
+Adding (inspected pont_diable)
+Updating (total-cost) (15) by 1 increase
+
+Checking next happening (time 14)
+Deleting (drone_at droneb serrallo)
+Deleting (battery droneb b5)
+Adding (drone_at droneb bonavista)
+Adding (battery droneb b4)
+Updating (total-cost) (16) by 1 increase
+
+Checking next happening (time 15)
+Deleting (drone_at droneb bonavista)
+Deleting (battery droneb b4)
+Adding (drone_at droneb port)
+Adding (battery droneb b2)
+Updating (total-cost) (17) by 2 increase
+
+Checking next happening (time 16)
+Deleting (drone_at droneb port)
+Deleting (battery droneb b2)
+Adding (drone_at droneb francoli)
+Adding (battery droneb b1)
+Updating (total-cost) (19) by 1 increase
+
+Checking next happening (time 17)
+Deleting (needs_inspection francoli)
+Adding (inspected francoli)
+Updating (total-cost) (20) by 1 increase
+
+Checking next happening (time 18)
+Deleting (drone_at droneb francoli)
+Deleting (battery droneb b1)
+Adding (drone_at droneb estacio)
+Adding (battery droneb b0)
+Updating (total-cost) (21) by 1 increase
+
+Checking next happening (time 19)
+Deleting (drone_at dronea petrochem)
+Deleting (battery dronea b3)
+Adding (drone_at dronea bonavista)
+Adding (battery dronea b2)
+Updating (total-cost) (22) by 1 increase
+
+Checking next happening (time 20)
+Deleting (battery dronea b2)
+Adding (battery dronea b6)
+Updating (total-cost) (23) by 1 increase
+
+Checking next happening (time 21)
+Deleting (drone_at dronea bonavista)
+Deleting (battery dronea b6)
+Adding (drone_at dronea campus)
+Adding (battery dronea b3)
+Updating (total-cost) (24) by 3 increase
+
+Checking next happening (time 22)
+Deleting (drone_at dronea campus)
+Deleting (battery dronea b3)
+Adding (drone_at dronea rambla)
+Adding (battery dronea b1)
+Updating (total-cost) (27) by 2 increase
+
+Checking next happening (time 23)
+Deleting (battery dronea b1)
+Adding (battery dronea b6)
+Updating (total-cost) (29) by 1 increase
+
+Checking next happening (time 24)
+Deleting (drone_at dronea rambla)
+Deleting (battery dronea b6)
+Adding (drone_at dronea amfiteatre)
+Adding (battery dronea b5)
+Updating (total-cost) (30) by 1 increase
+
+Checking next happening (time 25)
+Deleting (needs_inspection amfiteatre)
+Adding (inspected amfiteatre)
+Adding (accessible part_alta)
+Updating (total-cost) (31) by 1 increase
+
+Checking next happening (time 26)
+Deleting (drone_at dronea amfiteatre)
+Deleting (battery dronea b5)
+Adding (drone_at dronea rambla)
+Adding (battery dronea b4)
+Updating (total-cost) (32) by 1 increase
+
+Checking next happening (time 27)
+Deleting (drone_at dronea rambla)
+Deleting (battery dronea b4)
+Adding (drone_at dronea estacio)
+Adding (battery dronea b3)
+Updating (total-cost) (33) by 1 increase
+
+Checking next happening (time 28)
+Deleting (supply_at kit1 estacio)
+Deleting (cargo_empty dronea)
+Adding (carrying dronea kit1)
+Updating (total-cost) (34) by 1 increase
+
+Checking next happening (time 29)
+Deleting (drone_at dronea estacio)
+Deleting (battery dronea b3)
+Adding (drone_at dronea francoli)
+Adding (battery dronea b2)
+Updating (total-cost) (35) by 1 increase
+
+Checking next happening (time 30)
+Deleting (drone_at dronea francoli)
+Deleting (battery dronea b2)
+Adding (drone_at dronea estacio)
+Adding (battery dronea b1)
+Updating (total-cost) (36) by 1 increase
+
+Checking next happening (time 31)
+Deleting (drone_at dronea estacio)
+Deleting (battery dronea b1)
+Adding (drone_at dronea rambla)
+Adding (battery dronea b0)
+Updating (total-cost) (37) by 1 increase
+
+Checking next happening (time 32)
+Deleting (battery dronea b0)
+Adding (battery dronea b6)
+Updating (total-cost) (38) by 1 increase
+
+Checking next happening (time 33)
+Deleting (drone_at dronea rambla)
+Deleting (battery dronea b6)
+Adding (drone_at dronea part_alta)
+Adding (battery dronea b4)
+Updating (total-cost) (39) by 2 increase
+
+Checking next happening (time 34)
+Deleting (carrying dronea kit1)
+Deleting (needs_supply part_alta kit1)
+Adding (cargo_empty dronea)
+Adding (delivered kit1 part_alta)
+Updating (total-cost) (41) by 1 increase
+
+Checking next happening (time 35)
+Deleting (drone_at dronea part_alta)
+Deleting (battery dronea b4)
+Adding (drone_at dronea rambla)
+Adding (battery dronea b2)
+Updating (total-cost) (42) by 2 increase
+
+Checking next happening (time 36)
+Deleting (drone_at dronea rambla)
+Deleting (battery dronea b2)
+Adding (drone_at dronea estacio)
+Adding (battery dronea b1)
+Updating (total-cost) (44) by 1 increase
+
+Checking next happening (time 37)
+Deleting (supply_at kit2 estacio)
+Deleting (cargo_empty dronea)
+Adding (carrying dronea kit2)
+Updating (total-cost) (45) by 1 increase
+
+Checking next happening (time 38)
+Deleting (drone_at dronea estacio)
+Deleting (battery dronea b1)
+Adding (drone_at dronea rambla)
+Adding (battery dronea b0)
+Updating (total-cost) (46) by 1 increase
+
+Checking next happening (time 39)
+Deleting (battery dronea b0)
+Adding (battery dronea b6)
+Updating (total-cost) (47) by 1 increase
+
+Checking next happening (time 40)
+Deleting (drone_at dronea rambla)
+Deleting (battery dronea b6)
+Adding (drone_at dronea campus)
+Adding (battery dronea b4)
+Updating (total-cost) (48) by 2 increase
+
+Checking next happening (time 41)
+Deleting (drone_at dronea campus)
+Deleting (battery dronea b4)
+Adding (drone_at dronea hospital)
+Adding (battery dronea b3)
+Updating (total-cost) (50) by 1 increase
+
+Checking next happening (time 42)
+Deleting (carrying dronea kit2)
+Deleting (needs_supply hospital kit2)
+Adding (cargo_empty dronea)
+Adding (delivered kit2 hospital)
+Updating (total-cost) (51) by 1 increase
+Plan executed successfully - checking goal
+Plan valid
+Final value: 52 
+
+Successful plans:
+Value: 52
+ plans/problem-large-clustered_A_lama-first.plan 52 
+

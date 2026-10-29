@@ -4,6 +4,8 @@
 #
 # Usage (from the repo folder, in WSL/Linux):  bash run_experiments.sh
 # Optional: FD=/path/to/fast-downward.py VALIDATE=/path/to/Validate bash run_experiments.sh
+# Runs that already have a log are skipped, so the script can be re-run after
+# adding instances. FORCE=1 bash run_experiments.sh re-runs everything.
 #
 # Output:
 #   plans/       <instance>_<model>_<config>.plan   (lama: the last, cheapest plan)
@@ -26,13 +28,17 @@ LAMA_INSTANCES="problem-large problem-large-1drone problem-large-clustered"
 
 mkdir -p plans validation logs results
 CSV=results/results.csv
-echo "instance,model,planner,solved,runtime_s,plan_length,plan_cost,expanded_states,val" > "$CSV"
+if [ "${FORCE:-0}" = 1 ] || [ ! -f "$CSV" ]; then
+  rm -f logs/*.log plans/*.plan validation/*.val.txt
+  echo "instance,model,planner,solved,runtime_s,plan_length,plan_cost,expanded_states,val" > "$CSV"
+fi
 
 run() {  # run <problem-file> <model> <config-name> <planner options...>
   local prob=$1 model=$2 cfg=$3; shift 3
   local inst; inst=$(basename "$prob" .pddl)
   local id="${inst}_${model}_${cfg}"
   local tmp="plans/.tmp_${id}"
+  if [ -f "logs/$id.log" ]; then echo "--- $id (done, skipped)"; return; fi
   echo ">>> $id"
   rm -f "$tmp" "$tmp".*
   # --alias goes before the input files, --search after them
@@ -74,11 +80,17 @@ for prob in $INSTANCES; do
   [ -f "$prob" ] || { echo "skip $prob (not written yet)"; continue; }
   inst=$(basename "$prob" .pddl)
   for model in A B; do
+    # required (Section 7.1)
     run "$prob" "$model" lama-first  --alias lama-first
     run "$prob" "$model" astar-lmcut --search "astar(lmcut())"
     if [[ " $LAMA_INSTANCES " == *" $inst "* ]]; then
       run "$prob" "$model" lama --alias lama
     fi
+    # extra configurations (Lecture 2: blind vs weak vs strong heuristic,
+    # and greedy search with plain h_FF)
+    run "$prob" "$model" astar-blind --search "astar(blind())"
+    run "$prob" "$model" astar-hmax  --search "astar(hmax())"
+    run "$prob" "$model" gbfs-ff     --search "eager_greedy([ff()])"
   done
 done
 

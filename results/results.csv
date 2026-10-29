@@ -1,0 +1,47 @@
+instance,model,planner,solved,runtime_s,plan_length,plan_cost,expanded_states,val
+test-problem,A,lama-first,yes,0.26,8,10,19,valid
+test-problem,A,astar-lmcut,yes,0.22,8,10,12,valid
+test-problem,B,lama-first,yes,0.19,8,10,19,valid
+test-problem,B,astar-lmcut,yes,0.18,8,10,12,valid
+problem-large,A,lama-first,yes,0.27,44,57,145,valid
+problem-large,A,astar-lmcut,yes,85.56,26,30,115435,valid
+problem-large,A,lama,yes,276.58,26,30,328780,valid
+problem-large,B,lama-first,yes,0.17,51,60,3452,valid
+problem-large,B,astar-lmcut,yes,111.74,27,31,242786,valid
+problem-large,B,lama,yes,277.08,27,31,26521,valid
+problem-large-1drone,A,lama-first,yes,0.10,50,64,141,valid
+problem-large-1drone,A,astar-lmcut,yes,0.33,33,38,4456,valid
+problem-large-1drone,A,lama,yes,0.58,34,38,67665,valid
+problem-large-1drone,B,lama-first,yes,0.13,62,72,2996,valid
+problem-large-1drone,B,astar-lmcut,yes,0.61,45,50,11443,valid
+problem-large-1drone,B,lama,yes,0.60,45,50,54127,valid
+problem-large-clustered,A,lama-first,yes,0.15,42,52,118,valid
+problem-large-clustered,A,astar-lmcut,yes,177.63,28,31,420442,valid
+problem-large-clustered,A,lama,yes,276.18,29,32,155,valid
+problem-large-clustered,B,lama-first,yes,0.13,54,64,112,valid
+problem-large-clustered,B,astar-lmcut,no (time),276.28,,,,
+problem-large-clustered,B,lama,yes,276.35,30,33,32870,valid
+test-problem,A,astar-blind,yes,0.23,8,10,647,valid
+test-problem,A,astar-hmax,yes,0.20,8,10,111,valid
+test-problem,A,gbfs-ff,yes,0.16,8,10,9,valid
+test-problem,B,astar-blind,yes,0.22,8,10,885,valid
+test-problem,B,astar-hmax,yes,0.20,8,10,122,valid
+test-problem,B,gbfs-ff,yes,0.19,8,10,9,valid
+problem-large,A,astar-blind,no (time),287.37,,,,
+problem-large,A,astar-hmax,no (time),276.27,,,,
+problem-large,A,gbfs-ff,yes,0.25,37,44,632,valid
+problem-large,B,astar-blind,no (time),276.58,,,,
+problem-large,B,astar-hmax,no (time),276.73,,,,
+problem-large,B,gbfs-ff,yes,0.24,39,44,66,valid
+problem-large-1drone,A,astar-blind,yes,0.22,33,38,21639,valid
+problem-large-1drone,A,astar-hmax,yes,0.24,33,38,13624,valid
+problem-large-1drone,A,gbfs-ff,yes,0.21,44,54,102,valid
+problem-large-1drone,B,astar-blind,yes,0.29,45,50,25321,valid
+problem-large-1drone,B,astar-hmax,yes,0.39,45,50,17832,valid
+problem-large-1drone,B,gbfs-ff,yes,0.23,70,82,236,valid
+problem-large-clustered,A,astar-blind,no (time),293.28,,,,
+problem-large-clustered,A,astar-hmax,no (time),299.55,,,,
+problem-large-clustered,A,gbfs-ff,yes,0.28,35,40,90,valid
+problem-large-clustered,B,astar-blind,no (time),299.40,,,,
+problem-large-clustered,B,astar-hmax,no (time),299.29,,,,
+problem-large-clustered,B,gbfs-ff,yes,0.26,43,49,248,valid

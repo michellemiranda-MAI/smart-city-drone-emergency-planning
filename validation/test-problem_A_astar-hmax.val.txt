@@ -1,0 +1,99 @@
+Type-checking fly
+...action passes type checking.
+Type-checking inspect
+...action passes type checking.
+Type-checking pick-up-supply
+...action passes type checking.
+Type-checking deliver-supply
+...action passes type checking.
+Type-checking recharge
+...action passes type checking.
+Checking plan: plans/test-problem_A_astar-hmax.plan
+Plan to validate:
+
+Plan size: 8
+1:
+(pick-up-supply dronea kit1 port)
+ 
+2:
+(fly dronea port charging b2 b1 b1)
+ 
+3:
+(recharge dronea charging b1 b2 b5)
+ 
+4:
+(inspect droneb tower)
+ 
+5:
+(fly droneb tower plant b4 b2 b2)
+ 
+6:
+(fly dronea charging hospital b5 b2 b3)
+ 
+7:
+(deliver-supply dronea kit1 hospital)
+ 
+8:
+(inspect droneb plant)
+ 
+
+Plan Validation details
+-----------------------
+
+Checking next happening (time 1)
+Deleting (supply_at kit1 port)
+Deleting (cargo_empty dronea)
+Adding (carrying dronea kit1)
+Updating (total-cost) (0) by 1 increase
+
+Checking next happening (time 2)
+Deleting (drone_at dronea port)
+Deleting (battery dronea b2)
+Adding (drone_at dronea charging)
+Adding (battery dronea b1)
+Updating (total-cost) (1) by 1 increase
+
+Checking next happening (time 3)
+Deleting (battery dronea b1)
+Adding (battery dronea b5)
+Updating (total-cost) (2) by 1 increase
+
+Checking next happening (time 4)
+Deleting (needs_inspection tower)
+Adding (inspected tower)
+Adding (accessible plant)
+Updating (total-cost) (3) by 1 increase
+
+Checking next happening (time 5)
+Deleting (drone_at droneb tower)
+Deleting (battery droneb b4)
+Adding (drone_at droneb plant)
+Adding (battery droneb b2)
+Updating (total-cost) (4) by 2 increase
+
+Checking next happening (time 6)
+Deleting (drone_at dronea charging)
+Deleting (battery dronea b5)
+Adding (drone_at dronea hospital)
+Adding (battery dronea b3)
+Updating (total-cost) (6) by 2 increase
+
+Checking next happening (time 7)
+Deleting (carrying dronea kit1)
+Deleting (needs_supply hospital kit1)
+Adding (cargo_empty dronea)
+Adding (delivered kit1 hospital)
+Updating (total-cost) (8) by 1 increase
+
+Checking next happening (time 8)
+Deleting (needs_inspection plant)
+Adding (inspected plant)
+Updating (total-cost) (9) by 1 increase
+Plan executed successfully - checking goal
+Plan valid
+Final value: 10 
+
+Successful plans:
+Value: 10
+ plans/test-problem_A_astar-hmax.plan 10 
+

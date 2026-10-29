@@ -1,0 +1,1149 @@
+INFO     planner time limit: 300s
+INFO     planner memory limit: 4096 MB
+
+INFO     Running translator.
+INFO     translator stdin: None
+INFO     translator time limit: 299s
+INFO     translator memory limit: 4096 MB
+INFO     translator command line string: /usr/bin/python3 -m fast_downward.translate domain-B.pddl problem-large.pddl --sas-file output.sas
+Parsing...
+Parsing: [0.000s CPU, 0.007s wall-clock]
+Normalizing task... [0.000s CPU, 0.001s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.001s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.010s CPU, 0.002s wall-clock]
+Preparing model... [0.000s CPU, 0.001s wall-clock]
+Generated 44 rules.
+Computing model... [0.000s CPU, 0.006s wall-clock]
+893 relevant atoms
+1059 auxiliary atoms
+1952 final queue length
+3001 total queue pushes
+Completing instantiation... [0.010s CPU, 0.009s wall-clock]
+Instantiating: [0.020s CPU, 0.023s wall-clock]
+Computing fact groups...
+Finding invariants...
+26 initial candidates
+Finding invariants: [0.000s CPU, 0.002s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.001s wall-clock]
+Instantiating groups... [0.000s CPU, 0.001s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.000s wall-clock]
+Choosing groups...
+19 uncovered facts
+Choosing groups: [0.000s CPU, 0.000s wall-clock]
+Building translation key... [0.000s CPU, 0.000s wall-clock]
+Computing fact groups: [0.000s CPU, 0.008s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.001s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Translator axioms removed by simplifying: 0
+Processing axioms: [0.000s CPU, 0.002s wall-clock]
+Translating task: [0.010s CPU, 0.010s wall-clock]
+24 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+0 axioms removed
+34 propositions removed
+Detecting unreachable propositions: [0.000s CPU, 0.004s wall-clock]
+Reordering and filtering variables...
+23 of 23 variables necessary.
+15 of 33 mutex groups necessary.
+588 of 588 operators necessary.
+0 of 0 axiom rules necessary.
+Reordering and filtering variables: [0.010s CPU, 0.002s wall-clock]
+Translator variables: 23
+Translator derived variables: 0
+Translator facts: 103
+Translator goal facts: 8
+Translator mutex groups: 15
+Translator total mutex groups size: 39
+Translator operators: 588
+Translator axioms: 0
+Translator task size: 3140
+Translator peak memory: 33392 KB
+Writing output... [0.000s CPU, 0.007s wall-clock]
+Done! [0.040s CPU, 0.069s wall-clock]
+b'Warning: :predicates specification not allowed here (cf. PDDL BNF)\n'
+translate exit code: 0
+
+INFO     Running search (release).
+INFO     search stdin: output.sas
+INFO     search time limit: 299s
+INFO     search memory limit: 4096 MB
+INFO     search command line string: /home/sonia/downward/builds/release/bin/downward --search --if-unit-cost 'let(hlm,landmark_sum(lm_reasonable_orders_hps(lm_rhw()),pref=false),let(hff,ff(),iterated([lazy_greedy([hff,hlm],preferred=[hff,hlm]),lazy_wastar([hff,hlm],preferred=[hff,hlm],w=5),lazy_wastar([hff,hlm],preferred=[hff,hlm],w=3),lazy_wastar([hff,hlm],preferred=[hff,hlm],w=2),lazy_wastar([hff,hlm],preferred=[hff,hlm],w=1)],repeat_last=true)))' --if-non-unit-cost 'let(hlm1,eval_modify_costs(landmark_sum(lm_reasonable_orders_hps(lm_rhw()),pref=false),cost_type=one),let(hff1,eval_modify_costs(ff(),cost_type=one),let(hlm2,eval_modify_costs(landmark_sum(lm_reasonable_orders_hps(lm_rhw()),pref=false),cost_type=plusone),let(hff2,eval_modify_costs(ff(),cost_type=plusone),iterated([lazy_greedy([hff1,hlm1],preferred=[hff1,hlm1],cost_type=one,reopen_closed=false),lazy_greedy([hff2,hlm2],preferred=[hff2,hlm2],reopen_closed=false),lazy_wastar([hff2,hlm2],preferred=[hff2,hlm2],w=5),lazy_wastar([hff2,hlm2],preferred=[hff2,hlm2],w=3),lazy_wastar([hff2,hlm2],preferred=[hff2,hlm2],w=2),lazy_wastar([hff2,hlm2],preferred=[hff2,hlm2],w=1)],repeat_last=true)))))' --always --internal-plan-file plans/.tmp_problem-large_B_lama < output.sas
+[t=0.001904s, 11340 KB] Search code revision: 487e33cd6
+[t=0.002030s, 11340 KB] reading input...
+[t=0.003964s, 11472 KB] done reading input!
+[t=0.004037s, 11868 KB] Building successor generator... done!
+[t=0.006525s, 11868 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.006599s, 11868 KB] time for successor generation creation: 0.000117s
+[t=0.006663s, 11868 KB] Variables: 23
+[t=0.006704s, 11868 KB] FactPairs: 103
+[t=0.006759s, 11868 KB] Bytes per state: 8
+[t=0.006794s, 11868 KB] Simplifying 1128 unary operators... done! [972 unary operators]
+[t=0.007207s, 12000 KB] time to simplify: 0.000413s
+[t=0.007296s, 12000 KB] Initializing additive heuristic...
+[t=0.007367s, 12000 KB] Initializing FF heuristic...
+[t=0.007416s, 12000 KB] Initializing landmark sum heuristic...
+[t=0.007482s, 12000 KB] Generating landmark graph...
+[t=0.007519s, 12000 KB] Building a landmark graph with reasonable orders.
+[t=0.007596s, 12000 KB] Initializing Exploration...
+[t=0.007665s, 12000 KB] Generating landmarks using the RPG/SAS+ approach
+[t=0.007810s, 12000 KB] Landmarks generation time: 0.000214s
+[t=0.009159s, 12000 KB] Discovered 37 landmarks, of which 13 are disjunctive and 0 are conjunctive.
+[t=0.009206s, 12000 KB] There are 49 landmark orderings.
+[t=0.009289s, 12000 KB] approx. reasonable orders
+[t=0.009348s, 12000 KB] Landmarks generation time: 0.001828s
+[t=0.009447s, 12000 KB] Discovered 37 landmarks, of which 13 are disjunctive and 0 are conjunctive.
+[t=0.009499s, 12000 KB] There are 49 landmark orderings.
+[t=0.009545s, 12000 KB] Landmark graph generation time: 0.002062s
+[t=0.009596s, 12000 KB] Landmark graph contains 37 landmarks, of which 13 are disjunctive and 0 are conjunctive.
+[t=0.009639s, 12000 KB] Landmark graph contains 49 orderings.
+[t=0.009688s, 12000 KB] Building successor generator... done!
+[t=0.009813s, 12000 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.009863s, 12000 KB] time for successor generation creation: 0.000000s
+[t=0.009916s, 12000 KB] Variables: 23
+[t=0.009954s, 12000 KB] FactPairs: 103
+[t=0.010011s, 12000 KB] Bytes per state: 8
+[t=0.010045s, 12000 KB] Starting search: lazy_greedy
+[t=0.010105s, 12000 KB] Conducting lazy best first search, (real) bound = 2147483647
+[t=0.010148s, 12000 KB] New best heuristic value for landmark_sum_heuristic: 23
+[t=0.010305s, 12000 KB] New best heuristic value for ff: 23
+[t=0.010389s, 12000 KB] g=0, 1 evaluated, 0 expanded
+[t=0.010459s, 12000 KB] Initial heuristic value for landmark_sum_heuristic: 23
+[t=0.010529s, 12000 KB] Initial heuristic value for ff: 23
+[t=0.010581s, 12000 KB] New best heuristic value for landmark_sum_heuristic: 22
+[t=0.010647s, 12000 KB] New best heuristic value for ff: 22
+[t=0.010698s, 12000 KB] g=1, 2 evaluated, 1 expanded
+[t=0.010743s, 12000 KB] New best heuristic value for landmark_sum_heuristic: 21
+[t=0.010824s, 12000 KB] g=2, 3 evaluated, 2 expanded
+[t=0.010867s, 12000 KB] New best heuristic value for landmark_sum_heuristic: 19
+[t=0.010943s, 12000 KB] New best heuristic value for ff: 21
+[t=0.010977s, 12000 KB] g=3, 4 evaluated, 3 expanded
+[t=0.011026s, 12000 KB] New best heuristic value for landmark_sum_heuristic: 18
+[t=0.011094s, 12000 KB] g=4, 5 evaluated, 4 expanded
+[t=0.011147s, 12000 KB] New best heuristic value for ff: 20
+[t=0.011233s, 12000 KB] g=4, 7 evaluated, 6 expanded
+[t=0.011283s, 12000 KB] New best heuristic value for landmark_sum_heuristic: 17
+[t=0.011344s, 12000 KB] g=5, 8 evaluated, 7 expanded
+[t=0.011393s, 12000 KB] New best heuristic value for ff: 19
+[t=0.011454s, 12000 KB] g=5, 9 evaluated, 8 expanded
+[t=0.011502s, 12000 KB] New best heuristic value for landmark_sum_heuristic: 16
+[t=0.011587s, 12000 KB] g=6, 12 evaluated, 11 expanded
+[t=0.011637s, 12000 KB] New best heuristic value for landmark_sum_heuristic: 14
+[t=0.011759s, 12000 KB] g=7, 18 evaluated, 17 expanded
+[t=0.011849s, 12000 KB] New best heuristic value for landmark_sum_heuristic: 13
+[t=0.011931s, 12000 KB] New best heuristic value for ff: 18
+[t=0.011985s, 12000 KB] g=8, 20 evaluated, 19 expanded
+[t=0.012030s, 12000 KB] New best heuristic value for ff: 17
+[t=0.012135s, 12000 KB] g=9, 21 evaluated, 20 expanded
+[t=0.012194s, 12000 KB] New best heuristic value for landmark_sum_heuristic: 12
+[t=0.012298s, 12000 KB] New best heuristic value for ff: 16
+[t=0.012343s, 12000 KB] g=10, 24 evaluated, 23 expanded
+[t=0.012398s, 12000 KB] New best heuristic value for landmark_sum_heuristic: 11
+[t=0.012490s, 12000 KB] New best heuristic value for ff: 15
+[t=0.012543s, 12000 KB] g=11, 26 evaluated, 25 expanded
+[t=0.012588s, 12000 KB] New best heuristic value for landmark_sum_heuristic: 10
+[t=0.012782s, 12000 KB] New best heuristic value for ff: 14
+[t=0.012827s, 12000 KB] g=13, 39 evaluated, 38 expanded
+[t=0.012880s, 12000 KB] New best heuristic value for landmark_sum_heuristic: 9
+[t=0.012975s, 12000 KB] g=14, 42 evaluated, 41 expanded
+[t=0.013026s, 12132 KB] New best heuristic value for landmark_sum_heuristic: 8
+[t=0.013109s, 12132 KB] g=15, 43 evaluated, 42 expanded
+[t=0.013159s, 12132 KB] New best heuristic value for ff: 13
+[t=0.013245s, 12132 KB] g=16, 47 evaluated, 46 expanded
+[t=0.013336s, 12132 KB] New best heuristic value for ff: 11
+[t=0.013674s, 12132 KB] g=19, 79 evaluated, 78 expanded
+[t=0.013738s, 12132 KB] New best heuristic value for ff: 10
+[t=0.013865s, 12132 KB] g=20, 80 evaluated, 79 expanded
+[t=0.013924s, 12132 KB] New best heuristic value for landmark_sum_heuristic: 7
+[t=0.014019s, 12132 KB] g=21, 83 evaluated, 82 expanded
+[t=0.014068s, 12132 KB] New best heuristic value for landmark_sum_heuristic: 6
+[t=0.014135s, 12132 KB] g=22, 84 evaluated, 83 expanded
+[t=0.014184s, 12132 KB] New best heuristic value for ff: 9
+[t=0.014289s, 12132 KB] g=24, 92 evaluated, 90 expanded
+[t=0.014340s, 12132 KB] New best heuristic value for ff: 8
+[t=0.014403s, 12132 KB] g=25, 94 evaluated, 92 expanded
+[t=0.014452s, 12132 KB] New best heuristic value for landmark_sum_heuristic: 5
+[t=0.014530s, 12132 KB] g=28, 100 evaluated, 98 expanded
+[t=0.014578s, 12132 KB] New best heuristic value for landmark_sum_heuristic: 4
+[t=0.014630s, 12132 KB] g=29, 101 evaluated, 99 expanded
+[t=0.014678s, 12132 KB] New best heuristic value for ff: 7
+[t=0.014733s, 12132 KB] g=28, 102 evaluated, 100 expanded
+[t=0.014782s, 12132 KB] New best heuristic value for ff: 6
+[t=0.014882s, 12132 KB] g=32, 114 evaluated, 109 expanded
+[t=0.014930s, 12132 KB] New best heuristic value for ff: 5
+[t=0.015011s, 12132 KB] g=33, 116 evaluated, 111 expanded
+[t=0.015064s, 12132 KB] New best heuristic value for landmark_sum_heuristic: 3
+[t=0.015120s, 12132 KB] New best heuristic value for ff: 4
+[t=0.015167s, 12132 KB] g=34, 118 evaluated, 113 expanded
+[t=0.015202s, 12132 KB] New best heuristic value for landmark_sum_heuristic: 2
+[t=0.015275s, 12132 KB] New best heuristic value for ff: 3
+[t=0.015317s, 12132 KB] g=35, 120 evaluated, 114 expanded
+[t=0.041989s, 12660 KB] New best heuristic value for ff: 2
+[t=0.043643s, 12660 KB] g=49, 4551 evaluated, 3450 expanded
+[t=0.043725s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 1
+[t=0.043801s, 12660 KB] New best heuristic value for ff: 1
+[t=0.043855s, 12660 KB] g=50, 4552 evaluated, 3451 expanded
+[t=0.043897s, 12660 KB] Solution found!
+[t=0.043973s, 12660 KB] Actual search time: 0.033826s
+pick-up-supply dronea comm1 port (1)
+fly dronea port bonavista b6 b2 b4 (2)
+deliver-supply dronea comm1 bonavista (1)
+fly dronea bonavista petrochem b4 b1 b3 (1)
+inspect dronea petrochem (1)
+fly droneb rambla amfiteatre b6 b1 b5 (1)
+inspect droneb amfiteatre (1)
+fly droneb amfiteatre part_alta b5 b1 b4 (1)
+fly dronea petrochem bonavista b3 b1 b2 (1)
+fly dronea bonavista serrallo b2 b1 b1 (1)
+fly dronec campus hospital b6 b1 b5 (1)
+fly dronec hospital francoli b5 b2 b3 (2)
+inspect dronec francoli (1)
+fly droneb part_alta rambla b4 b2 b2 (2)
+fly dronea serrallo port b1 b1 b0 (1)
+fly dronec francoli port b3 b1 b2 (1)
+pick-up-supply dronec water1 port (1)
+fly dronec port serrallo b2 b1 b1 (1)
+deliver-supply dronec water1 serrallo (1)
+fly droneb rambla estacio b2 b1 b1 (1)
+pick-up-supply droneb kit1 estacio (1)
+fly droneb estacio rambla b1 b1 b0 (1)
+recharge droneb rambla b0 b1 (1)
+recharge droneb rambla b1 b2 (1)
+fly droneb rambla part_alta b2 b2 b0 (2)
+deliver-supply droneb kit1 part_alta (1)
+fly dronec serrallo bonavista b1 b1 b0 (1)
+recharge dronec bonavista b0 b1 (1)
+recharge dronec bonavista b1 b2 (1)
+recharge dronec bonavista b2 b3 (1)
+fly dronec bonavista campus b3 b3 b0 (3)
+recharge dronec campus b0 b1 (1)
+recharge dronec campus b1 b2 (1)
+fly dronec campus rambla b2 b2 b0 (2)
+recharge dronec rambla b0 b1 (1)
+recharge dronec rambla b1 b2 (1)
+fly dronec rambla estacio b2 b1 b1 (1)
+pick-up-supply dronec kit2 estacio (1)
+fly dronec estacio rambla b1 b1 b0 (1)
+recharge dronec rambla b0 b1 (1)
+recharge dronec rambla b1 b2 (1)
+fly dronec rambla campus b2 b2 b0 (2)
+recharge dronec campus b0 b1 (1)
+recharge dronec campus b1 b2 (1)
+fly dronec campus hospital b2 b1 b1 (1)
+deliver-supply dronec kit2 hospital (1)
+fly dronec hospital campus b1 b1 b0 (1)
+recharge dronec campus b0 b1 (1)
+recharge dronec campus b1 b2 (1)
+fly dronec campus pont_diable b2 b2 b0 (2)
+inspect dronec pont_diable (1)
+[t=0.047599s, 12660 KB] Plan length: 51 step(s).
+[t=0.047681s, 12660 KB] Plan cost: 60
+[t=0.047742s, 12660 KB] Expanded 3452 state(s).
+[t=0.047800s, 12660 KB] Reopened 0 state(s).
+[t=0.047843s, 12660 KB] Evaluated 4553 state(s).
+[t=0.047893s, 12660 KB] Evaluations: 8006
+[t=0.047928s, 12660 KB] Generated 17376 state(s).
+[t=0.047975s, 12660 KB] Dead ends: 1100 state(s).
+[t=0.048008s, 12660 KB] Number of registered states: 4553
+[t=0.048096s, 12660 KB] Int hash set load factor: 4553/8192 = 0.555786
+[t=0.048139s, 12660 KB] Int hash set resizes: 13
+[t=0.048190s, 12660 KB] Best solution cost so far: 60
+[t=0.048366s, 12660 KB] Solution found - keep searching
+[t=0.048413s, 12660 KB] Simplifying 1128 unary operators... done! [972 unary operators]
+[t=0.048742s, 12660 KB] time to simplify: 0.000329s
+[t=0.048830s, 12660 KB] Initializing additive heuristic...
+[t=0.048908s, 12660 KB] Initializing FF heuristic...
+[t=0.048953s, 12660 KB] Initializing landmark sum heuristic...
+[t=0.049017s, 12660 KB] Generating landmark graph...
+[t=0.049068s, 12660 KB] Building a landmark graph with reasonable orders.
+[t=0.049138s, 12660 KB] Initializing Exploration...
+[t=0.049216s, 12660 KB] Generating landmarks using the RPG/SAS+ approach
+[t=0.049346s, 12660 KB] Landmarks generation time: 0.000209s
+[t=0.050702s, 12660 KB] Discovered 37 landmarks, of which 13 are disjunctive and 0 are conjunctive.
+[t=0.050799s, 12660 KB] There are 49 landmark orderings.
+[t=0.050865s, 12660 KB] approx. reasonable orders
+[t=0.050924s, 12660 KB] Landmarks generation time: 0.001856s
+[t=0.051023s, 12660 KB] Discovered 37 landmarks, of which 13 are disjunctive and 0 are conjunctive.
+[t=0.051067s, 12660 KB] There are 49 landmark orderings.
+[t=0.051120s, 12660 KB] Landmark graph generation time: 0.002103s
+[t=0.051161s, 12660 KB] Landmark graph contains 37 landmarks, of which 13 are disjunctive and 0 are conjunctive.
+[t=0.051212s, 12660 KB] Landmark graph contains 49 orderings.
+[t=0.051247s, 12660 KB] Building successor generator... done!
+[t=0.051388s, 12660 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.051446s, 12660 KB] time for successor generation creation: 0.000000s
+[t=0.051492s, 12660 KB] Variables: 23
+[t=0.051546s, 12660 KB] FactPairs: 103
+[t=0.051587s, 12660 KB] Bytes per state: 8
+[t=0.051634s, 12660 KB] Starting search: lazy_greedy
+[t=0.051677s, 12660 KB] Conducting lazy best first search, (real) bound = 60
+[t=0.051725s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 47
+[t=0.051798s, 12660 KB] New best heuristic value for ff: 48
+[t=0.051902s, 12660 KB] g=0, 1 evaluated, 0 expanded
+[t=0.051944s, 12660 KB] Initial heuristic value for landmark_sum_heuristic: 47
+[t=0.052005s, 12660 KB] Initial heuristic value for ff: 48
+[t=0.052046s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 45
+[t=0.052123s, 12660 KB] New best heuristic value for ff: 46
+[t=0.052165s, 12660 KB] g=1, 2 evaluated, 1 expanded
+[t=0.052215s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 43
+[t=0.052283s, 12660 KB] g=3, 3 evaluated, 2 expanded
+[t=0.052334s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 39
+[t=0.052396s, 12660 KB] New best heuristic value for ff: 44
+[t=0.052446s, 12660 KB] g=4, 4 evaluated, 3 expanded
+[t=0.052486s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 37
+[t=0.052565s, 12660 KB] g=5, 5 evaluated, 4 expanded
+[t=0.052606s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 35
+[t=0.052719s, 12660 KB] New best heuristic value for ff: 42
+[t=0.052763s, 12660 KB] g=6, 8 evaluated, 7 expanded
+[t=0.052826s, 12660 KB] New best heuristic value for ff: 40
+[t=0.052885s, 12660 KB] g=7, 9 evaluated, 8 expanded
+[t=0.052933s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 33
+[t=0.053006s, 12660 KB] g=7, 11 evaluated, 10 expanded
+[t=0.053054s, 12660 KB] New best heuristic value for ff: 37
+[t=0.053112s, 12660 KB] g=8, 12 evaluated, 11 expanded
+[t=0.053159s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 31
+[t=0.053237s, 12660 KB] g=9, 15 evaluated, 14 expanded
+[t=0.053284s, 12660 KB] New best heuristic value for ff: 35
+[t=0.053427s, 12660 KB] g=9, 19 evaluated, 18 expanded
+[t=0.053488s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 27
+[t=0.053547s, 12660 KB] g=10, 20 evaluated, 19 expanded
+[t=0.053597s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 25
+[t=0.053739s, 12660 KB] g=11, 22 evaluated, 21 expanded
+[t=0.053834s, 12660 KB] New best heuristic value for ff: 33
+[t=0.053960s, 12660 KB] g=13, 26 evaluated, 25 expanded
+[t=0.054020s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 23
+[t=0.054085s, 12660 KB] g=12, 28 evaluated, 27 expanded
+[t=0.054135s, 12660 KB] New best heuristic value for ff: 30
+[t=0.054261s, 12660 KB] g=15, 35 evaluated, 34 expanded
+[t=0.054315s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 22
+[t=0.054383s, 12660 KB] g=17, 37 evaluated, 36 expanded
+[t=0.054430s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 20
+[t=0.054516s, 12660 KB] g=18, 42 evaluated, 41 expanded
+[t=0.054563s, 12660 KB] New best heuristic value for ff: 28
+[t=0.054638s, 12660 KB] g=16, 45 evaluated, 44 expanded
+[t=0.054686s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 18
+[t=0.054761s, 12660 KB] g=21, 49 evaluated, 48 expanded
+[t=0.054807s, 12660 KB] New best heuristic value for ff: 27
+[t=0.054999s, 12660 KB] g=19, 68 evaluated, 65 expanded
+[t=0.055047s, 12660 KB] New best heuristic value for ff: 24
+[t=0.055123s, 12660 KB] g=21, 72 evaluated, 69 expanded
+[t=0.055173s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 16
+[t=0.055244s, 12660 KB] g=22, 76 evaluated, 72 expanded
+[t=0.055293s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 14
+[t=0.055492s, 12660 KB] g=27, 99 evaluated, 92 expanded
+[t=0.055540s, 12660 KB] New best heuristic value for ff: 22
+[t=0.055687s, 12660 KB] g=30, 118 evaluated, 105 expanded
+[t=0.055733s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 12
+[t=0.055794s, 12660 KB] New best heuristic value for ff: 21
+[t=0.055841s, 12660 KB] g=33, 121 evaluated, 108 expanded
+[t=0.055877s, 12660 KB] New best heuristic value for ff: 20
+[t=0.056008s, 12660 KB] g=36, 130 evaluated, 114 expanded
+[t=0.056042s, 12660 KB] New best heuristic value for ff: 19
+[t=0.056685s, 12660 KB] g=32, 223 evaluated, 184 expanded
+[t=0.056719s, 12660 KB] New best heuristic value for ff: 16
+[t=0.056855s, 12660 KB] g=37, 236 evaluated, 194 expanded
+[t=0.056898s, 12660 KB] New best heuristic value for ff: 14
+[t=0.056975s, 12660 KB] g=38, 238 evaluated, 196 expanded
+[t=0.057015s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 10
+[t=0.057093s, 12660 KB] New best heuristic value for ff: 12
+[t=0.057125s, 12660 KB] g=39, 240 evaluated, 198 expanded
+[t=0.057181s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 8
+[t=0.057232s, 12660 KB] New best heuristic value for ff: 10
+[t=0.057321s, 12660 KB] g=40, 241 evaluated, 199 expanded
+[t=0.068132s, 12660 KB] New best heuristic value for ff: 9
+[t=0.069905s, 12660 KB] g=52, 2258 evaluated, 1598 expanded
+[t=0.069968s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 7
+[t=0.070030s, 12660 KB] g=53, 2259 evaluated, 1599 expanded
+[t=0.070091s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 5
+[t=0.070167s, 12660 KB] g=54, 2260 evaluated, 1600 expanded
+[t=0.070234s, 12660 KB] New best heuristic value for ff: 7
+[t=0.070315s, 12660 KB] g=56, 2263 evaluated, 1602 expanded
+[t=0.070361s, 12660 KB] New best heuristic value for ff: 5
+[t=0.070428s, 12660 KB] g=57, 2264 evaluated, 1603 expanded
+[t=0.070513s, 12660 KB] New best heuristic value for landmark_sum_heuristic: 2
+[t=0.070601s, 12660 KB] New best heuristic value for ff: 2
+[t=0.070650s, 12660 KB] g=59, 2265 evaluated, 1604 expanded
+[t=0.211692s, 15124 KB] Solution found!
+[t=0.213711s, 15124 KB] Actual search time: 0.161985s
+pick-up-supply dronea comm1 port (1)
+fly dronea port bonavista b6 b2 b4 (2)
+deliver-supply dronea comm1 bonavista (1)
+fly dronea bonavista petrochem b4 b1 b3 (1)
+inspect dronea petrochem (1)
+fly dronea petrochem bonavista b3 b1 b2 (1)
+fly dronea bonavista serrallo b2 b1 b1 (1)
+fly droneb rambla estacio b6 b1 b5 (1)
+fly dronec campus pont_diable b6 b2 b4 (2)
+inspect dronec pont_diable (1)
+fly droneb estacio francoli b5 b1 b4 (1)
+inspect droneb francoli (1)
+fly droneb francoli estacio b4 b1 b3 (1)
+pick-up-supply droneb kit1 estacio (1)
+fly droneb estacio rambla b3 b1 b2 (1)
+fly droneb rambla amfiteatre b2 b1 b1 (1)
+inspect droneb amfiteatre (1)
+fly droneb amfiteatre part_alta b1 b1 b0 (1)
+deliver-supply droneb kit1 part_alta (1)
+fly dronec pont_diable campus b4 b2 b2 (2)
+fly dronec campus rambla b2 b2 b0 (2)
+recharge dronec rambla b0 b1 (1)
+recharge dronec rambla b1 b2 (1)
+fly dronec rambla estacio b2 b1 b1 (1)
+pick-up-supply dronec kit2 estacio (1)
+fly dronec estacio rambla b1 b1 b0 (1)
+recharge dronec rambla b0 b1 (1)
+recharge dronec rambla b1 b2 (1)
+fly dronec rambla campus b2 b2 b0 (2)
+recharge dronec campus b0 b1 (1)
+fly dronea serrallo port b1 b1 b0 (1)
+recharge dronec campus b1 b2 (1)
+fly dronec campus hospital b2 b1 b1 (1)
+deliver-supply dronec kit2 hospital (1)
+fly dronec hospital campus b1 b1 b0 (1)
+recharge dronec campus b0 b1 (1)
+recharge dronec campus b1 b2 (1)
+recharge dronec campus b2 b3 (1)
+fly dronec campus bonavista b3 b3 b0 (3)
+recharge dronec bonavista b0 b1 (1)
+recharge dronec bonavista b1 b2 (1)
+recharge dronec bonavista b2 b3 (1)
+fly dronec bonavista port b3 b2 b1 (2)
+pick-up-supply dronec water1 port (1)
+fly dronec port serrallo b1 b1 b0 (1)
+deliver-supply dronec water1 serrallo (1)
+[t=0.216476s, 15124 KB] Plan length: 46 step(s).
+[t=0.216595s, 15124 KB] Plan cost: 54
+[t=0.216685s, 15124 KB] Expanded 18173 state(s).
+[t=0.216764s, 15124 KB] Reopened 0 state(s).
+[t=0.216806s, 15124 KB] Evaluated 24891 state(s).
+[t=0.216869s, 15124 KB] Evaluations: 43065
+[t=0.216917s, 15124 KB] Generated 81739 state(s).
+[t=0.216969s, 15124 KB] Dead ends: 6717 state(s).
+[t=0.217013s, 15124 KB] Number of registered states: 24891
+[t=0.217066s, 15124 KB] Int hash set load factor: 24891/32768 = 0.759613
+[t=0.217107s, 15124 KB] Int hash set resizes: 15
+[t=0.217157s, 15124 KB] Best solution cost so far: 54
+[t=0.217548s, 15124 KB] Solution found - keep searching
+[t=0.217597s, 15124 KB] Building successor generator... done!
+[t=0.217810s, 15124 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.217860s, 15124 KB] time for successor generation creation: 0.000000s
+[t=0.217910s, 15124 KB] Variables: 23
+[t=0.217946s, 15124 KB] FactPairs: 103
+[t=0.217993s, 15124 KB] Bytes per state: 8
+[t=0.218026s, 15124 KB] Starting search: lazy_wastar
+[t=0.218081s, 15124 KB] Conducting lazy best first search, (real) bound = 54
+[t=0.218114s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 47
+[t=0.218207s, 15124 KB] New best heuristic value for ff: 48
+[t=0.218248s, 15124 KB] g=0, 1 evaluated, 0 expanded
+[t=0.218351s, 15124 KB] Initial heuristic value for landmark_sum_heuristic: 47
+[t=0.218453s, 15124 KB] Initial heuristic value for ff: 48
+[t=0.218544s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 45
+[t=0.218635s, 15124 KB] New best heuristic value for ff: 46
+[t=0.218696s, 15124 KB] g=1, 2 evaluated, 1 expanded
+[t=0.218737s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 43
+[t=0.218827s, 15124 KB] g=3, 3 evaluated, 2 expanded
+[t=0.218863s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 39
+[t=0.218940s, 15124 KB] New best heuristic value for ff: 44
+[t=0.218973s, 15124 KB] g=4, 4 evaluated, 3 expanded
+[t=0.219054s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 37
+[t=0.219111s, 15124 KB] g=5, 5 evaluated, 4 expanded
+[t=0.219160s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 35
+[t=0.219247s, 15124 KB] New best heuristic value for ff: 42
+[t=0.219283s, 15124 KB] g=6, 8 evaluated, 7 expanded
+[t=0.219367s, 15124 KB] New best heuristic value for ff: 40
+[t=0.219448s, 15124 KB] g=7, 9 evaluated, 8 expanded
+[t=0.219483s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 33
+[t=0.219576s, 15124 KB] g=7, 11 evaluated, 10 expanded
+[t=0.219616s, 15124 KB] New best heuristic value for ff: 37
+[t=0.219693s, 15124 KB] g=8, 12 evaluated, 11 expanded
+[t=0.219726s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 31
+[t=0.219830s, 15124 KB] g=9, 15 evaluated, 14 expanded
+[t=0.219866s, 15124 KB] New best heuristic value for ff: 35
+[t=0.219984s, 15124 KB] g=9, 19 evaluated, 18 expanded
+[t=0.220023s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 27
+[t=0.220097s, 15124 KB] g=10, 20 evaluated, 19 expanded
+[t=0.220130s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 25
+[t=0.220217s, 15124 KB] g=11, 22 evaluated, 21 expanded
+[t=0.220257s, 15124 KB] New best heuristic value for ff: 33
+[t=0.220367s, 15124 KB] g=13, 26 evaluated, 25 expanded
+[t=0.220405s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 23
+[t=0.220491s, 15124 KB] g=12, 28 evaluated, 27 expanded
+[t=0.220530s, 15124 KB] New best heuristic value for ff: 30
+[t=0.220729s, 15124 KB] g=15, 39 evaluated, 38 expanded
+[t=0.220782s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 22
+[t=0.220884s, 15124 KB] g=17, 41 evaluated, 40 expanded
+[t=0.220926s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 20
+[t=0.221042s, 15124 KB] g=18, 46 evaluated, 45 expanded
+[t=0.221076s, 15124 KB] New best heuristic value for ff: 28
+[t=0.221166s, 15124 KB] g=16, 49 evaluated, 48 expanded
+[t=0.221206s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 18
+[t=0.221310s, 15124 KB] g=21, 53 evaluated, 52 expanded
+[t=0.221343s, 15124 KB] New best heuristic value for ff: 27
+[t=0.221584s, 15124 KB] g=19, 73 evaluated, 70 expanded
+[t=0.221629s, 15124 KB] New best heuristic value for ff: 24
+[t=0.221706s, 15124 KB] g=21, 75 evaluated, 72 expanded
+[t=0.221746s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 16
+[t=0.221837s, 15124 KB] g=22, 78 evaluated, 75 expanded
+[t=0.221869s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 14
+[t=0.222351s, 15124 KB] g=27, 110 evaluated, 102 expanded
+[t=0.222407s, 15124 KB] New best heuristic value for ff: 22
+[t=0.222627s, 15124 KB] g=30, 129 evaluated, 115 expanded
+[t=0.222672s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 12
+[t=0.222765s, 15124 KB] New best heuristic value for ff: 21
+[t=0.222799s, 15124 KB] g=33, 132 evaluated, 118 expanded
+[t=0.222842s, 15124 KB] New best heuristic value for ff: 20
+[t=0.222951s, 15124 KB] g=36, 141 evaluated, 124 expanded
+[t=0.223000s, 15124 KB] New best heuristic value for ff: 19
+[t=0.223773s, 15124 KB] g=32, 239 evaluated, 199 expanded, 1 reopened
+[t=0.223871s, 15124 KB] New best heuristic value for ff: 16
+[t=0.223972s, 15124 KB] g=37, 252 evaluated, 209 expanded, 1 reopened
+[t=0.224024s, 15124 KB] New best heuristic value for ff: 14
+[t=0.224089s, 15124 KB] g=38, 254 evaluated, 211 expanded, 1 reopened
+[t=0.224138s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 10
+[t=0.224201s, 15124 KB] New best heuristic value for ff: 12
+[t=0.224249s, 15124 KB] g=39, 256 evaluated, 213 expanded, 1 reopened
+[t=0.224283s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 8
+[t=0.224350s, 15124 KB] New best heuristic value for ff: 10
+[t=0.224384s, 15124 KB] g=40, 257 evaluated, 214 expanded, 1 reopened
+[t=0.232289s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 6
+[t=0.232742s, 15124 KB] New best heuristic value for ff: 8
+[t=0.232813s, 15124 KB] g=40, 1427 evaluated, 1082 expanded, 18 reopened
+[t=0.232860s, 15124 KB] New best heuristic value for landmark_sum_heuristic: 4
+[t=0.232935s, 15124 KB] New best heuristic value for ff: 6
+[t=0.232981s, 15124 KB] g=41, 1429 evaluated, 1083 expanded, 18 reopened
+[t=0.396733s, 15524 KB] New best heuristic value for ff: 4
+[t=0.398579s, 15524 KB] g=50, 25470 evaluated, 19907 expanded, 1903 reopened
+[t=0.398690s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 2
+[t=0.398789s, 15524 KB] New best heuristic value for ff: 2
+[t=0.398834s, 15524 KB] g=51, 25472 evaluated, 19909 expanded, 1903 reopened
+[t=0.398905s, 15524 KB] Solution found!
+[t=0.398995s, 15524 KB] Actual search time: 0.180881s
+pick-up-supply dronea comm1 port (1)
+fly dronea port bonavista b6 b2 b4 (2)
+deliver-supply dronea comm1 bonavista (1)
+fly dronea bonavista petrochem b4 b1 b3 (1)
+inspect dronea petrochem (1)
+fly dronea petrochem bonavista b3 b1 b2 (1)
+fly dronea bonavista serrallo b2 b1 b1 (1)
+fly droneb rambla estacio b6 b1 b5 (1)
+fly dronec campus pont_diable b6 b2 b4 (2)
+inspect dronec pont_diable (1)
+fly droneb estacio francoli b5 b1 b4 (1)
+inspect droneb francoli (1)
+fly droneb francoli estacio b4 b1 b3 (1)
+pick-up-supply droneb kit1 estacio (1)
+fly dronec pont_diable campus b4 b2 b2 (2)
+fly droneb estacio rambla b3 b1 b2 (1)
+fly droneb rambla amfiteatre b2 b1 b1 (1)
+inspect droneb amfiteatre (1)
+fly droneb amfiteatre part_alta b1 b1 b0 (1)
+deliver-supply droneb kit1 part_alta (1)
+fly dronec campus rambla b2 b2 b0 (2)
+recharge dronec rambla b0 b1 (1)
+recharge dronec rambla b1 b2 (1)
+fly dronec rambla estacio b2 b1 b1 (1)
+pick-up-supply dronec kit2 estacio (1)
+fly dronec estacio rambla b1 b1 b0 (1)
+recharge dronec rambla b0 b1 (1)
+recharge dronec rambla b1 b2 (1)
+fly dronec rambla campus b2 b2 b0 (2)
+recharge dronec campus b0 b1 (1)
+recharge dronec campus b1 b2 (1)
+fly dronec campus hospital b2 b1 b1 (1)
+deliver-supply dronec kit2 hospital (1)
+fly dronec hospital campus b1 b1 b0 (1)
+recharge dronec campus b0 b1 (1)
+recharge dronec campus b1 b2 (1)
+recharge dronec campus b2 b3 (1)
+recharge dronec campus b3 b4 (1)
+recharge dronec campus b4 b5 (1)
+fly dronec campus hospital b5 b1 b4 (1)
+fly dronea serrallo port b1 b1 b0 (1)
+fly dronec hospital francoli b4 b2 b2 (2)
+fly dronec francoli port b2 b1 b1 (1)
+pick-up-supply dronec water1 port (1)
+fly dronec port serrallo b1 b1 b0 (1)
+deliver-supply dronec water1 serrallo (1)
+[t=0.402236s, 15524 KB] Plan length: 46 step(s).
+[t=0.402328s, 15524 KB] Plan cost: 52
+[t=0.402386s, 15524 KB] Expanded 19910 state(s).
+[t=0.402438s, 15524 KB] Reopened 1903 state(s).
+[t=0.402501s, 15524 KB] Evaluated 25473 state(s).
+[t=0.402538s, 15524 KB] Evaluations: 43481
+[t=0.402584s, 15524 KB] Generated 94734 state(s).
+[t=0.402678s, 15524 KB] Dead ends: 5562 state(s).
+[t=0.402770s, 15524 KB] Number of registered states: 23570
+[t=0.402831s, 15524 KB] Int hash set load factor: 23570/32768 = 0.719299
+[t=0.402927s, 15524 KB] Int hash set resizes: 15
+[t=0.403007s, 15524 KB] Best solution cost so far: 52
+[t=0.403567s, 15524 KB] Solution found - keep searching
+[t=0.403622s, 15524 KB] Building successor generator... done!
+[t=0.403754s, 15524 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.403809s, 15524 KB] time for successor generation creation: 0.000000s
+[t=0.403857s, 15524 KB] Variables: 23
+[t=0.403909s, 15524 KB] FactPairs: 103
+[t=0.403956s, 15524 KB] Bytes per state: 8
+[t=0.404002s, 15524 KB] Starting search: lazy_wastar
+[t=0.404058s, 15524 KB] Conducting lazy best first search, (real) bound = 52
+[t=0.404104s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 47
+[t=0.404200s, 15524 KB] New best heuristic value for ff: 48
+[t=0.404251s, 15524 KB] g=0, 1 evaluated, 0 expanded
+[t=0.404298s, 15524 KB] Initial heuristic value for landmark_sum_heuristic: 47
+[t=0.404363s, 15524 KB] Initial heuristic value for ff: 48
+[t=0.404457s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 45
+[t=0.404602s, 15524 KB] New best heuristic value for ff: 46
+[t=0.404671s, 15524 KB] g=1, 2 evaluated, 1 expanded
+[t=0.404763s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 43
+[t=0.404926s, 15524 KB] g=3, 3 evaluated, 2 expanded
+[t=0.404987s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 39
+[t=0.405095s, 15524 KB] New best heuristic value for ff: 44
+[t=0.405150s, 15524 KB] g=4, 4 evaluated, 3 expanded
+[t=0.405199s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 37
+[t=0.405287s, 15524 KB] g=5, 5 evaluated, 4 expanded
+[t=0.405420s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 35
+[t=0.405609s, 15524 KB] New best heuristic value for ff: 42
+[t=0.405665s, 15524 KB] g=6, 8 evaluated, 7 expanded
+[t=0.405713s, 15524 KB] New best heuristic value for ff: 40
+[t=0.405789s, 15524 KB] g=7, 9 evaluated, 8 expanded
+[t=0.405838s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 33
+[t=0.405928s, 15524 KB] g=7, 11 evaluated, 10 expanded
+[t=0.405976s, 15524 KB] New best heuristic value for ff: 37
+[t=0.406047s, 15524 KB] g=8, 12 evaluated, 11 expanded
+[t=0.406090s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 31
+[t=0.406237s, 15524 KB] g=9, 15 evaluated, 14 expanded
+[t=0.406304s, 15524 KB] New best heuristic value for ff: 35
+[t=0.406431s, 15524 KB] g=9, 19 evaluated, 18 expanded
+[t=0.406480s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 27
+[t=0.406553s, 15524 KB] g=10, 20 evaluated, 19 expanded
+[t=0.406602s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 25
+[t=0.406691s, 15524 KB] g=11, 22 evaluated, 21 expanded
+[t=0.406740s, 15524 KB] New best heuristic value for ff: 33
+[t=0.406849s, 15524 KB] g=13, 26 evaluated, 25 expanded
+[t=0.406897s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 23
+[t=0.406980s, 15524 KB] g=12, 28 evaluated, 27 expanded
+[t=0.407088s, 15524 KB] New best heuristic value for ff: 30
+[t=0.407259s, 15524 KB] g=15, 39 evaluated, 38 expanded
+[t=0.407302s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 22
+[t=0.407400s, 15524 KB] g=17, 41 evaluated, 40 expanded
+[t=0.407456s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 21
+[t=0.407527s, 15524 KB] g=15, 42 evaluated, 41 expanded
+[t=0.407576s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 19
+[t=0.407712s, 15524 KB] g=16, 48 evaluated, 47 expanded
+[t=0.407763s, 15524 KB] New best heuristic value for ff: 28
+[t=0.407832s, 15524 KB] g=16, 49 evaluated, 48 expanded
+[t=0.407879s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 17
+[t=0.407949s, 15524 KB] g=17, 50 evaluated, 49 expanded
+[t=0.407998s, 15524 KB] New best heuristic value for ff: 27
+[t=0.408275s, 15524 KB] g=19, 71 evaluated, 69 expanded
+[t=0.408324s, 15524 KB] New best heuristic value for ff: 24
+[t=0.408569s, 15524 KB] g=21, 75 evaluated, 73 expanded
+[t=0.408641s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 16
+[t=0.408756s, 15524 KB] g=22, 79 evaluated, 76 expanded
+[t=0.409197s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 14
+[t=0.409276s, 15524 KB] g=27, 120 evaluated, 113 expanded
+[t=0.409320s, 15524 KB] New best heuristic value for ff: 23
+[t=0.409975s, 15524 KB] g=24, 184 evaluated, 168 expanded
+[t=0.410010s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 13
+[t=0.410140s, 15524 KB] g=28, 194 evaluated, 177 expanded
+[t=0.410189s, 15524 KB] New best heuristic value for ff: 22
+[t=0.410298s, 15524 KB] g=30, 199 evaluated, 182 expanded
+[t=0.410350s, 15524 KB] New best heuristic value for ff: 19
+[t=0.410453s, 15524 KB] g=31, 202 evaluated, 184 expanded
+[t=0.410515s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 11
+[t=0.410584s, 15524 KB] g=33, 203 evaluated, 185 expanded
+[t=0.410636s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 9
+[t=0.410702s, 15524 KB] g=34, 204 evaluated, 186 expanded
+[t=0.410749s, 15524 KB] New best heuristic value for ff: 18
+[t=0.410954s, 15524 KB] g=38, 224 evaluated, 201 expanded
+[t=0.411000s, 15524 KB] New best heuristic value for ff: 16
+[t=0.411421s, 15524 KB] g=34, 268 evaluated, 240 expanded
+[t=0.411470s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 8
+[t=0.411555s, 15524 KB] New best heuristic value for ff: 14
+[t=0.411608s, 15524 KB] g=35, 271 evaluated, 243 expanded
+[t=0.411657s, 15524 KB] New best heuristic value for ff: 12
+[t=0.411746s, 15524 KB] g=37, 275 evaluated, 247 expanded
+[t=0.414038s, 15524 KB] New best heuristic value for ff: 11
+[t=0.414609s, 15524 KB] g=38, 613 evaluated, 504 expanded, 3 reopened
+[t=0.414651s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 6
+[t=0.414720s, 15524 KB] New best heuristic value for ff: 8
+[t=0.414761s, 15524 KB] g=40, 615 evaluated, 506 expanded, 3 reopened
+[t=0.414799s, 15524 KB] New best heuristic value for landmark_sum_heuristic: 4
+[t=0.414853s, 15524 KB] New best heuristic value for ff: 6
+[t=0.414885s, 15524 KB] g=41, 617 evaluated, 507 expanded, 3 reopened
+[t=0.607195s, 15920 KB] New best heuristic value for ff: 4
+[t=0.610426s, 15920 KB] g=50, 27972 evaluated, 22145 expanded, 2059 reopened
+[t=0.610510s, 15920 KB] New best heuristic value for landmark_sum_heuristic: 2
+[t=0.610595s, 15920 KB] New best heuristic value for ff: 2
+[t=0.610629s, 15920 KB] g=51, 27973 evaluated, 22146 expanded, 2059 reopened
+[t=0.619282s, 16052 KB] Solution found!
+[t=0.619553s, 16052 KB] Actual search time: 0.215448s
+pick-up-supply dronea comm1 port (1)
+fly dronea port bonavista b6 b2 b4 (2)
+deliver-supply dronea comm1 bonavista (1)
+fly dronea bonavista petrochem b4 b1 b3 (1)
+inspect dronea petrochem (1)
+fly dronea petrochem bonavista b3 b1 b2 (1)
+fly dronea bonavista serrallo b2 b1 b1 (1)
+fly droneb rambla estacio b6 b1 b5 (1)
+pick-up-supply droneb kit1 estacio (1)
+fly droneb estacio francoli b5 b1 b4 (1)
+inspect droneb francoli (1)
+fly droneb francoli estacio b4 b1 b3 (1)
+fly droneb estacio rambla b3 b1 b2 (1)
+fly droneb rambla amfiteatre b2 b1 b1 (1)
+fly dronec campus rambla b6 b2 b4 (2)
+fly dronec rambla estacio b4 b1 b3 (1)
+pick-up-supply dronec kit2 estacio (1)
+fly dronec estacio rambla b3 b1 b2 (1)
+fly dronec rambla campus b2 b2 b0 (2)
+recharge dronec campus b0 b1 (1)
+recharge dronec campus b1 b2 (1)
+fly dronec campus hospital b2 b1 b1 (1)
+deliver-supply dronec kit2 hospital (1)
+fly dronec hospital campus b1 b1 b0 (1)
+recharge dronec campus b0 b1 (1)
+recharge dronec campus b1 b2 (1)
+fly dronec campus pont_diable b2 b2 b0 (2)
+inspect dronec pont_diable (1)
+inspect droneb amfiteatre (1)
+fly droneb amfiteatre part_alta b1 b1 b0 (1)
+deliver-supply droneb kit1 part_alta (1)
+fly dronea serrallo bonavista b1 b1 b0 (1)
+recharge dronea bonavista b0 b1 (1)
+recharge dronea bonavista b1 b2 (1)
+recharge dronea bonavista b2 b3 (1)
+fly dronea bonavista port b3 b2 b1 (2)
+pick-up-supply dronea water1 port (1)
+fly dronea port serrallo b1 b1 b0 (1)
+deliver-supply dronea water1 serrallo (1)
+[t=0.622411s, 16052 KB] Plan length: 39 step(s).
+[t=0.622509s, 16052 KB] Plan cost: 44
+[t=0.622556s, 16052 KB] Expanded 23131 state(s).
+[t=0.622622s, 16052 KB] Reopened 2221 state(s).
+[t=0.622674s, 16052 KB] Evaluated 29145 state(s).
+[t=0.622740s, 16052 KB] Evaluations: 50056
+[t=0.622797s, 16052 KB] Generated 113705 state(s).
+[t=0.622842s, 16052 KB] Dead ends: 6013 state(s).
+[t=0.622885s, 16052 KB] Number of registered states: 26924
+[t=0.622930s, 16052 KB] Int hash set load factor: 26924/32768 = 0.821655
+[t=0.622964s, 16052 KB] Int hash set resizes: 15
+[t=0.623006s, 16052 KB] Best solution cost so far: 44
+[t=0.623461s, 16052 KB] Solution found - keep searching
+[t=0.623515s, 16052 KB] Building successor generator... done!
+[t=0.623617s, 16052 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.623681s, 16052 KB] time for successor generation creation: 0.000000s
+[t=0.623734s, 16052 KB] Variables: 23
+[t=0.623775s, 16052 KB] FactPairs: 103
+[t=0.623820s, 16052 KB] Bytes per state: 8
+[t=0.623854s, 16052 KB] Starting search: lazy_wastar
+[t=0.623908s, 16052 KB] Conducting lazy best first search, (real) bound = 44
+[t=0.623951s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 47
+[t=0.624041s, 16052 KB] New best heuristic value for ff: 48
+[t=0.624078s, 16052 KB] g=0, 1 evaluated, 0 expanded
+[t=0.624118s, 16052 KB] Initial heuristic value for landmark_sum_heuristic: 47
+[t=0.624175s, 16052 KB] Initial heuristic value for ff: 48
+[t=0.624208s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 45
+[t=0.624280s, 16052 KB] New best heuristic value for ff: 46
+[t=0.624325s, 16052 KB] g=1, 2 evaluated, 1 expanded
+[t=0.624359s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 43
+[t=0.624433s, 16052 KB] g=3, 3 evaluated, 2 expanded
+[t=0.624478s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 39
+[t=0.624547s, 16052 KB] New best heuristic value for ff: 44
+[t=0.624583s, 16052 KB] g=4, 4 evaluated, 3 expanded
+[t=0.624677s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 37
+[t=0.624824s, 16052 KB] g=5, 5 evaluated, 4 expanded
+[t=0.624883s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 35
+[t=0.624994s, 16052 KB] New best heuristic value for ff: 42
+[t=0.625039s, 16052 KB] g=6, 8 evaluated, 7 expanded
+[t=0.625076s, 16052 KB] New best heuristic value for ff: 40
+[t=0.625149s, 16052 KB] g=7, 9 evaluated, 8 expanded
+[t=0.625184s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 33
+[t=0.625269s, 16052 KB] g=7, 11 evaluated, 10 expanded
+[t=0.625314s, 16052 KB] New best heuristic value for ff: 37
+[t=0.625380s, 16052 KB] g=8, 12 evaluated, 11 expanded
+[t=0.625413s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 31
+[t=0.625509s, 16052 KB] g=9, 15 evaluated, 14 expanded
+[t=0.625552s, 16052 KB] New best heuristic value for ff: 35
+[t=0.625651s, 16052 KB] g=9, 19 evaluated, 18 expanded
+[t=0.625725s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 27
+[t=0.625787s, 16052 KB] g=10, 20 evaluated, 19 expanded
+[t=0.625837s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 25
+[t=0.625925s, 16052 KB] g=11, 22 evaluated, 21 expanded
+[t=0.625970s, 16052 KB] New best heuristic value for ff: 33
+[t=0.626065s, 16052 KB] g=13, 26 evaluated, 25 expanded
+[t=0.626110s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 23
+[t=0.626191s, 16052 KB] g=12, 28 evaluated, 27 expanded
+[t=0.626225s, 16052 KB] New best heuristic value for ff: 32
+[t=0.626356s, 16052 KB] g=11, 34 evaluated, 33 expanded
+[t=0.626402s, 16052 KB] New best heuristic value for ff: 30
+[t=0.626498s, 16052 KB] g=12, 38 evaluated, 37 expanded
+[t=0.626544s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 21
+[t=0.626666s, 16052 KB] g=15, 41 evaluated, 40 expanded
+[t=0.626721s, 16052 KB] New best heuristic value for ff: 28
+[t=0.626849s, 16052 KB] g=13, 46 evaluated, 45 expanded
+[t=0.626894s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 19
+[t=0.626950s, 16052 KB] g=16, 47 evaluated, 46 expanded
+[t=0.626996s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 17
+[t=0.627092s, 16052 KB] g=17, 49 evaluated, 48 expanded
+[t=0.627277s, 16052 KB] New best heuristic value for ff: 26
+[t=0.627470s, 16052 KB] g=15, 60 evaluated, 59 expanded
+[t=0.627547s, 16052 KB] New best heuristic value for ff: 23
+[t=0.628272s, 16052 KB] g=19, 127 evaluated, 122 expanded
+[t=0.628314s, 16052 KB] New best heuristic value for ff: 22
+[t=0.628408s, 16052 KB] g=20, 130 evaluated, 125 expanded
+[t=0.628450s, 16052 KB] New best heuristic value for ff: 18
+[t=0.628583s, 16052 KB] g=23, 138 evaluated, 133 expanded
+[t=0.628629s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 16
+[t=0.628702s, 16052 KB] g=24, 141 evaluated, 136 expanded
+[t=0.628747s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 12
+[t=0.628821s, 16052 KB] g=25, 144 evaluated, 139 expanded
+[t=0.628871s, 16052 KB] New best heuristic value for ff: 16
+[t=0.629070s, 16052 KB] g=30, 150 evaluated, 145 expanded
+[t=0.629138s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 10
+[t=0.629233s, 16052 KB] g=31, 153 evaluated, 148 expanded
+[t=0.631048s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 8
+[t=0.632078s, 16052 KB] g=29, 446 evaluated, 402 expanded
+[t=0.632120s, 16052 KB] New best heuristic value for ff: 15
+[t=0.632218s, 16052 KB] g=31, 453 evaluated, 408 expanded
+[t=0.632267s, 16052 KB] New best heuristic value for ff: 13
+[t=0.632346s, 16052 KB] g=32, 456 evaluated, 411 expanded
+[t=0.632391s, 16052 KB] New best heuristic value for ff: 12
+[t=0.632452s, 16052 KB] g=34, 459 evaluated, 413 expanded
+[t=0.632498s, 16052 KB] New best heuristic value for ff: 10
+[t=0.632572s, 16052 KB] g=35, 462 evaluated, 416 expanded
+[t=0.632614s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 6
+[t=0.632679s, 16052 KB] New best heuristic value for ff: 8
+[t=0.632725s, 16052 KB] g=36, 465 evaluated, 419 expanded
+[t=0.632767s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 4
+[t=0.632814s, 16052 KB] New best heuristic value for ff: 6
+[t=0.632857s, 16052 KB] g=37, 466 evaluated, 420 expanded
+[t=0.770968s, 16052 KB] New best heuristic value for ff: 5
+[t=0.772383s, 16052 KB] g=43, 18501 evaluated, 15164 expanded, 916 reopened
+[t=0.776463s, 16052 KB] New best heuristic value for ff: 4
+[t=0.779345s, 16052 KB] g=43, 19443 evaluated, 15975 expanded, 935 reopened
+[t=0.841385s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 2
+[t=0.844888s, 16052 KB] New best heuristic value for ff: 2
+[t=0.844986s, 16052 KB] g=37, 28152 evaluated, 23239 expanded, 1583 reopened
+[t=0.845031s, 16052 KB] Solution found!
+[t=0.845099s, 16052 KB] Actual search time: 0.221147s
+pick-up-supply dronea comm1 port (1)
+fly dronea port bonavista b6 b2 b4 (2)
+deliver-supply dronea comm1 bonavista (1)
+fly dronea bonavista petrochem b4 b1 b3 (1)
+inspect dronea petrochem (1)
+fly dronea petrochem bonavista b3 b1 b2 (1)
+fly dronea bonavista serrallo b2 b1 b1 (1)
+fly droneb rambla estacio b6 b1 b5 (1)
+pick-up-supply droneb kit2 estacio (1)
+fly droneb estacio francoli b5 b1 b4 (1)
+inspect droneb francoli (1)
+fly droneb francoli hospital b4 b2 b2 (2)
+deliver-supply droneb kit2 hospital (1)
+fly dronec campus rambla b6 b2 b4 (2)
+fly droneb hospital campus b2 b1 b1 (1)
+recharge droneb campus b1 b2 (1)
+fly droneb campus pont_diable b2 b2 b0 (2)
+inspect droneb pont_diable (1)
+fly dronec rambla estacio b4 b1 b3 (1)
+pick-up-supply dronec kit1 estacio (1)
+fly dronec estacio rambla b3 b1 b2 (1)
+fly dronec rambla amfiteatre b2 b1 b1 (1)
+inspect dronec amfiteatre (1)
+fly dronec amfiteatre part_alta b1 b1 b0 (1)
+deliver-supply dronec kit1 part_alta (1)
+fly dronea serrallo bonavista b1 b1 b0 (1)
+recharge dronea bonavista b0 b1 (1)
+recharge dronea bonavista b1 b2 (1)
+recharge dronea bonavista b2 b3 (1)
+fly dronea bonavista port b3 b2 b1 (2)
+pick-up-supply dronea water1 port (1)
+fly dronea port serrallo b1 b1 b0 (1)
+deliver-supply dronea water1 serrallo (1)
+[t=0.847341s, 16052 KB] Plan length: 33 step(s).
+[t=0.847440s, 16052 KB] Plan cost: 38
+[t=0.847492s, 16052 KB] Expanded 23240 state(s).
+[t=0.847560s, 16052 KB] Reopened 1583 state(s).
+[t=0.847600s, 16052 KB] Evaluated 28153 state(s).
+[t=0.847637s, 16052 KB] Evaluations: 49811
+[t=0.847682s, 16052 KB] Generated 118960 state(s).
+[t=0.847724s, 16052 KB] Dead ends: 4912 state(s).
+[t=0.847772s, 16052 KB] Number of registered states: 26570
+[t=0.847815s, 16052 KB] Int hash set load factor: 26570/32768 = 0.810852
+[t=0.847856s, 16052 KB] Int hash set resizes: 15
+[t=0.847897s, 16052 KB] Best solution cost so far: 38
+[t=0.848322s, 16052 KB] Solution found - keep searching
+[t=0.848359s, 16052 KB] Building successor generator... done!
+[t=0.848460s, 16052 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.848507s, 16052 KB] time for successor generation creation: 0.000000s
+[t=0.848547s, 16052 KB] Variables: 23
+[t=0.848589s, 16052 KB] FactPairs: 103
+[t=0.848672s, 16052 KB] Bytes per state: 8
+[t=0.848712s, 16052 KB] Starting search: lazy_wastar
+[t=0.848754s, 16052 KB] Conducting lazy best first search, (real) bound = 38
+[t=0.848796s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 47
+[t=0.848886s, 16052 KB] New best heuristic value for ff: 48
+[t=0.848928s, 16052 KB] g=0, 1 evaluated, 0 expanded
+[t=0.848972s, 16052 KB] Initial heuristic value for landmark_sum_heuristic: 47
+[t=0.849027s, 16052 KB] Initial heuristic value for ff: 48
+[t=0.849059s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 45
+[t=0.849116s, 16052 KB] New best heuristic value for ff: 46
+[t=0.849160s, 16052 KB] g=1, 2 evaluated, 1 expanded
+[t=0.849217s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 43
+[t=0.849279s, 16052 KB] g=3, 3 evaluated, 2 expanded
+[t=0.849312s, 16052 KB] New best heuristic value for ff: 45
+[t=0.849399s, 16052 KB] g=2, 6 evaluated, 5 expanded
+[t=0.849453s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 41
+[t=0.849519s, 16052 KB] g=3, 7 evaluated, 6 expanded
+[t=0.849568s, 16052 KB] New best heuristic value for ff: 42
+[t=0.849650s, 16052 KB] g=4, 9 evaluated, 8 expanded
+[t=0.849697s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 39
+[t=0.849761s, 16052 KB] g=6, 10 evaluated, 9 expanded
+[t=0.849802s, 16052 KB] New best heuristic value for ff: 41
+[t=0.849879s, 16052 KB] g=5, 12 evaluated, 11 expanded
+[t=0.849914s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 35
+[t=0.850009s, 16052 KB] g=5, 16 evaluated, 15 expanded
+[t=0.850051s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 33
+[t=0.850120s, 16052 KB] g=6, 18 evaluated, 17 expanded
+[t=0.850155s, 16052 KB] New best heuristic value for ff: 39
+[t=0.850232s, 16052 KB] g=6, 19 evaluated, 18 expanded
+[t=0.850292s, 16052 KB] New best heuristic value for ff: 38
+[t=0.850490s, 16052 KB] g=7, 23 evaluated, 22 expanded
+[t=0.850547s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 31
+[t=0.850627s, 16052 KB] g=9, 24 evaluated, 23 expanded
+[t=0.850686s, 16052 KB] New best heuristic value for ff: 37
+[t=0.850840s, 16052 KB] g=7, 31 evaluated, 30 expanded
+[t=0.850885s, 16052 KB] New best heuristic value for ff: 36
+[t=0.850995s, 16052 KB] g=8, 35 evaluated, 34 expanded
+[t=0.851040s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 30
+[t=0.851101s, 16052 KB] g=8, 36 evaluated, 35 expanded
+[t=0.851134s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 28
+[t=0.851211s, 16052 KB] g=9, 38 evaluated, 37 expanded
+[t=0.851253s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 26
+[t=0.851417s, 16052 KB] g=10, 45 evaluated, 44 expanded
+[t=0.851466s, 16052 KB] New best heuristic value for ff: 35
+[t=0.851525s, 16052 KB] g=9, 46 evaluated, 45 expanded
+[t=0.851568s, 16052 KB] New best heuristic value for ff: 34
+[t=0.851745s, 16052 KB] g=9, 57 evaluated, 56 expanded
+[t=0.851800s, 16052 KB] New best heuristic value for ff: 33
+[t=0.851870s, 16052 KB] g=10, 59 evaluated, 58 expanded
+[t=0.851910s, 16052 KB] New best heuristic value for ff: 32
+[t=0.852052s, 16052 KB] g=11, 67 evaluated, 66 expanded
+[t=0.852091s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 24
+[t=0.852269s, 16052 KB] g=13, 79 evaluated, 78 expanded
+[t=0.852301s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 22
+[t=0.852554s, 16052 KB] New best heuristic value for ff: 31
+[t=0.852641s, 16052 KB] g=13, 98 evaluated, 97 expanded
+[t=0.852680s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 20
+[t=0.852759s, 16052 KB] New best heuristic value for ff: 30
+[t=0.852802s, 16052 KB] g=14, 100 evaluated, 99 expanded
+[t=0.852859s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 18
+[t=0.852938s, 16052 KB] New best heuristic value for ff: 28
+[t=0.852980s, 16052 KB] g=15, 102 evaluated, 101 expanded
+[t=0.853021s, 16052 KB] New best heuristic value for ff: 26
+[t=0.853111s, 16052 KB] g=17, 106 evaluated, 105 expanded
+[t=0.853153s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 16
+[t=0.853208s, 16052 KB] g=18, 107 evaluated, 106 expanded
+[t=0.853249s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 14
+[t=0.853449s, 16052 KB] g=21, 122 evaluated, 121 expanded
+[t=0.853885s, 16052 KB] New best heuristic value for ff: 24
+[t=0.855346s, 16052 KB] g=19, 305 evaluated, 294 expanded
+[t=0.855383s, 16052 KB] New best heuristic value for ff: 21
+[t=0.856090s, 16052 KB] g=23, 372 evaluated, 359 expanded
+[t=0.856147s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 12
+[t=0.856357s, 16052 KB] g=24, 385 evaluated, 372 expanded
+[t=0.856415s, 16052 KB] New best heuristic value for ff: 19
+[t=0.857585s, 16052 KB] g=25, 505 evaluated, 485 expanded
+[t=0.857620s, 16052 KB] New best heuristic value for ff: 18
+[t=0.858752s, 16052 KB] g=23, 628 evaluated, 600 expanded
+[t=0.858801s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 10
+[t=0.861213s, 16052 KB] g=27, 875 evaluated, 842 expanded
+[t=0.868767s, 16052 KB] New best heuristic value for ff: 16
+[t=0.872235s, 16052 KB] g=26, 1994 evaluated, 1914 expanded
+[t=0.881995s, 16052 KB] New best heuristic value for ff: 14
+[t=0.885545s, 16052 KB] g=27, 3278 evaluated, 3125 expanded
+[t=0.885615s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 8
+[t=0.885676s, 16052 KB] New best heuristic value for ff: 12
+[t=0.885709s, 16052 KB] g=28, 3279 evaluated, 3126 expanded
+[t=0.885744s, 16052 KB] New best heuristic value for ff: 10
+[t=0.885875s, 16052 KB] g=31, 3288 evaluated, 3134 expanded
+[t=0.898406s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 6
+[t=0.901757s, 16052 KB] New best heuristic value for ff: 8
+[t=0.901848s, 16052 KB] g=36, 4982 evaluated, 4738 expanded
+[t=0.901901s, 16052 KB] New best heuristic value for landmark_sum_heuristic: 4
+[t=0.901976s, 16052 KB] New best heuristic value for ff: 6
+[t=0.902024s, 16052 KB] g=37, 4984 evaluated, 4740 expanded
+[t=0.974147s, 16052 KB] New best heuristic value for ff: 4
+[t=0.975718s, 16052 KB] g=37, 12757 evaluated, 12073 expanded, 9 reopened
+[t=1.076283s, 16448 KB] New best heuristic value for landmark_sum_heuristic: 2
+[t=1.077124s, 16448 KB] g=36, 22994 evaluated, 21628 expanded, 38 reopened
+[t=1.126090s, 17376 KB] New best heuristic value for ff: 2
+[t=1.126641s, 17376 KB] g=30, 28179 evaluated, 26520 expanded, 48 reopened
+[t=1.126760s, 17376 KB] Solution found!
+[t=1.126870s, 17376 KB] Actual search time: 0.278074s
+pick-up-supply dronea water1 port (1)
+fly dronea port serrallo b6 b1 b5 (1)
+deliver-supply dronea water1 serrallo (1)
+fly dronea serrallo port b5 b1 b4 (1)
+pick-up-supply dronea comm1 port (1)
+fly dronea port bonavista b4 b2 b2 (2)
+deliver-supply dronea comm1 bonavista (1)
+fly dronea bonavista petrochem b2 b1 b1 (1)
+inspect dronea petrochem (1)
+fly droneb rambla estacio b6 b1 b5 (1)
+pick-up-supply droneb kit2 estacio (1)
+fly droneb estacio francoli b5 b1 b4 (1)
+inspect droneb francoli (1)
+fly droneb francoli hospital b4 b2 b2 (2)
+deliver-supply droneb kit2 hospital (1)
+fly dronec campus rambla b6 b2 b4 (2)
+fly droneb hospital campus b2 b1 b1 (1)
+recharge droneb campus b1 b2 (1)
+fly droneb campus pont_diable b2 b2 b0 (2)
+inspect droneb pont_diable (1)
+fly dronec rambla estacio b4 b1 b3 (1)
+pick-up-supply dronec kit1 estacio (1)
+fly dronec estacio rambla b3 b1 b2 (1)
+fly dronec rambla amfiteatre b2 b1 b1 (1)
+inspect dronec amfiteatre (1)
+fly dronec amfiteatre part_alta b1 b1 b0 (1)
+deliver-supply dronec kit1 part_alta (1)
+[t=1.128669s, 17376 KB] Plan length: 27 step(s).
+[t=1.128747s, 17376 KB] Plan cost: 31
+[t=1.128800s, 17376 KB] Expanded 26521 state(s).
+[t=1.128847s, 17376 KB] Reopened 48 state(s).
+[t=1.128899s, 17376 KB] Evaluated 28180 state(s).
+[t=1.128934s, 17376 KB] Evaluations: 54654
+[t=1.128982s, 17376 KB] Generated 157035 state(s).
+[t=1.129023s, 17376 KB] Dead ends: 1658 state(s).
+[t=1.129062s, 17376 KB] Number of registered states: 28132
+[t=1.129103s, 17376 KB] Int hash set load factor: 28132/32768 = 0.858521
+[t=1.129142s, 17376 KB] Int hash set resizes: 15
+[t=1.129180s, 17376 KB] Best solution cost so far: 31
+[t=1.129756s, 17376 KB] Solution found - keep searching
+[t=1.129815s, 17376 KB] Building successor generator... done!
+[t=1.129935s, 17376 KB] peak memory difference for successor generator creation: 0 KB
+[t=1.129982s, 17376 KB] time for successor generation creation: 0.000000s
+[t=1.130013s, 17376 KB] Variables: 23
+[t=1.130064s, 17376 KB] FactPairs: 103
+[t=1.130105s, 17376 KB] Bytes per state: 8
+[t=1.130146s, 17376 KB] Starting search: lazy_wastar
+[t=1.130202s, 17376 KB] Conducting lazy best first search, (real) bound = 31
+[t=1.130244s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 47
+[t=1.130337s, 17376 KB] New best heuristic value for ff: 48
+[t=1.130380s, 17376 KB] g=0, 1 evaluated, 0 expanded
+[t=1.130419s, 17376 KB] Initial heuristic value for landmark_sum_heuristic: 47
+[t=1.130479s, 17376 KB] Initial heuristic value for ff: 48
+[t=1.130519s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 45
+[t=1.130595s, 17376 KB] New best heuristic value for ff: 46
+[t=1.130639s, 17376 KB] g=1, 2 evaluated, 1 expanded
+[t=1.130682s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 43
+[t=1.130768s, 17376 KB] g=3, 3 evaluated, 2 expanded
+[t=1.130813s, 17376 KB] New best heuristic value for ff: 45
+[t=1.130931s, 17376 KB] g=2, 6 evaluated, 5 expanded
+[t=1.130974s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 41
+[t=1.131050s, 17376 KB] g=3, 7 evaluated, 6 expanded
+[t=1.131105s, 17376 KB] New best heuristic value for ff: 42
+[t=1.131208s, 17376 KB] g=4, 9 evaluated, 8 expanded
+[t=1.131247s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 39
+[t=1.131324s, 17376 KB] g=6, 10 evaluated, 9 expanded
+[t=1.131368s, 17376 KB] New best heuristic value for ff: 41
+[t=1.131460s, 17376 KB] g=5, 12 evaluated, 11 expanded
+[t=1.131579s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 35
+[t=1.131671s, 17376 KB] g=5, 16 evaluated, 15 expanded
+[t=1.131715s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 33
+[t=1.131809s, 17376 KB] g=6, 18 evaluated, 17 expanded
+[t=1.131849s, 17376 KB] New best heuristic value for ff: 39
+[t=1.131923s, 17376 KB] g=6, 19 evaluated, 18 expanded
+[t=1.131964s, 17376 KB] New best heuristic value for ff: 38
+[t=1.132082s, 17376 KB] g=7, 23 evaluated, 22 expanded
+[t=1.132143s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 31
+[t=1.132280s, 17376 KB] g=9, 24 evaluated, 23 expanded
+[t=1.132335s, 17376 KB] New best heuristic value for ff: 37
+[t=1.132509s, 17376 KB] g=7, 31 evaluated, 30 expanded
+[t=1.132553s, 17376 KB] New best heuristic value for ff: 36
+[t=1.132674s, 17376 KB] g=8, 35 evaluated, 34 expanded
+[t=1.132724s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 30
+[t=1.132799s, 17376 KB] g=8, 36 evaluated, 35 expanded
+[t=1.132853s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 28
+[t=1.132944s, 17376 KB] g=9, 38 evaluated, 37 expanded
+[t=1.132977s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 26
+[t=1.133144s, 17376 KB] g=10, 45 evaluated, 44 expanded
+[t=1.133185s, 17376 KB] New best heuristic value for ff: 35
+[t=1.133243s, 17376 KB] g=9, 46 evaluated, 45 expanded
+[t=1.133293s, 17376 KB] New best heuristic value for ff: 34
+[t=1.133498s, 17376 KB] g=9, 57 evaluated, 56 expanded
+[t=1.133546s, 17376 KB] New best heuristic value for ff: 33
+[t=1.133638s, 17376 KB] g=10, 59 evaluated, 58 expanded
+[t=1.133682s, 17376 KB] New best heuristic value for ff: 32
+[t=1.133841s, 17376 KB] g=11, 67 evaluated, 66 expanded
+[t=1.133888s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 24
+[t=1.134103s, 17376 KB] g=13, 79 evaluated, 78 expanded
+[t=1.134150s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 22
+[t=1.134437s, 17376 KB] New best heuristic value for ff: 31
+[t=1.134485s, 17376 KB] g=13, 98 evaluated, 97 expanded
+[t=1.134535s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 20
+[t=1.134619s, 17376 KB] New best heuristic value for ff: 30
+[t=1.134662s, 17376 KB] g=14, 100 evaluated, 99 expanded
+[t=1.134709s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 18
+[t=1.134791s, 17376 KB] New best heuristic value for ff: 28
+[t=1.134837s, 17376 KB] g=15, 102 evaluated, 101 expanded
+[t=1.134879s, 17376 KB] New best heuristic value for ff: 26
+[t=1.135052s, 17376 KB] g=17, 106 evaluated, 105 expanded
+[t=1.135107s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 16
+[t=1.135179s, 17376 KB] g=18, 107 evaluated, 106 expanded
+[t=1.135227s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 14
+[t=1.135470s, 17376 KB] g=21, 122 evaluated, 121 expanded
+[t=1.135523s, 17376 KB] New best heuristic value for ff: 24
+[t=1.137361s, 17376 KB] g=19, 305 evaluated, 294 expanded
+[t=1.137412s, 17376 KB] New best heuristic value for ff: 21
+[t=1.138078s, 17376 KB] g=23, 372 evaluated, 359 expanded
+[t=1.138126s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 12
+[t=1.138306s, 17376 KB] g=24, 385 evaluated, 372 expanded
+[t=1.138360s, 17376 KB] New best heuristic value for ff: 19
+[t=1.139556s, 17376 KB] g=25, 505 evaluated, 485 expanded
+[t=1.139609s, 17376 KB] New best heuristic value for ff: 18
+[t=1.141188s, 17376 KB] g=23, 628 evaluated, 600 expanded
+[t=1.141890s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 10
+[t=1.143789s, 17376 KB] g=27, 875 evaluated, 842 expanded
+[t=1.152328s, 17376 KB] New best heuristic value for ff: 16
+[t=1.155264s, 17376 KB] g=26, 1994 evaluated, 1914 expanded
+[t=1.166211s, 17376 KB] New best heuristic value for ff: 14
+[t=1.167822s, 17376 KB] g=27, 3278 evaluated, 3125 expanded
+[t=1.167867s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 8
+[t=1.167917s, 17376 KB] New best heuristic value for ff: 12
+[t=1.167950s, 17376 KB] g=28, 3279 evaluated, 3126 expanded
+[t=1.220060s, 17376 KB] New best heuristic value for ff: 11
+[t=1.220541s, 17376 KB] g=28, 7789 evaluated, 7347 expanded, 2 reopened
+[t=1.220632s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 6
+[t=1.220715s, 17376 KB] g=29, 7790 evaluated, 7348 expanded, 2 reopened
+[t=1.262114s, 17376 KB] New best heuristic value for ff: 10
+[t=1.265625s, 17376 KB] g=28, 12130 evaluated, 11496 expanded, 7 reopened
+[t=1.408038s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 5
+[t=1.410929s, 17376 KB] g=28, 26667 evaluated, 25154 expanded, 41 reopened
+[t=1.414030s, 17376 KB] New best heuristic value for ff: 9
+[t=1.417620s, 17376 KB] g=29, 27421 evaluated, 25868 expanded, 47 reopened
+[t=1.417697s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 4
+[t=1.419389s, 17376 KB] New best heuristic value for ff: 8
+[t=1.419451s, 17376 KB] g=29, 27609 evaluated, 26045 expanded, 47 reopened
+[t=1.419511s, 17376 KB] New best heuristic value for ff: 6
+[t=1.419910s, 17376 KB] g=28, 27644 evaluated, 26079 expanded, 48 reopened
+[t=1.419996s, 17376 KB] New best heuristic value for ff: 4
+[t=1.420078s, 17376 KB] g=29, 27645 evaluated, 26080 expanded, 48 reopened
+[t=1.420139s, 17376 KB] New best heuristic value for landmark_sum_heuristic: 2
+[t=1.420209s, 17376 KB] New best heuristic value for ff: 2
+[t=1.420249s, 17376 KB] g=30, 27646 evaluated, 26081 expanded, 48 reopened
+Peak memory: 3250152 KB
+caught signal 24 -- exiting
+Time limit has been reached.
+Remove intermediate file output.sas
+search exit code: 23
+
+Driver aborting after search
+INFO     Planner time: 277.08s

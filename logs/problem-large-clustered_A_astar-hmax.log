@@ -1,0 +1,131 @@
+INFO     planner time limit: 300s
+INFO     planner memory limit: 4096 MB
+
+INFO     Running translator.
+INFO     translator stdin: None
+INFO     translator time limit: 299s
+INFO     translator memory limit: 4096 MB
+INFO     translator command line string: /usr/bin/python3 -m fast_downward.translate domain-A.pddl experiments/problem-large-clustered.pddl --sas-file output.sas
+Parsing...
+Parsing: [0.010s CPU, 0.046s wall-clock]
+Normalizing task... [0.000s CPU, 0.002s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.002s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.000s CPU, 0.007s wall-clock]
+Preparing model... [0.000s CPU, 0.004s wall-clock]
+Generated 46 rules.
+Computing model... [0.010s CPU, 0.021s wall-clock]
+893 relevant atoms
+1129 auxiliary atoms
+2022 final queue length
+3071 total queue pushes
+Completing instantiation... [0.030s CPU, 0.029s wall-clock]
+Instantiating: [0.050s CPU, 0.079s wall-clock]
+Computing fact groups...
+Finding invariants...
+26 initial candidates
+Finding invariants: [0.000s CPU, 0.006s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.001s wall-clock]
+Instantiating groups... [0.000s CPU, 0.002s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.001s wall-clock]
+Choosing groups...
+19 uncovered facts
+Choosing groups: [0.000s CPU, 0.001s wall-clock]
+Building translation key... [0.000s CPU, 0.001s wall-clock]
+Computing fact groups: [0.010s CPU, 0.023s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.001s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.001s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.001s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.001s wall-clock]
+Translator axioms removed by simplifying: 0
+Processing axioms: [0.000s CPU, 0.004s wall-clock]
+Translating task: [0.010s CPU, 0.020s wall-clock]
+24 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+0 axioms removed
+34 propositions removed
+Detecting unreachable propositions: [0.010s CPU, 0.009s wall-clock]
+Reordering and filtering variables...
+23 of 23 variables necessary.
+15 of 33 mutex groups necessary.
+588 of 588 operators necessary.
+0 of 0 axiom rules necessary.
+Reordering and filtering variables: [0.000s CPU, 0.005s wall-clock]
+Translator variables: 23
+Translator derived variables: 0
+Translator facts: 103
+Translator goal facts: 8
+Translator mutex groups: 15
+Translator total mutex groups size: 39
+Translator operators: 588
+Translator axioms: 0
+Translator task size: 3140
+Translator peak memory: 33392 KB
+Writing output... [0.010s CPU, 0.024s wall-clock]
+Done! [0.110s CPU, 0.229s wall-clock]
+b'Warning: :predicates specification not allowed here (cf. PDDL BNF)\n'
+translate exit code: 0
+
+INFO     Running search (release).
+INFO     search stdin: output.sas
+INFO     search time limit: 299s
+INFO     search memory limit: 4096 MB
+INFO     search command line string: /home/sonia/downward/builds/release/bin/downward --search 'astar(hmax())' --internal-plan-file plans/.tmp_problem-large-clustered_A_astar-hmax < output.sas
+[t=0.000851s, 11340 KB] Search code revision: 487e33cd6
+[t=0.001178s, 11340 KB] reading input...
+[t=0.005904s, 11472 KB] done reading input!
+[t=0.007687s, 11884 KB] Simplifying 1128 unary operators... done! [972 unary operators]
+[t=0.008374s, 11884 KB] time to simplify: 0.000687s
+[t=0.008566s, 11884 KB] Initializing HSP max heuristic...
+[t=0.008729s, 11884 KB] Building successor generator... done!
+[t=0.009048s, 11884 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.009334s, 11884 KB] time for successor generation creation: 0.000000s
+[t=0.009452s, 11884 KB] Variables: 23
+[t=0.009584s, 11884 KB] FactPairs: 103
+[t=0.009695s, 11884 KB] Bytes per state: 8
+[t=0.009797s, 11884 KB] Conducting best first search with reopening closed nodes, (real) bound = 2147483647
+[t=0.009924s, 11884 KB] New best heuristic value for hmax: 7
+[t=0.010088s, 11884 KB] g=0, 1 evaluated, 0 expanded
+[t=0.010213s, 11884 KB] f = 7, 1 evaluated, 0 expanded
+[t=0.010330s, 11884 KB] Initial heuristic value for hmax: 7
+[t=0.010608s, 11884 KB] pruning method: none
+[t=0.010718s, 11884 KB] New best heuristic value for hmax: 6
+[t=0.010976s, 11884 KB] g=1, 9 evaluated, 1 expanded
+[t=0.011106s, 11884 KB] f = 8, 55 evaluated, 4 expanded
+[t=0.011778s, 11884 KB] New best heuristic value for hmax: 5
+[t=0.013014s, 11884 KB] g=3, 101 evaluated, 9 expanded
+[t=0.015292s, 11884 KB] f = 9, 428 evaluated, 49 expanded
+[t=0.030475s, 12028 KB] f = 10, 1807 evaluated, 272 expanded
+[t=0.077151s, 12180 KB] f = 11, 6061 evaluated, 1077 expanded
+[t=0.079818s, 12180 KB] New best heuristic value for hmax: 4
+[t=0.082648s, 12180 KB] g=8, 6585 evaluated, 1146 expanded
+[t=0.161901s, 12708 KB] f = 12, 17228 evaluated, 3469 expanded
+[t=0.348663s, 13764 KB] f = 13, 42982 evaluated, 9580 expanded
+[t=0.842818s, 15888 KB] f = 14, 97793 evaluated, 23767 expanded
+[t=1.701745s, 20260 KB] f = 15, 208017 evaluated, 54588 expanded
+[t=3.535623s, 28712 KB] f = 16, 415991 evaluated, 116943 expanded
+[t=6.725705s, 43932 KB] f = 17, 786712 evaluated, 235111 expanded
+[t=12.400673s, 71020 KB] f = 18, 1414901 evaluated, 446909 expanded
+[t=21.678977s, 117804 KB] f = 19, 2431254 evaluated, 808502 expanded
+[t=36.364107s, 215616 KB] f = 20, 4009278 evaluated, 1399619 expanded
+[t=36.446917s, 215616 KB] New best heuristic value for hmax: 3
+[t=36.449072s, 215616 KB] g=17, 4021680 evaluated, 1402084 expanded
+[t=59.680132s, 267484 KB] f = 21, 6367785 evaluated, 2327286 expanded
+[t=93.314170s, 433704 KB] f = 22, 9765963 evaluated, 3728630 expanded
+[t=141.992348s, 801188 KB] f = 23, 14496605 evaluated, 5772853 expanded
+[t=206.267309s, 891600 KB] f = 24, 20885928 evaluated, 8664463 expanded
+[t=290.525936s, 1559444 KB] f = 25, 29274450 evaluated, 12640895 expanded
+Peak memory: 1559444 KB
+caught signal 24 -- exiting
+Time limit has been reached.
+Remove intermediate file output.sas
+search exit code: 23
+
+Driver aborting after search
+INFO     Planner time: 299.55s
