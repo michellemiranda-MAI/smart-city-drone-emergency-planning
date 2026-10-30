@@ -10,6 +10,6 @@
 (recharge dronea montjuic_pad b2 b3)
 (fly dronea montjuic_pad barceloneta b3 b1 b2)
 (fly dronea barceloneta aerodrome b2 b1 b1)
-(fly dronea aerodrome hospital_mar b1 b1 b0)
-(deliver-supply dronea kit1 hospital_mar)
+(fly dronea aerodrome hospital_viladecans b1 b1 b0)
+(deliver-supply dronea kit1 hospital_viladecans)
 ; cost = 14 (unit cost)

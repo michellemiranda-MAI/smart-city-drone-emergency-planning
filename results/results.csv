@@ -55,13 +55,13 @@ problem-large-clustered,B,lama,yes,292.14,30,33,32870,valid
 problem-large-clustered,B,astar-blind,no (time),292.10,,,,
 problem-large-clustered,B,astar-hmax,no (time),292.02,,,,
 problem-large-clustered,B,gbfs-ff,yes,0.13,43,49,248,valid
-problem-small,A,lama-first,yes,0.29,12,12,21,valid
-problem-small,A,astar-lmcut,yes,0.23,10,10,16,valid
-problem-small,A,astar-blind,yes,0.21,10,10,73,valid
-problem-small,A,astar-hmax,yes,0.22,10,10,37,valid
-problem-small,A,gbfs-ff,yes,0.17,12,12,17,valid
-problem-small,B,lama-first,yes,0.14,10,10,28,valid
-problem-small,B,astar-lmcut,yes,0.15,10,10,16,valid
-problem-small,B,astar-blind,yes,0.18,10,10,106,valid
-problem-small,B,astar-hmax,yes,0.18,10,10,46,valid
-problem-small,B,gbfs-ff,yes,0.18,14,14,20,valid
+problem-small,A,lama-first,yes,0.34,12,12,21,valid
+problem-small,A,astar-lmcut,yes,0.18,10,10,16,valid
+problem-small,A,astar-blind,yes,0.16,10,10,73,valid
+problem-small,A,astar-hmax,yes,0.19,10,10,37,valid
+problem-small,A,gbfs-ff,yes,0.14,12,12,17,valid
+problem-small,B,lama-first,yes,0.13,10,10,28,valid
+problem-small,B,astar-lmcut,yes,0.14,10,10,16,valid
+problem-small,B,astar-blind,yes,0.20,10,10,106,valid
+problem-small,B,astar-hmax,yes,0.14,10,10,46,valid
+problem-small,B,gbfs-ff,yes,0.14,14,14,20,valid

@@ -43,10 +43,10 @@ Plan size: 12
 (fly dronea barceloneta aerodrome b3 b1 b2)
  
 11:
-(fly dronea aerodrome hospital_mar b2 b1 b1)
+(fly dronea aerodrome hospital_viladecans b2 b1 b1)
  
 12:
-(deliver-supply dronea kit1 hospital_mar)
+(deliver-supply dronea kit1 hospital_viladecans)
  
 
 Plan Validation details
@@ -119,15 +119,15 @@ Updating (total-cost) (9) by 1 increase
 Checking next happening (time 11)
 Deleting (drone_at dronea aerodrome)
 Deleting (battery dronea b2)
-Adding (drone_at dronea hospital_mar)
+Adding (drone_at dronea hospital_viladecans)
 Adding (battery dronea b1)
 Updating (total-cost) (10) by 1 increase
 
 Checking next happening (time 12)
 Deleting (carrying dronea kit1)
-Deleting (needs_supply hospital_mar kit1)
+Deleting (needs_supply hospital_viladecans kit1)
 Adding (cargo_empty dronea)
-Adding (delivered kit1 hospital_mar)
+Adding (delivered kit1 hospital_viladecans)
 Updating (total-cost) (11) by 1 increase
 Plan executed successfully - checking goal
 Plan valid

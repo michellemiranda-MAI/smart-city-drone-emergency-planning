@@ -16,13 +16,13 @@ Plan size: 10
 (pick-up-supply dronea kit1 aerodrome)
  
 2:
-(fly dronea aerodrome hospital_mar b4 b1 b3)
+(fly dronea aerodrome hospital_viladecans b4 b1 b3)
  
 3:
-(deliver-supply dronea kit1 hospital_mar)
+(deliver-supply dronea kit1 hospital_viladecans)
  
 4:
-(fly dronea hospital_mar aerodrome b3 b1 b2)
+(fly dronea hospital_viladecans aerodrome b3 b1 b2)
  
 5:
 (fly dronea aerodrome barceloneta b2 b1 b1)
@@ -55,19 +55,19 @@ Updating (total-cost) (0) by 1 increase
 Checking next happening (time 2)
 Deleting (drone_at dronea aerodrome)
 Deleting (battery dronea b4)
-Adding (drone_at dronea hospital_mar)
+Adding (drone_at dronea hospital_viladecans)
 Adding (battery dronea b3)
 Updating (total-cost) (1) by 1 increase
 
 Checking next happening (time 3)
 Deleting (carrying dronea kit1)
-Deleting (needs_supply hospital_mar kit1)
+Deleting (needs_supply hospital_viladecans kit1)
 Adding (cargo_empty dronea)
-Adding (delivered kit1 hospital_mar)
+Adding (delivered kit1 hospital_viladecans)
 Updating (total-cost) (2) by 1 increase
 
 Checking next happening (time 4)
-Deleting (drone_at dronea hospital_mar)
+Deleting (drone_at dronea hospital_viladecans)
 Deleting (battery dronea b3)
 Adding (drone_at dronea aerodrome)
 Adding (battery dronea b2)
