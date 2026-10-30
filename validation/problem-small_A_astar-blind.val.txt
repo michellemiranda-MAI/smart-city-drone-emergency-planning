@@ -8,35 +8,38 @@ Type-checking deliver-supply
 ...action passes type checking.
 Type-checking recharge
 ...action passes type checking.
-Checking plan: plans/problem-small_A_astar-blind.plan
+Checking plan: plans/problem-small_A_astar-blind.plan
 Plan to validate:
 
-Plan size: 9
+Plan size: 10
 1:
-(fly dronea aerodrome barceloneta b3 b1 b2)
+(pick-up-supply dronea kit1 aerodrome)
  
 2:
-(inspect dronea barceloneta)
+(fly dronea aerodrome hospital_mar b4 b1 b3)
  
 3:
-(fly dronea barceloneta montjuic_pad b2 b1 b1)
- 
-4:
-(recharge dronea montjuic_pad b1 b2 b4)
- 
-5:
-(pick-up-supply dronea kit1 montjuic_pad)
- 
-6:
-(fly dronea montjuic_pad hospital_mar b4 b1 b3)
- 
-7:
 (deliver-supply dronea kit1 hospital_mar)
  
+4:
+(fly dronea hospital_mar aerodrome b3 b1 b2)
+ 
+5:
+(fly dronea aerodrome barceloneta b2 b1 b1)
+ 
+6:
+(inspect dronea barceloneta)
+ 
+7:
+(fly dronea barceloneta montjuic_pad b1 b1 b0)
+ 
 8:
-(fly dronea hospital_mar ciutadella b3 b1 b2)
+(recharge dronea montjuic_pad b0 b1 b4)
  
 9:
+(fly dronea montjuic_pad ciutadella b4 b1 b3)
+ 
+10:
 (inspect dronea ciutadella)
  
 
@@ -44,66 +47,73 @@ Plan Validation details
 -----------------------
 
 Checking next happening (time 1)
-Deleting (drone_at dronea aerodrome)
-Deleting (battery dronea b3)
-Adding (drone_at dronea barceloneta)
-Adding (battery dronea b2)
+Deleting (supply_at kit1 aerodrome)
+Deleting (cargo_empty dronea)
+Adding (carrying dronea kit1)
 Updating (total-cost) (0) by 1 increase
 
 Checking next happening (time 2)
-Deleting (needs_inspection barceloneta)
-Adding (inspected barceloneta)
-Adding (accessible ciutadella)
-Updating (total-cost) (1) by 1 increase
-
-Checking next happening (time 3)
-Deleting (drone_at dronea barceloneta)
-Deleting (battery dronea b2)
-Adding (drone_at dronea montjuic_pad)
-Adding (battery dronea b1)
-Updating (total-cost) (2) by 1 increase
-
-Checking next happening (time 4)
-Deleting (battery dronea b1)
-Adding (battery dronea b4)
-Updating (total-cost) (3) by 1 increase
-
-Checking next happening (time 5)
-Deleting (supply_at kit1 montjuic_pad)
-Deleting (cargo_empty dronea)
-Adding (carrying dronea kit1)
-Updating (total-cost) (4) by 1 increase
-
-Checking next happening (time 6)
-Deleting (drone_at dronea montjuic_pad)
+Deleting (drone_at dronea aerodrome)
 Deleting (battery dronea b4)
 Adding (drone_at dronea hospital_mar)
 Adding (battery dronea b3)
-Updating (total-cost) (5) by 1 increase
+Updating (total-cost) (1) by 1 increase
 
-Checking next happening (time 7)
+Checking next happening (time 3)
 Deleting (carrying dronea kit1)
 Deleting (needs_supply hospital_mar kit1)
 Adding (cargo_empty dronea)
 Adding (delivered kit1 hospital_mar)
+Updating (total-cost) (2) by 1 increase
+
+Checking next happening (time 4)
+Deleting (drone_at dronea hospital_mar)
+Deleting (battery dronea b3)
+Adding (drone_at dronea aerodrome)
+Adding (battery dronea b2)
+Updating (total-cost) (3) by 1 increase
+
+Checking next happening (time 5)
+Deleting (drone_at dronea aerodrome)
+Deleting (battery dronea b2)
+Adding (drone_at dronea barceloneta)
+Adding (battery dronea b1)
+Updating (total-cost) (4) by 1 increase
+
+Checking next happening (time 6)
+Deleting (needs_inspection barceloneta)
+Adding (inspected barceloneta)
+Adding (accessible ciutadella)
+Updating (total-cost) (5) by 1 increase
+
+Checking next happening (time 7)
+Deleting (drone_at dronea barceloneta)
+Deleting (battery dronea b1)
+Adding (drone_at dronea montjuic_pad)
+Adding (battery dronea b0)
 Updating (total-cost) (6) by 1 increase
 
 Checking next happening (time 8)
-Deleting (drone_at dronea hospital_mar)
-Deleting (battery dronea b3)
-Adding (drone_at dronea ciutadella)
-Adding (battery dronea b2)
+Deleting (battery dronea b0)
+Adding (battery dronea b4)
 Updating (total-cost) (7) by 1 increase
 
 Checking next happening (time 9)
+Deleting (drone_at dronea montjuic_pad)
+Deleting (battery dronea b4)
+Adding (drone_at dronea ciutadella)
+Adding (battery dronea b3)
+Updating (total-cost) (8) by 1 increase
+
+Checking next happening (time 10)
 Deleting (needs_inspection ciutadella)
 Adding (inspected ciutadella)
-Updating (total-cost) (8) by 1 increase
+Updating (total-cost) (9) by 1 increase
 Plan executed successfully - checking goal
 Plan valid
-Final value: 9 
+Final value: 10 
 
 Successful plans:
-Value: 9
- plans/problem-small_A_astar-blind.plan 9 
+Value: 10
+ plans/problem-small_A_astar-blind.plan 10 
 

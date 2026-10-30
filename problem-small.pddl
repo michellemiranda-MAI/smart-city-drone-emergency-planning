@@ -4,36 +4,35 @@
 ;; Scenario: A DANA storm brings torrential rain and a Mediterranean storm surge,
 ;;   flooding Barcelona's coastal Barceloneta district and cutting off access to
 ;;   Parc de la Ciutadella, which is being used as an evacuation centre.
-;;   One drone (droneA) is dispatched from El Prat emergency aerodrome.
-;;   A medical kit has been pre-staged at the Montjuic hilltop charging pad.
+;;   One drone (droneA) is dispatched from El Prat emergency aerodrome, the
+;;   central depot where the medical kit is stored.
 ;;
 ;; Objects:
 ;;   1 drone  : droneA  (starts at aerodrome, full battery b4)
-;;   5 locations:
-;;     aerodrome       - El Prat emergency drone base          (depot, no charger)
-;;     montjuic_pad    - Montjuic hilltop charging pad         (CHARGING STATION, kit1 here)
-;;     barceloneta     - La Barceloneta flooded beach district  (inspect -> unlocks ciutadella)
+;;   5 locations (a line: hospital_mar - aerodrome - barceloneta - montjuic_pad - ciutadella):
+;;     aerodrome       - El Prat emergency drone base          (DEPOT, kit1 here, no charger)
 ;;     hospital_mar    - Hospital del Mar (cut-off by flooding) (deliver kit1)
+;;     barceloneta     - La Barceloneta flooded beach district  (inspect -> unlocks ciutadella)
+;;     montjuic_pad    - Montjuic hilltop charging pad         (CHARGING STATION)
 ;;     ciutadella      - Parc de la Ciutadella evacuation hub   (LOCKED, inspect)
-;;   1 supply: kit1 (medical_kit) at montjuic_pad
+;;   1 supply: kit1 (medical_kit) at the depot (aerodrome)
 ;;
 ;; Design constraint (mandatory recharge):
 ;;   droneA starts FULL (b4), so the map itself forces the recharge.
-;;   ciutadella's only neighbour is hospital_mar, so it is the last stop and
-;;   hospital_mar comes just before it. A 4-flight route would then be
-;;   aerodrome -> {montjuic_pad, barceloneta} -> hospital_mar -> ciutadella,
-;;   which needs a montjuic_pad-barceloneta edge: there is none. So every
-;;   complete mission needs at least 5 flights (e.g. aerodrome->montjuic_pad->
-;;   hospital_mar->barceloneta->hospital_mar->ciutadella) = 5 levels > 4.
-;;   No recharge-free solution exists; the recharge is at montjuic_pad, which
-;;   every route visits to pick up kit1.
+;;   The map is a line and the drone starts between its two ends:
+;;   hospital_mar (one side) and ciutadella (other side) must both be visited.
+;;   So the drone must reach one end and come back: the cheapest way is
+;;   aerodrome->hospital_mar->aerodrome (2 flights), then
+;;   aerodrome->barceloneta->montjuic_pad->ciutadella (3 flights).
+;;   Every complete mission needs at least 5 flights = 5 levels > 4.
+;;   No recharge-free solution exists. On the best route the drone reaches
+;;   montjuic_pad (the only charger) with b0, just before the last flight.
 ;;
 ;; Optimal plan cost: 10 in both models
 ;;   (5 flights + 2 inspections + pick-up + delivery + 1 recharge)
 ;;   Model A (instant full recharge): 10
-;;   Model B (incremental +1/action):  10 (one recharge is enough: the drone
-;;     only lacks 1 level, e.g. aerodrome->montjuic_pad leaves b3 with 4
-;;     flights to go, and b3 -> b4 covers them)
+;;   Model B (incremental +1/action):  10 (one recharge is enough: b0 -> b1
+;;     covers the last flight montjuic_pad->ciutadella)
 ;; ============================================================================
 
 (define (problem barcelona-flood-small)
@@ -54,29 +53,25 @@
     (cargo_empty droneA)
 
     ;; ---- map: connections (bidirectional) ------------------------------------
-    ;; Ring: aerodrome-montjuic_pad-hospital_mar-barceloneta-aerodrome
-    ;; Plus ciutadella hanging off hospital_mar (its only neighbour)
-    ;; No montjuic_pad-barceloneta and no barceloneta-ciutadella edge: this is
-    ;; what makes every complete route at least 5 flights long
-    (connected aerodrome     montjuic_pad) (connected montjuic_pad aerodrome)
+    ;; Line: hospital_mar - aerodrome - barceloneta - montjuic_pad - ciutadella
+    ;; Both ends are mission sites, so the drone must go to one end and back:
+    ;; this is what makes every complete route at least 5 flights long
+    (connected aerodrome     hospital_mar) (connected hospital_mar aerodrome)
     (connected aerodrome     barceloneta)  (connected barceloneta  aerodrome)
-    (connected montjuic_pad  hospital_mar) (connected hospital_mar montjuic_pad)
-    (connected barceloneta   hospital_mar) (connected hospital_mar barceloneta)
-    (connected hospital_mar  ciutadella)   (connected ciutadella   hospital_mar)
+    (connected barceloneta   montjuic_pad) (connected montjuic_pad barceloneta)
+    (connected montjuic_pad  ciutadella)   (connected ciutadella   montjuic_pad)
 
     ;; ---- flight costs (all 1 level per edge) ---------------------------------
-    (flight_cost aerodrome    montjuic_pad b1) (flight_cost montjuic_pad aerodrome    b1)
+    (flight_cost aerodrome    hospital_mar b1) (flight_cost hospital_mar aerodrome    b1)
     (flight_cost aerodrome    barceloneta  b1) (flight_cost barceloneta  aerodrome    b1)
-    (flight_cost montjuic_pad hospital_mar b1) (flight_cost hospital_mar montjuic_pad b1)
-    (flight_cost barceloneta  hospital_mar b1) (flight_cost hospital_mar barceloneta  b1)
-    (flight_cost hospital_mar ciutadella   b1) (flight_cost ciutadella   hospital_mar b1)
+    (flight_cost barceloneta  montjuic_pad b1) (flight_cost montjuic_pad barceloneta  b1)
+    (flight_cost montjuic_pad ciutadella   b1) (flight_cost ciutadella   montjuic_pad b1)
 
     ;; ---- distances (plan-cost per edge, equals flight cost here) ------------
-    (= (distance aerodrome    montjuic_pad) 1) (= (distance montjuic_pad aerodrome)    1)
+    (= (distance aerodrome    hospital_mar) 1) (= (distance hospital_mar aerodrome)    1)
     (= (distance aerodrome    barceloneta)  1) (= (distance barceloneta  aerodrome)    1)
-    (= (distance montjuic_pad hospital_mar) 1) (= (distance hospital_mar montjuic_pad) 1)
-    (= (distance barceloneta  hospital_mar) 1) (= (distance hospital_mar barceloneta)  1)
-    (= (distance hospital_mar ciutadella)   1) (= (distance ciutadella   hospital_mar) 1)
+    (= (distance barceloneta  montjuic_pad) 1) (= (distance montjuic_pad barceloneta)  1)
+    (= (distance montjuic_pad ciutadella)   1) (= (distance ciutadella   montjuic_pad) 1)
 
     ;; ---- infrastructure ------------------------------------------------------
     (has_charging_station montjuic_pad)    ; Montjuic hilltop solar charging station
@@ -92,7 +87,7 @@
     (unlocked_by_inspection barceloneta ciutadella)
 
     ;; ---- supplies -----------------------------------------------------------
-    (supply_at kit1 montjuic_pad)          ; medical kit pre-staged at Montjuic pad
+    (supply_at kit1 aerodrome)             ; medical kit stored at the depot
     (needs_supply hospital_mar kit1)       ; Hospital del Mar awaits the kit
 
     ;; ---- mission requirements -----------------------------------------------
