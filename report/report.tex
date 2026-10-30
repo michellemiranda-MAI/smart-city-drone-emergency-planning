@@ -49,6 +49,23 @@
 \section{Introduction}
 % Motivation and scenario summary.
 
+After an emergency in a city, a fleet of autonomous drones has to bring
+supplies such as medical kits, water and communication equipment from depots to
+the affected locations. Each drone carries one item at a time, and its battery
+limits how far it can fly before it needs a charging station. Some areas are
+blocked at first and only become reachable once a nearby site has been
+inspected or has received its supply. The goal is to
+find a sequence of flights, inspections, pick-ups, deliveries and recharges
+that meets every demand at the lowest total cost.
+
+In this project we model the scenario in PDDL and solve it with Fast Downward.
+Since the planner does not support numeric fluents, the battery is encoded with
+symbolic levels. We build two alternative models that differ only in how
+recharging works: a full recharge in one action (Model A), or one level per
+action (Model B). We test both on a small, a medium and a large instance with
+several planner configurations, validate every plan with VAL, and compare
+plan quality and search effort.
+
 \section{Problem Analysis}
 % Search space, types, predicates, actions and design decisions.
 
