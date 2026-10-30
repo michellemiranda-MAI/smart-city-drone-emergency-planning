@@ -8,7 +8,7 @@
 ;;   A medical kit has been pre-staged at the Montjuic hilltop charging pad.
 ;;
 ;; Objects:
-;;   1 drone  : droneA  (starts at aerodrome, battery b3)
+;;   1 drone  : droneA  (starts at aerodrome, full battery b4)
 ;;   5 locations:
 ;;     aerodrome       - El Prat emergency drone base          (depot, no charger)
 ;;     montjuic_pad    - Montjuic hilltop charging pad         (CHARGING STATION, kit1 here)
@@ -18,17 +18,22 @@
 ;;   1 supply: kit1 (medical_kit) at montjuic_pad
 ;;
 ;; Design constraint (mandatory recharge):
-;;   droneA starts at b3 (3 levels). Any valid complete mission path requires a
-;;   minimum of 4 flights (e.g. aerodrome->montjuic(1)->barceloneta(2)->
-;;   hospital_mar(3)->ciutadella(4)), exceeding the 3 remaining levels.
-;;   No recharge-free solution exists. One stop at montjuic_pad is unavoidable.
+;;   droneA starts FULL (b4), so the map itself forces the recharge.
+;;   ciutadella's only neighbour is hospital_mar, so it is the last stop and
+;;   hospital_mar comes just before it. A 4-flight route would then be
+;;   aerodrome -> {montjuic_pad, barceloneta} -> hospital_mar -> ciutadella,
+;;   which needs a montjuic_pad-barceloneta edge: there is none. So every
+;;   complete mission needs at least 5 flights (e.g. aerodrome->montjuic_pad->
+;;   hospital_mar->barceloneta->hospital_mar->ciutadella) = 5 levels > 4.
+;;   No recharge-free solution exists; the recharge is at montjuic_pad, which
+;;   every route visits to pick up kit1.
 ;;
-;; Optimal plan cost: 9 in both models
-;;   (4 flights + 2 inspections + pick-up + delivery + 1 recharge)
-;;   Model A (instant full recharge): 9
-;;   Model B (incremental +1/action):  9 (one recharge is enough: the drone
-;;     only lacks 1 level, e.g. aerodrome->barceloneta->montjuic_pad leaves b1
-;;     with 2 flights to go, and b1 -> b2 covers them)
+;; Optimal plan cost: 10 in both models
+;;   (5 flights + 2 inspections + pick-up + delivery + 1 recharge)
+;;   Model A (instant full recharge): 10
+;;   Model B (incremental +1/action):  10 (one recharge is enough: the drone
+;;     only lacks 1 level, e.g. aerodrome->montjuic_pad leaves b3 with 4
+;;     flights to go, and b3 -> b4 covers them)
 ;; ============================================================================
 
 (define (problem barcelona-flood-small)
@@ -45,38 +50,33 @@
 
     ;; ---- drone ---------------------------------------------------------------
     (drone_at droneA aerodrome)   ; droneA at El Prat emergency base
-    (battery  droneA b3)          ; 3 of 4 levels -- forces at least one recharge
+    (battery  droneA b4)          ; full battery: the map, not the start, forces the recharge
     (cargo_empty droneA)
 
     ;; ---- map: connections (bidirectional) ------------------------------------
-    ;; Triangle: aerodrome-montjuic_pad-barceloneta (3 mutual connections)
-    ;; Plus spokes from both montjuic_pad AND barceloneta into hospital_mar
-    ;; Plus hospital_mar and barceloneta connections to ciutadella
+    ;; Ring: aerodrome-montjuic_pad-hospital_mar-barceloneta-aerodrome
+    ;; Plus ciutadella hanging off hospital_mar (its only neighbour)
+    ;; No montjuic_pad-barceloneta and no barceloneta-ciutadella edge: this is
+    ;; what makes every complete route at least 5 flights long
     (connected aerodrome     montjuic_pad) (connected montjuic_pad aerodrome)
     (connected aerodrome     barceloneta)  (connected barceloneta  aerodrome)
-    (connected montjuic_pad  barceloneta)  (connected barceloneta  montjuic_pad)
     (connected montjuic_pad  hospital_mar) (connected hospital_mar montjuic_pad)
     (connected barceloneta   hospital_mar) (connected hospital_mar barceloneta)
     (connected hospital_mar  ciutadella)   (connected ciutadella   hospital_mar)
-    (connected barceloneta   ciutadella)   (connected ciutadella   barceloneta)
 
     ;; ---- flight costs (all 1 level per edge) ---------------------------------
     (flight_cost aerodrome    montjuic_pad b1) (flight_cost montjuic_pad aerodrome    b1)
     (flight_cost aerodrome    barceloneta  b1) (flight_cost barceloneta  aerodrome    b1)
-    (flight_cost montjuic_pad barceloneta  b1) (flight_cost barceloneta  montjuic_pad b1)
     (flight_cost montjuic_pad hospital_mar b1) (flight_cost hospital_mar montjuic_pad b1)
     (flight_cost barceloneta  hospital_mar b1) (flight_cost hospital_mar barceloneta  b1)
     (flight_cost hospital_mar ciutadella   b1) (flight_cost ciutadella   hospital_mar b1)
-    (flight_cost barceloneta  ciutadella   b1) (flight_cost ciutadella   barceloneta  b1)
 
     ;; ---- distances (plan-cost per edge, equals flight cost here) ------------
     (= (distance aerodrome    montjuic_pad) 1) (= (distance montjuic_pad aerodrome)    1)
     (= (distance aerodrome    barceloneta)  1) (= (distance barceloneta  aerodrome)    1)
-    (= (distance montjuic_pad barceloneta)  1) (= (distance barceloneta  montjuic_pad) 1)
     (= (distance montjuic_pad hospital_mar) 1) (= (distance hospital_mar montjuic_pad) 1)
     (= (distance barceloneta  hospital_mar) 1) (= (distance hospital_mar barceloneta)  1)
     (= (distance hospital_mar ciutadella)   1) (= (distance ciutadella   hospital_mar) 1)
-    (= (distance barceloneta  ciutadella)   1) (= (distance ciutadella   barceloneta)  1)
 
     ;; ---- infrastructure ------------------------------------------------------
     (has_charging_station montjuic_pad)    ; Montjuic hilltop solar charging station

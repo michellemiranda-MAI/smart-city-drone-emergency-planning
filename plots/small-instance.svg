@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 70 800 510" font-family="Atkinson Hyperlegible, Segoe UI, Arial, sans-serif">
+  <!-- Small instance (Barcelona flood): location graph with edge costs,
+       depot, charger, mission sites, drone start and unlock dependency.
+       Same style as large-instance.svg, for the report. -->
+  <style>
+    .bg { fill: #ffffff; }
+    .sea { fill: #dceaf3; }
+    .river { stroke: #9cc3dc; stroke-width: 10; fill: none; stroke-linecap: round; }
+    .edge { stroke: #a3aeaa; stroke-width: 2.5; fill: none; }
+    .wbg { fill: #ffffff; stroke: #a3aeaa; stroke-width: 1.5; }
+    .w { font-family: JetBrains Mono, Consolas, monospace; font-size: 12.5px; font-weight: 600; fill: #1c2421; }
+    .lbl { font-size: 15px; font-weight: 700; fill: #1c2421; }
+    .sub { font-size: 12.5px; fill: #5d6a65; }
+    .region { font-size: 12.5px; letter-spacing: 0.14em; fill: #5d6a65; }
+    .water { font-size: 12.5px; font-style: italic; fill: #4f86ad; }
+    .node { fill: #ffffff; stroke-width: 3.5; }
+    .depot { stroke: #2f5d9e; }
+    .charger { stroke: #237347; }
+    .mission { stroke: #b8561a; }
+    .locked { stroke: #b3261e; stroke-width: 3; stroke-dasharray: 6 5; }
+    .f-depot { fill: #2f5d9e; }
+    .f-charger { fill: #237347; }
+    .f-mission { fill: #b8561a; }
+    .f-locked { fill: #b3261e; }
+    .s-mission { stroke: #b8561a; }
+    .s-locked { stroke: #b3261e; }
+    .t-mission { fill: #b8561a; }
+    .t-locked { fill: #b3261e; }
+    .dep { stroke: #b3261e; stroke-width: 2; stroke-dasharray: 7 6; fill: none; }
+    .badge { fill: #1c2421; }
+    .badge-t { fill: #ffffff; font-family: JetBrains Mono, Consolas, monospace; font-size: 12.5px; font-weight: 600; }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="800" height="580"/>
+
+  <!-- sea -->
+  <path class="sea" d="M0 548 C 160 538, 360 558, 540 546 S 720 540, 800 550 L 800 580 L 0 580 Z"/>
+  <text class="water" x="660" y="572">Mediterranean</text>
+
+  <!-- edges (all flight costs 1) -->
+  <line class="edge" x1="110" y1="270" x2="300" y2="120"/>
+  <line class="edge" x1="110" y1="270" x2="340" y2="400"/>
+  <line class="edge" x1="300" y1="120" x2="620" y2="250"/>
+  <line class="edge" x1="340" y1="400" x2="620" y2="250"/>
+  <line class="edge" x1="620" y1="250" x2="600" y2="460"/>
+
+  <!-- unlock dependency -->
+  <path class="dep" d="M352 424 Q 450 512 578 478"/>
+  <polygon class="f-locked" points="578,478 566,487 563,476"/>
+  <text class="sub t-locked" x="420" y="510">inspected</text>
+  <text class="sub t-locked" x="420" y="526">opens it</text>
+
+  <!-- edge weights (flight cost = distance) -->
+  <circle class="wbg" cx="205" cy="195" r="12"/><text class="w" x="205" y="199.5" text-anchor="middle">1</text>
+  <circle class="wbg" cx="225" cy="335" r="12"/><text class="w" x="225" y="339.5" text-anchor="middle">1</text>
+  <circle class="wbg" cx="460" cy="185" r="12"/><text class="w" x="460" y="189.5" text-anchor="middle">1</text>
+  <circle class="wbg" cx="480" cy="325" r="12"/><text class="w" x="480" y="329.5" text-anchor="middle">1</text>
+  <circle class="wbg" cx="610" cy="355" r="12"/><text class="w" x="610" y="359.5" text-anchor="middle">1</text>
+
+  <!-- aerodrome (depot, empty) -->
+  <rect class="node depot" x="89" y="249" width="42" height="42" rx="6"/>
+  <rect class="f-depot" x="101" y="261" width="18" height="18" rx="2"/>
+  <text class="lbl" x="110" y="316" text-anchor="middle">aerodrome</text>
+  <text class="sub" x="110" y="332" text-anchor="middle">depot · El Prat</text>
+
+  <!-- montjuic_pad (charger, kit1 here) -->
+  <circle class="node charger" cx="300" cy="120" r="21"/>
+  <polygon class="f-charger" points="304,106 292,123 300,123 296,135 308,117 300,117"/>
+  <text class="lbl" x="330" y="112">montjuic_pad</text>
+  <text class="sub" x="330" y="128">charger · kit1</text>
+
+  <!-- barceloneta (inspect) -->
+  <circle class="node mission" cx="340" cy="400" r="21"/>
+  <polygon points="340,389 350,408 330,408" fill="none" class="s-mission" stroke-width="3"/>
+  <text class="lbl" x="318" y="446" text-anchor="end">barceloneta</text>
+  <text class="sub t-mission" x="318" y="462" text-anchor="end">inspect</text>
+
+  <!-- hospital_mar (delivery) -->
+  <circle class="node mission" cx="620" cy="250" r="21"/>
+  <path class="s-mission" d="M620 240 v20 M610 250 h20" stroke-width="5"/>
+  <text class="lbl" x="652" y="246">hospital_mar</text>
+  <text class="sub t-mission" x="652" y="262">needs kit1</text>
+
+  <!-- ciutadella (locked, inspect) -->
+  <circle class="node locked" cx="600" cy="460" r="21"/>
+  <rect class="f-locked" x="592" y="459" width="16" height="12" rx="2"/>
+  <path class="s-locked" d="M595 459 v-5 a5 5 0 0 1 10 0 v5" fill="none" stroke-width="2.5"/>
+  <text class="lbl" x="632" y="456">ciutadella</text>
+  <text class="sub t-locked" x="632" y="472">locked · inspect</text>
+
+  <!-- drone start badge (capacity b4, starts full) -->
+  <rect class="badge" x="81" y="212" width="58" height="26" rx="5"/>
+  <text class="badge-t" x="110" y="230" text-anchor="middle">A b4</text>
+</svg>
