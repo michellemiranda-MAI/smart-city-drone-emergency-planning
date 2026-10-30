@@ -1,0 +1,84 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+% PDDL listings for the appendix
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  commentstyle=\color{gray},
+  morecomment=[l]{;},
+}
+
+\begin{document}
+
+% ---------------------------------------------------------------------------
+% Title page
+% ---------------------------------------------------------------------------
+\begin{titlepage}
+  \centering
+  \vspace*{3cm}
+  {\Large Planning and Approximate Reasoning (PAR)\par}
+  \vspace{0.5cm}
+  {\large Final Practical Project\par}
+  \vspace{2cm}
+  {\huge\bfseries Autonomous Drone Planning for\\[0.3cm] Smart-City Emergency Response\par}
+  \vspace{2cm}
+  {\Large Sonia Castro Paniello\\[0.2cm] Michelle Miranda\par}
+  \vfill
+  {\large Master in Artificial Intelligence\par}
+  \vspace{0.3cm}
+  {\large November 2026\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% Statement, Section 10: 8 to 12 pages, excluding appendices.
+
+\section{Introduction}
+% Motivation and scenario summary.
+
+\section{Problem Analysis}
+% Search space, types, predicates, actions and design decisions.
+
+\section{PDDL Implementation}
+% Commented domain files, with an explanation of every predicate and action.
+
+\section{Alternative Models}
+% Description and structured comparison of Model A and Model B.
+
+\section{Problem Instances}
+% Each instance with its location diagram (plots/).
+\subsection{Small instance}
+\subsection{Medium instance}
+\subsection{Large instance}
+
+\section{Planner Setup}
+% Tools used, configurations tested, experimental procedure.
+
+\section{Results and Analysis}
+% Results table (Section 7.2) plus one analytical paragraph per instance (7.3).
+
+\section{Literature Connection}
+% Two papers, 4-6 sentences each, connected to a specific project decision.
+
+\section{Limitations and Future Work}
+% What the model does not capture and how it could be extended.
+
+\appendix
+\section{Appendix}
+% Full PDDL source code, example generated plans, VAL output
+% (at least one VAL output per instance).
+
+\end{document}
