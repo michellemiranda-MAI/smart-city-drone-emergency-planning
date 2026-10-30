@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 770" font-family="Atkinson Hyperlegible, Segoe UI, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -40 960 832" font-family="Atkinson Hyperlegible, Segoe UI, Arial, sans-serif">
   <!-- Large instance (Tarragona chemical emergency): location graph with edge
        costs, depots, chargers, mission sites, drone starts and unlock
        dependencies. Light colours, for the report. -->
@@ -31,7 +31,7 @@
     .badge-t { fill: #ffffff; font-family: JetBrains Mono, Consolas, monospace; font-size: 12.5px; font-weight: 600; }
   </style>
 
-  <rect class="bg" x="0" y="0" width="960" height="770"/>
+  <rect class="bg" x="0" y="-40" width="960" height="832"/>
 
   <!-- sea and river -->
   <path class="sea" d="M0 640 C 200 628, 420 652, 620 638 S 860 630, 960 642 L 960 690 L 0 690 Z"/>
@@ -40,8 +40,8 @@
   <text class="water" x="312" y="34">riu Francolí</text>
 
   <!-- region labels -->
-  <text class="region" x="20" y="34">WEST BANK</text>
-  <text class="region" x="440" y="34">NORTH</text>
+  <text class="region" x="20" y="-12">WEST BANK</text>
+  <text class="region" x="440" y="-12">NORTH</text>
   <text class="region" x="660" y="618">CITY CENTRE</text>
 
   <!-- edges -->
@@ -173,6 +173,7 @@
 
   <!-- legend -->
   <g transform="translate(60,718)">
+    <rect x="-14" y="-24" width="866" height="82" rx="8" fill="#fafbfa" stroke="#d5dcd9" stroke-width="1.5"/>
     <rect class="node depot" x="3" y="-11" width="22" height="22" rx="4" style="stroke-width:2.5"/>
     <rect class="f-depot" x="9" y="-5" width="10" height="10" rx="1"/>
     <text class="sub" x="38" y="4.5">depot (supplies start here)</text>

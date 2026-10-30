@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 120 1000 620" font-family="Atkinson Hyperlegible, Segoe UI, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 80 1000 682" font-family="Atkinson Hyperlegible, Segoe UI, Arial, sans-serif">
   <!-- Medium instance (Barcelona storm surge): location graph with edge
        costs, depot, chargers, mission sites, drone starts and unlock
        dependency. Same style as large-instance.svg, for the report. -->
@@ -31,17 +31,21 @@
     .badge-t { fill: #ffffff; font-family: JetBrains Mono, Consolas, monospace; font-size: 12.5px; font-weight: 600; }
   </style>
 
-  <rect class="bg" x="0" y="0" width="1000" height="740"/>
+  <rect class="bg" x="0" y="0" width="1000" height="762"/>
 
   <!-- sea -->
   <path class="sea" d="M0 622 C 200 610, 420 634, 620 620 S 860 612, 1000 624 L 1000 660 L 0 660 Z"/>
   <text class="water" x="760" y="648">Mediterranean</text>
 
+  <!-- river Besòs (north-east, next to besos_delta) -->
+  <path class="river" d="M950 80 C 935 260, 995 430, 988 622"/>
+  <text class="water" x="880" y="134">riu Besòs</text>
+
   <!-- region labels -->
-  <text class="region" x="20" y="146">PORT · MONTJUÏC</text>
-  <text class="region" x="300" y="146">EIXAMPLE</text>
-  <text class="region" x="640" y="146">SANT MARTÍ</text>
-  <text class="region" x="450" y="604">CIUTAT VELLA</text>
+  <text class="region" x="20" y="108">PORT · MONTJUÏC</text>
+  <text class="region" x="500" y="108">EIXAMPLE</text>
+  <text class="region" x="760" y="108">SANT MARTÍ</text>
+  <text class="region" x="330" y="108">CIUTAT VELLA</text>
 
   <!-- edges -->
   <line class="edge" x1="250" y1="430" x2="100" y2="520"/>
@@ -136,6 +140,7 @@
 
   <!-- legend -->
   <g transform="translate(80,688)">
+    <rect x="-14" y="-24" width="866" height="82" rx="8" fill="#fafbfa" stroke="#d5dcd9" stroke-width="1.5"/>
     <rect class="node depot" x="3" y="-11" width="22" height="22" rx="4" style="stroke-width:2.5"/>
     <rect class="f-depot" x="9" y="-5" width="10" height="10" rx="1"/>
     <text class="sub" x="38" y="4.5">depot (supplies start here)</text>
