@@ -920,36 +920,37 @@ them separately.
 \label{sec:literature}
 % Two papers, 4-6 sentences each, connected to a specific project decision.
 
-\paragraph{Hoffmann (2003), Metric-FF~\cite{hoffmann2003metricff}.}
-Metric-FF extends the FF relaxed-plan heuristic to numeric state variables,
-so a battery or fuel level can be a number with \p{decrease} effects and
-\p{>=} conditions. Its relaxation carries the idea of ignoring delete lists
-over to numbers: effects that make a numeric condition harder to satisfy are
-ignored in the heuristic estimate. This paper connects to our most
-important design decision. Fast Downward cannot handle numeric fluents, so we
-compiled the battery into level objects and a \p{battery_after} lookup table,
-with one row for every valid (level, cost) pair, which is what a numeric
-planner gets for free. The relaxation also explains our observation that
-heuristics guide Model B poorly. Whether the battery is a number or a set of
-level facts, the relaxed problem never runs out of energy, so recharges stay
-invisible to the heuristic. Switching to a numeric planner would therefore
-simplify the model, but it would not by itself fix the weak guidance on
-recharging.
+\paragraph{Bernardini, Fox and Long (2014), quadcopter
+surveillance~\cite{bernardini2014quadcopter}.}
+This paper plans the missions of a real low-cost quadcopter in PDDL, and
+names its short battery life as the main limit on what the drone can do.
+The battery is a numeric fluent: each manoeuvre requires
+\p{(>= (batteryLevel) ...)} and applies a \p{decrease}, with the energy of
+each manoeuvre measured in flight tests. Fast Downward cannot handle numeric
+fluents, so we compiled the same idea into level objects and a
+\p{battery_after} table with one row per valid (level, cost) pair, which a
+numeric model gets for free. Their second domain adds a \p{recharge} action
+that charges ``to full capacity or up to a chosen level'', the same choice
+we split into Model A (full) and Model B (one level per action), and close to
+the variable recharge we propose in Section~\ref{sec:limitations}. They also
+use durative actions with the anytime planner OPTIC, which supports both our
+anytime \p{--alias lama} runs on the large instance and our point that only
+a temporal model can reward drones flying in parallel.
 
-\paragraph{Richter and Westphal (2010), LAMA~\cite{richter2010lama}.}
-LAMA combines the FF heuristic with a landmark-count heuristic, uses
-preferred operators, and runs as an anytime planner. It finds a first plan
-quickly with greedy search and then restarts weighted A$^*$ with decreasing
-weights, keeping each cheaper plan. The authors observe that taking action
-costs fully into account from the start can make the search slower, which is
-why the first phase gives up some cost awareness for speed. Our large
-instance shows both sides of this choice. LAMA-first, run with unit costs,
-returns plans that cost almost twice the optimum (57 vs 30), because it
-treats a cost-3 river crossing like any other flight. The anytime iterations,
-which use the real costs, reach the optimal cost in 1.3--9.5\,s, much faster
-than A$^*$ with LM-cut. This is why we ran \p{--alias lama} on all large
-variants and compared the single-drone and three-drone variants on the best
-validated cost, not on the first plan.
+\paragraph{Nakhost, Hoffmann and M\"uller (2012), resource-constrained
+planning~\cite{nakhost2012rcp}.}
+This paper studies planning when the resource supply is close to the minimum
+a plan needs. Its main finding is that planners guided by delete-relaxation
+heuristics get much worse as resources get tighter, because relaxed plans
+act as if a resource value, once reached, persists forever. This explains
+our observation that heuristics guide Model B poorly. Whether the battery is
+a number or a set of level facts, the relaxed problem never runs out of
+energy, so recharges stay invisible to the heuristic. In their study, LM-cut
+worked best with the propositional encoding (resource levels as facts) and
+LAMA with that encoding plus action costs, which supports our choice to
+compile the battery into levels for Fast Downward. The connection is
+partial: their resources cannot be replenished, while our drones can
+recharge, so our instances are only tight between chargers.
 
 % ===========================================================================
 \section{Limitations and Future Work}
@@ -1007,12 +1008,15 @@ validated cost, not on the first plan.
   \bibitem{helmert2009lmcut} M.~Helmert and C.~Domshlak. Landmarks, critical
     paths and abstractions: What's the difference anyway? In \emph{Proc.\
     ICAPS}, pages 162--169, 2009.
-  \bibitem{hoffmann2003metricff} J.~Hoffmann. The Metric-FF planning system:
-    Translating ``ignoring delete lists'' to numeric state variables.
-    \emph{Journal of Artificial Intelligence Research}, 20:291--341, 2003.
   \bibitem{richter2010lama} S.~Richter and M.~Westphal. The LAMA planner:
     Guiding cost-based anytime planning with landmarks. \emph{Journal of
     Artificial Intelligence Research}, 39:127--177, 2010.
+  \bibitem{bernardini2014quadcopter} S.~Bernardini, M.~Fox and D.~Long.
+    Planning the behaviour of low-cost quadcopters for surveillance missions.
+    In \emph{Proc.\ ICAPS}, pages 445--453, 2014.
+  \bibitem{nakhost2012rcp} H.~Nakhost, J.~Hoffmann and M.~M\"uller.
+    Resource-constrained planning: A Monte Carlo random walk approach.
+    In \emph{Proc.\ ICAPS}, pages 181--189, 2012.
 \end{thebibliography}
 
 \appendix
