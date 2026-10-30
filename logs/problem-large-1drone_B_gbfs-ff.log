@@ -7,56 +7,56 @@ INFO     translator time limit: 299s
 INFO     translator memory limit: 4096 MB
 INFO     translator command line string: /usr/bin/python3 -m fast_downward.translate domain-B.pddl problem-large-1drone.pddl --sas-file output.sas
 Parsing...
-Parsing: [0.000s CPU, 0.013s wall-clock]
-Normalizing task... [0.000s CPU, 0.001s wall-clock]
+Parsing: [0.010s CPU, 0.005s wall-clock]
+Normalizing task... [0.000s CPU, 0.000s wall-clock]
 Instantiating...
-Generating Datalog program... [0.000s CPU, 0.001s wall-clock]
+Generating Datalog program... [0.000s CPU, 0.000s wall-clock]
 Normalizing Datalog program...
-Normalizing Datalog program: [0.000s CPU, 0.021s wall-clock]
-Preparing model... [0.000s CPU, 0.002s wall-clock]
+Normalizing Datalog program: [0.000s CPU, 0.002s wall-clock]
+Preparing model... [0.000s CPU, 0.001s wall-clock]
 Generated 44 rules.
-Computing model... [0.000s CPU, 0.006s wall-clock]
+Computing model... [0.000s CPU, 0.003s wall-clock]
 447 relevant atoms
 571 auxiliary atoms
 1018 final queue length
 1361 total queue pushes
-Completing instantiation... [0.010s CPU, 0.007s wall-clock]
-Instantiating: [0.010s CPU, 0.044s wall-clock]
+Completing instantiation... [0.010s CPU, 0.005s wall-clock]
+Instantiating: [0.010s CPU, 0.014s wall-clock]
 Computing fact groups...
 Finding invariants...
 26 initial candidates
-Finding invariants: [0.000s CPU, 0.005s wall-clock]
+Finding invariants: [0.000s CPU, 0.002s wall-clock]
 Checking invariant weight... [0.000s CPU, 0.001s wall-clock]
-Instantiating groups... [0.000s CPU, 0.002s wall-clock]
-Collecting mutex groups... [0.000s CPU, 0.001s wall-clock]
+Instantiating groups... [0.000s CPU, 0.001s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.000s wall-clock]
 Choosing groups...
 16 uncovered facts
-Choosing groups: [0.000s CPU, 0.001s wall-clock]
-Building translation key... [0.000s CPU, 0.001s wall-clock]
-Computing fact groups: [0.000s CPU, 0.017s wall-clock]
-Building STRIPS to SAS dictionary... [0.000s CPU, 0.001s wall-clock]
-Building dictionary for full mutex groups... [0.000s CPU, 0.001s wall-clock]
+Choosing groups: [0.000s CPU, 0.000s wall-clock]
+Building translation key... [0.000s CPU, 0.000s wall-clock]
+Computing fact groups: [0.000s CPU, 0.007s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]
 Building mutex information...
-Building mutex information: [0.000s CPU, 0.001s wall-clock]
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
 Translating task...
 Processing axioms...
-Simplifying axioms... [0.000s CPU, 0.001s wall-clock]
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
 Translator axioms removed by simplifying: 0
-Processing axioms: [0.000s CPU, 0.003s wall-clock]
-Translating task: [0.000s CPU, 0.011s wall-clock]
+Processing axioms: [0.000s CPU, 0.001s wall-clock]
+Translating task: [0.000s CPU, 0.004s wall-clock]
 4 effect conditions simplified
 0 implied preconditions added
 Detecting unreachable propositions...
 0 operators removed
 0 axioms removed
 27 propositions removed
-Detecting unreachable propositions: [0.000s CPU, 0.004s wall-clock]
+Detecting unreachable propositions: [0.000s CPU, 0.002s wall-clock]
 Reordering and filtering variables...
 17 of 17 variables necessary.
 20 of 27 mutex groups necessary.
 196 of 196 operators necessary.
 0 of 0 axiom rules necessary.
-Reordering and filtering variables: [0.000s CPU, 0.002s wall-clock]
+Reordering and filtering variables: [0.010s CPU, 0.001s wall-clock]
 Translator variables: 17
 Translator derived variables: 0
 Translator facts: 56
@@ -66,9 +66,9 @@ Translator total mutex groups size: 44
 Translator operators: 196
 Translator axioms: 0
 Translator task size: 1114
-Translator peak memory: 31104 KB
-Writing output... [0.020s CPU, 0.010s wall-clock]
-Done! [0.050s CPU, 0.118s wall-clock]
+Translator peak memory: 31108 KB
+Writing output... [0.000s CPU, 0.003s wall-clock]
+Done! [0.030s CPU, 0.041s wall-clock]
 b'Warning: :predicates specification not allowed here (cf. PDDL BNF)\n'
 translate exit code: 0
 
@@ -77,78 +77,78 @@ INFO     search stdin: output.sas
 INFO     search time limit: 299s
 INFO     search memory limit: 4096 MB
 INFO     search command line string: /home/sonia/downward/builds/release/bin/downward --search 'eager_greedy([ff()])' --internal-plan-file plans/.tmp_problem-large-1drone_B_gbfs-ff < output.sas
-[t=0.003250s, 11340 KB] Search code revision: 487e33cd6
-[t=0.003618s, 11340 KB] reading input...
-[t=0.005185s, 11340 KB] done reading input!
-[t=0.005702s, 11736 KB] Simplifying 376 unary operators... done! [324 unary operators]
-[t=0.007994s, 11736 KB] time to simplify: 0.002292s
-[t=0.008168s, 11736 KB] Initializing additive heuristic...
-[t=0.008302s, 11736 KB] Initializing FF heuristic...
-[t=0.008418s, 11736 KB] Building successor generator... done!
-[t=0.008693s, 11736 KB] peak memory difference for successor generator creation: 0 KB
-[t=0.008954s, 11736 KB] time for successor generation creation: 0.000000s
-[t=0.009124s, 11736 KB] Variables: 17
-[t=0.009283s, 11736 KB] FactPairs: 56
-[t=0.009472s, 11736 KB] Bytes per state: 4
-[t=0.009612s, 11736 KB] Conducting best first search without reopening closed nodes, (real) bound = 2147483647
-[t=0.009765s, 11736 KB] New best heuristic value for ff: 26
-[t=0.009917s, 11736 KB] g=0, 1 evaluated, 0 expanded
-[t=0.009993s, 11736 KB] Initial heuristic value for ff: 26
-[t=0.010073s, 11736 KB] pruning method: none
-[t=0.010212s, 11736 KB] New best heuristic value for ff: 25
-[t=0.010342s, 11736 KB] g=1, 2 evaluated, 1 expanded
-[t=0.010437s, 11736 KB] New best heuristic value for ff: 24
-[t=0.010707s, 11736 KB] g=3, 16 evaluated, 4 expanded
-[t=0.010840s, 11736 KB] New best heuristic value for ff: 23
-[t=0.011418s, 11736 KB] g=8, 49 evaluated, 17 expanded
-[t=0.011587s, 11736 KB] New best heuristic value for ff: 22
-[t=0.012115s, 11736 KB] g=7, 72 evaluated, 31 expanded
-[t=0.012279s, 11736 KB] New best heuristic value for ff: 21
-[t=0.012488s, 11736 KB] g=8, 73 evaluated, 32 expanded
-[t=0.013754s, 11736 KB] New best heuristic value for ff: 20
-[t=0.014357s, 11736 KB] g=19, 233 evaluated, 129 expanded
-[t=0.014610s, 11736 KB] New best heuristic value for ff: 19
-[t=0.015030s, 11736 KB] g=22, 242 evaluated, 132 expanded
-[t=0.015318s, 11736 KB] New best heuristic value for ff: 18
-[t=0.016008s, 11736 KB] g=33, 284 evaluated, 148 expanded
-[t=0.016109s, 11736 KB] New best heuristic value for ff: 17
-[t=0.016402s, 11736 KB] g=36, 287 evaluated, 150 expanded
-[t=0.016570s, 11736 KB] New best heuristic value for ff: 16
-[t=0.016764s, 11736 KB] g=37, 291 evaluated, 151 expanded
-[t=0.016885s, 11736 KB] New best heuristic value for ff: 15
-[t=0.017143s, 11736 KB] g=43, 306 evaluated, 155 expanded
-[t=0.017223s, 11736 KB] New best heuristic value for ff: 14
-[t=0.017689s, 11736 KB] g=46, 358 evaluated, 194 expanded
-[t=0.017761s, 11736 KB] New best heuristic value for ff: 13
-[t=0.017858s, 11736 KB] g=48, 362 evaluated, 196 expanded
-[t=0.018082s, 11736 KB] New best heuristic value for ff: 12
-[t=0.018287s, 11736 KB] g=52, 367 evaluated, 201 expanded
-[t=0.018430s, 11736 KB] New best heuristic value for ff: 11
-[t=0.018700s, 11736 KB] g=53, 371 evaluated, 202 expanded
-[t=0.018854s, 11736 KB] New best heuristic value for ff: 10
-[t=0.019072s, 11736 KB] g=54, 373 evaluated, 203 expanded
-[t=0.019214s, 11736 KB] New best heuristic value for ff: 9
-[t=0.019548s, 11736 KB] g=61, 399 evaluated, 212 expanded
-[t=0.019693s, 11736 KB] New best heuristic value for ff: 8
-[t=0.020058s, 11736 KB] g=68, 428 evaluated, 222 expanded
-[t=0.020161s, 11736 KB] New best heuristic value for ff: 7
-[t=0.020295s, 11736 KB] g=71, 433 evaluated, 225 expanded
-[t=0.020372s, 11736 KB] New best heuristic value for ff: 6
-[t=0.020491s, 11736 KB] g=72, 436 evaluated, 226 expanded
-[t=0.020568s, 11736 KB] New best heuristic value for ff: 5
-[t=0.020717s, 11736 KB] g=74, 443 evaluated, 228 expanded
-[t=0.020783s, 11736 KB] New best heuristic value for ff: 4
-[t=0.020887s, 11736 KB] g=75, 445 evaluated, 229 expanded
-[t=0.020973s, 11736 KB] New best heuristic value for ff: 3
-[t=0.021123s, 11736 KB] g=79, 454 evaluated, 232 expanded
-[t=0.021280s, 11736 KB] New best heuristic value for ff: 2
-[t=0.021437s, 11736 KB] g=80, 457 evaluated, 233 expanded
-[t=0.021840s, 11736 KB] New best heuristic value for ff: 1
-[t=0.022127s, 11736 KB] g=81, 458 evaluated, 234 expanded
-[t=0.022288s, 11736 KB] New best heuristic value for ff: 0
-[t=0.022416s, 11736 KB] g=82, 460 evaluated, 235 expanded
-[t=0.022529s, 11736 KB] Solution found!
-[t=0.022682s, 11736 KB] Actual search time: 0.012470s
+[t=0.001762s, 11340 KB] Search code revision: 487e33cd6
+[t=0.001861s, 11340 KB] reading input...
+[t=0.002664s, 11340 KB] done reading input!
+[t=0.002720s, 11736 KB] Simplifying 376 unary operators... done! [324 unary operators]
+[t=0.003827s, 11736 KB] time to simplify: 0.001107s
+[t=0.003883s, 11736 KB] Initializing additive heuristic...
+[t=0.003933s, 11736 KB] Initializing FF heuristic...
+[t=0.003969s, 11736 KB] Building successor generator... done!
+[t=0.004088s, 11736 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.004158s, 11736 KB] time for successor generation creation: 0.000000s
+[t=0.004201s, 11736 KB] Variables: 17
+[t=0.004237s, 11736 KB] FactPairs: 56
+[t=0.004272s, 11736 KB] Bytes per state: 4
+[t=0.004307s, 11736 KB] Conducting best first search without reopening closed nodes, (real) bound = 2147483647
+[t=0.004345s, 11736 KB] New best heuristic value for ff: 26
+[t=0.004405s, 11736 KB] g=0, 1 evaluated, 0 expanded
+[t=0.004440s, 11736 KB] Initial heuristic value for ff: 26
+[t=0.004503s, 11736 KB] pruning method: none
+[t=0.004551s, 11736 KB] New best heuristic value for ff: 25
+[t=0.004607s, 11736 KB] g=1, 2 evaluated, 1 expanded
+[t=0.004645s, 11736 KB] New best heuristic value for ff: 24
+[t=0.004771s, 11736 KB] g=3, 16 evaluated, 4 expanded
+[t=0.004815s, 11736 KB] New best heuristic value for ff: 23
+[t=0.005055s, 11736 KB] g=8, 49 evaluated, 17 expanded
+[t=0.005109s, 11736 KB] New best heuristic value for ff: 22
+[t=0.005274s, 11736 KB] g=7, 72 evaluated, 31 expanded
+[t=0.005320s, 11736 KB] New best heuristic value for ff: 21
+[t=0.005373s, 11736 KB] g=8, 73 evaluated, 32 expanded
+[t=0.005411s, 11736 KB] New best heuristic value for ff: 20
+[t=0.006143s, 11736 KB] g=19, 233 evaluated, 129 expanded
+[t=0.006184s, 11736 KB] New best heuristic value for ff: 19
+[t=0.006272s, 11736 KB] g=22, 242 evaluated, 132 expanded
+[t=0.006309s, 11736 KB] New best heuristic value for ff: 18
+[t=0.006576s, 11736 KB] g=33, 284 evaluated, 148 expanded
+[t=0.006616s, 11736 KB] New best heuristic value for ff: 17
+[t=0.006684s, 11736 KB] g=36, 287 evaluated, 150 expanded
+[t=0.006718s, 11736 KB] New best heuristic value for ff: 16
+[t=0.006781s, 11736 KB] g=37, 291 evaluated, 151 expanded
+[t=0.006818s, 11736 KB] New best heuristic value for ff: 15
+[t=0.006911s, 11736 KB] g=43, 306 evaluated, 155 expanded
+[t=0.006953s, 11736 KB] New best heuristic value for ff: 14
+[t=0.007192s, 11736 KB] g=46, 358 evaluated, 194 expanded
+[t=0.007225s, 11736 KB] New best heuristic value for ff: 13
+[t=0.007273s, 11736 KB] g=48, 362 evaluated, 196 expanded
+[t=0.007316s, 11736 KB] New best heuristic value for ff: 12
+[t=0.007379s, 11736 KB] g=52, 367 evaluated, 201 expanded
+[t=0.007414s, 11736 KB] New best heuristic value for ff: 11
+[t=0.007470s, 11736 KB] g=53, 371 evaluated, 202 expanded
+[t=0.007518s, 11736 KB] New best heuristic value for ff: 10
+[t=0.007563s, 11736 KB] g=54, 373 evaluated, 203 expanded
+[t=0.007606s, 11736 KB] New best heuristic value for ff: 9
+[t=0.007756s, 11736 KB] g=61, 399 evaluated, 212 expanded
+[t=0.007791s, 11736 KB] New best heuristic value for ff: 8
+[t=0.007948s, 11736 KB] g=68, 428 evaluated, 222 expanded
+[t=0.007982s, 11736 KB] New best heuristic value for ff: 7
+[t=0.008037s, 11736 KB] g=71, 433 evaluated, 225 expanded
+[t=0.008082s, 11736 KB] New best heuristic value for ff: 6
+[t=0.008125s, 11736 KB] g=72, 436 evaluated, 226 expanded
+[t=0.008167s, 11736 KB] New best heuristic value for ff: 5
+[t=0.008250s, 11736 KB] g=74, 443 evaluated, 228 expanded
+[t=0.008284s, 11736 KB] New best heuristic value for ff: 4
+[t=0.008329s, 11736 KB] g=75, 445 evaluated, 229 expanded
+[t=0.008374s, 11736 KB] New best heuristic value for ff: 3
+[t=0.008497s, 11736 KB] g=79, 454 evaluated, 232 expanded
+[t=0.008562s, 11736 KB] New best heuristic value for ff: 2
+[t=0.008623s, 11736 KB] g=80, 457 evaluated, 233 expanded
+[t=0.008670s, 11736 KB] New best heuristic value for ff: 1
+[t=0.008720s, 11736 KB] g=81, 458 evaluated, 234 expanded
+[t=0.008758s, 11736 KB] New best heuristic value for ff: 0
+[t=0.008813s, 11736 KB] g=82, 460 evaluated, 235 expanded
+[t=0.008849s, 11736 KB] Solution found!
+[t=0.008886s, 11736 KB] Actual search time: 0.004336s
 pick-up-supply dronea water1 port (1)
 fly dronea port francoli b6 b1 b5 (1)
 inspect dronea francoli (1)
@@ -219,22 +219,22 @@ fly dronea rambla campus b2 b2 b0 (2)
 recharge dronea campus b0 b1 (1)
 fly dronea campus hospital b1 b1 b0 (1)
 deliver-supply dronea kit2 hospital (1)
-[t=0.022798s, 11736 KB] Plan length: 70 step(s).
-[t=0.022798s, 11736 KB] Plan cost: 82
-[t=0.022798s, 11736 KB] Expanded 236 state(s).
-[t=0.022798s, 11736 KB] Reopened 0 state(s).
-[t=0.022798s, 11736 KB] Evaluated 460 state(s).
-[t=0.022798s, 11736 KB] Evaluations: 460
-[t=0.022798s, 11736 KB] Generated 677 state(s).
-[t=0.022798s, 11736 KB] Dead ends: 69 state(s).
-[t=0.022798s, 11736 KB] Number of registered states: 460
-[t=0.022798s, 11736 KB] Int hash set load factor: 460/512 = 0.898438
-[t=0.022798s, 11736 KB] Int hash set resizes: 9
-[t=0.022798s, 11736 KB] Search time: 0.013186s
-[t=0.022798s, 11736 KB] Total time: 0.022798s
+[t=0.008934s, 11736 KB] Plan length: 70 step(s).
+[t=0.008934s, 11736 KB] Plan cost: 82
+[t=0.008934s, 11736 KB] Expanded 236 state(s).
+[t=0.008934s, 11736 KB] Reopened 0 state(s).
+[t=0.008934s, 11736 KB] Evaluated 460 state(s).
+[t=0.008934s, 11736 KB] Evaluations: 460
+[t=0.008934s, 11736 KB] Generated 677 state(s).
+[t=0.008934s, 11736 KB] Dead ends: 69 state(s).
+[t=0.008934s, 11736 KB] Number of registered states: 460
+[t=0.008934s, 11736 KB] Int hash set load factor: 460/512 = 0.898438
+[t=0.008934s, 11736 KB] Int hash set resizes: 9
+[t=0.008934s, 11736 KB] Search time: 0.004628s
+[t=0.008934s, 11736 KB] Total time: 0.008934s
 Solution found.
 Peak memory: 11736 KB
 Remove intermediate file output.sas
 search exit code: 0
 
-INFO     Planner time: 0.23s
+INFO     Planner time: 0.11s

@@ -1,0 +1,233 @@
+Type-checking fly
+...action passes type checking.
+Type-checking inspect
+...action passes type checking.
+Type-checking pick-up-supply
+...action passes type checking.
+Type-checking deliver-supply
+...action passes type checking.
+Type-checking recharge
+...action passes type checking.
+Checking plan: plans/problem-medium_A_astar-hmax.plan
+Plan to validate:
+
+Plan size: 22
+1:
+(fly droneb glories_tower port_depot b4 b2 b2)
+ 
+2:
+(pick-up-supply droneb water1 port_depot)
+ 
+3:
+(fly droneb port_depot glories_tower b2 b2 b0)
+ 
+4:
+(recharge droneb glories_tower b0 b1 b6)
+ 
+5:
+(fly droneb glories_tower poblenou b6 b1 b5)
+ 
+6:
+(deliver-supply droneb water1 poblenou)
+ 
+7:
+(fly droneb poblenou glories_tower b5 b1 b4)
+ 
+8:
+(pick-up-supply dronea comm1 port_depot)
+ 
+9:
+(fly dronea port_depot glories_tower b5 b2 b3)
+ 
+10:
+(fly dronea glories_tower poblenou b3 b1 b2)
+ 
+11:
+(fly droneb glories_tower port_depot b4 b2 b2)
+ 
+12:
+(inspect dronea poblenou)
+ 
+13:
+(pick-up-supply droneb kit1 port_depot)
+ 
+14:
+(fly droneb port_depot barceloneta b2 b1 b1)
+ 
+15:
+(fly dronea poblenou besos_delta b2 b1 b1)
+ 
+16:
+(inspect dronea besos_delta)
+ 
+17:
+(fly dronea besos_delta forum_shelter b1 b1 b0)
+ 
+18:
+(inspect droneb barceloneta)
+ 
+19:
+(fly droneb barceloneta hospital_mar b1 b1 b0)
+ 
+20:
+(deliver-supply dronea comm1 forum_shelter)
+ 
+21:
+(inspect droneb hospital_mar)
+ 
+22:
+(deliver-supply droneb kit1 hospital_mar)
+ 
+
+Plan Validation details
+-----------------------
+
+Checking next happening (time 1)
+Deleting (drone_at droneb glories_tower)
+Deleting (battery droneb b4)
+Adding (drone_at droneb port_depot)
+Adding (battery droneb b2)
+Updating (total-cost) (0) by 2 increase
+
+Checking next happening (time 2)
+Deleting (supply_at water1 port_depot)
+Deleting (cargo_empty droneb)
+Adding (carrying droneb water1)
+Updating (total-cost) (2) by 1 increase
+
+Checking next happening (time 3)
+Deleting (drone_at droneb port_depot)
+Deleting (battery droneb b2)
+Adding (drone_at droneb glories_tower)
+Adding (battery droneb b0)
+Updating (total-cost) (3) by 2 increase
+
+Checking next happening (time 4)
+Deleting (battery droneb b0)
+Adding (battery droneb b6)
+Updating (total-cost) (5) by 1 increase
+
+Checking next happening (time 5)
+Deleting (drone_at droneb glories_tower)
+Deleting (battery droneb b6)
+Adding (drone_at droneb poblenou)
+Adding (battery droneb b5)
+Updating (total-cost) (6) by 1 increase
+
+Checking next happening (time 6)
+Deleting (carrying droneb water1)
+Deleting (needs_supply poblenou water1)
+Adding (cargo_empty droneb)
+Adding (delivered water1 poblenou)
+Updating (total-cost) (7) by 1 increase
+
+Checking next happening (time 7)
+Deleting (drone_at droneb poblenou)
+Deleting (battery droneb b5)
+Adding (drone_at droneb glories_tower)
+Adding (battery droneb b4)
+Updating (total-cost) (8) by 1 increase
+
+Checking next happening (time 8)
+Deleting (supply_at comm1 port_depot)
+Deleting (cargo_empty dronea)
+Adding (carrying dronea comm1)
+Updating (total-cost) (9) by 1 increase
+
+Checking next happening (time 9)
+Deleting (drone_at dronea port_depot)
+Deleting (battery dronea b5)
+Adding (drone_at dronea glories_tower)
+Adding (battery dronea b3)
+Updating (total-cost) (10) by 2 increase
+
+Checking next happening (time 10)
+Deleting (drone_at dronea glories_tower)
+Deleting (battery dronea b3)
+Adding (drone_at dronea poblenou)
+Adding (battery dronea b2)
+Updating (total-cost) (12) by 1 increase
+
+Checking next happening (time 11)
+Deleting (drone_at droneb glories_tower)
+Deleting (battery droneb b4)
+Adding (drone_at droneb port_depot)
+Adding (battery droneb b2)
+Updating (total-cost) (13) by 2 increase
+
+Checking next happening (time 12)
+Deleting (needs_inspection poblenou)
+Adding (inspected poblenou)
+Adding (accessible besos_delta)
+Updating (total-cost) (15) by 1 increase
+
+Checking next happening (time 13)
+Deleting (supply_at kit1 port_depot)
+Deleting (cargo_empty droneb)
+Adding (carrying droneb kit1)
+Updating (total-cost) (16) by 1 increase
+
+Checking next happening (time 14)
+Deleting (drone_at droneb port_depot)
+Deleting (battery droneb b2)
+Adding (drone_at droneb barceloneta)
+Adding (battery droneb b1)
+Updating (total-cost) (17) by 1 increase
+
+Checking next happening (time 15)
+Deleting (drone_at dronea poblenou)
+Deleting (battery dronea b2)
+Adding (drone_at dronea besos_delta)
+Adding (battery dronea b1)
+Updating (total-cost) (18) by 1 increase
+
+Checking next happening (time 16)
+Deleting (needs_inspection besos_delta)
+Adding (inspected besos_delta)
+Updating (total-cost) (19) by 1 increase
+
+Checking next happening (time 17)
+Deleting (drone_at dronea besos_delta)
+Deleting (battery dronea b1)
+Adding (drone_at dronea forum_shelter)
+Adding (battery dronea b0)
+Updating (total-cost) (20) by 1 increase
+
+Checking next happening (time 18)
+Deleting (needs_inspection barceloneta)
+Adding (inspected barceloneta)
+Updating (total-cost) (21) by 1 increase
+
+Checking next happening (time 19)
+Deleting (drone_at droneb barceloneta)
+Deleting (battery droneb b1)
+Adding (drone_at droneb hospital_mar)
+Adding (battery droneb b0)
+Updating (total-cost) (22) by 1 increase
+
+Checking next happening (time 20)
+Deleting (carrying dronea comm1)
+Deleting (needs_supply forum_shelter comm1)
+Adding (cargo_empty dronea)
+Adding (delivered comm1 forum_shelter)
+Updating (total-cost) (23) by 1 increase
+
+Checking next happening (time 21)
+Deleting (needs_inspection hospital_mar)
+Adding (inspected hospital_mar)
+Updating (total-cost) (24) by 1 increase
+
+Checking next happening (time 22)
+Deleting (carrying droneb kit1)
+Deleting (needs_supply hospital_mar kit1)
+Adding (cargo_empty droneb)
+Adding (delivered kit1 hospital_mar)
+Updating (total-cost) (25) by 1 increase
+Plan executed successfully - checking goal
+Plan valid
+Final value: 26 
+
+Successful plans:
+Value: 26
+ plans/problem-medium_A_astar-hmax.plan 26 
+

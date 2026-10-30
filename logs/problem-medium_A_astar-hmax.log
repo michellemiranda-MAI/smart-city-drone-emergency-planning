@@ -1,0 +1,174 @@
+INFO     planner time limit: 300s
+INFO     planner memory limit: 4096 MB
+
+INFO     Running translator.
+INFO     translator stdin: None
+INFO     translator time limit: 299s
+INFO     translator memory limit: 4096 MB
+INFO     translator command line string: /usr/bin/python3 -m fast_downward.translate domain-A.pddl problem-medium.pddl --sas-file output.sas
+Parsing...
+Parsing: [0.000s CPU, 0.005s wall-clock]
+Normalizing task... [0.000s CPU, 0.000s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.000s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.000s CPU, 0.002s wall-clock]
+Preparing model... [0.000s CPU, 0.001s wall-clock]
+Generated 46 rules.
+Computing model... [0.010s CPU, 0.003s wall-clock]
+537 relevant atoms
+618 auxiliary atoms
+1155 final queue length
+1720 total queue pushes
+Completing instantiation... [0.000s CPU, 0.005s wall-clock]
+Instantiating: [0.010s CPU, 0.013s wall-clock]
+Computing fact groups...
+Finding invariants...
+26 initial candidates
+Finding invariants: [0.000s CPU, 0.001s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.000s CPU, 0.001s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.001s wall-clock]
+Choosing groups...
+13 uncovered facts
+Choosing groups: [0.000s CPU, 0.000s wall-clock]
+Building translation key... [0.000s CPU, 0.000s wall-clock]
+Computing fact groups: [0.000s CPU, 0.005s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Translator axioms removed by simplifying: 0
+Processing axioms: [0.000s CPU, 0.001s wall-clock]
+Translating task: [0.010s CPU, 0.005s wall-clock]
+12 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+0 axioms removed
+25 propositions removed
+Detecting unreachable propositions: [0.000s CPU, 0.003s wall-clock]
+Reordering and filtering variables...
+17 of 17 variables necessary.
+11 of 25 mutex groups necessary.
+316 of 316 operators necessary.
+0 of 0 axiom rules necessary.
+Reordering and filtering variables: [0.000s CPU, 0.001s wall-clock]
+Translator variables: 17
+Translator derived variables: 0
+Translator facts: 62
+Translator goal facts: 7
+Translator mutex groups: 11
+Translator total mutex groups size: 26
+Translator operators: 316
+Translator axioms: 0
+Translator task size: 1714
+Translator peak memory: 31108 KB
+Writing output... [0.000s CPU, 0.004s wall-clock]
+Done! [0.020s CPU, 0.041s wall-clock]
+b'Warning: :predicates specification not allowed here (cf. PDDL BNF)\n'
+translate exit code: 0
+
+INFO     Running search (release).
+INFO     search stdin: output.sas
+INFO     search time limit: 299s
+INFO     search memory limit: 4096 MB
+INFO     search command line string: /home/sonia/downward/builds/release/bin/downward --search 'astar(hmax())' --internal-plan-file plans/.tmp_problem-medium_A_astar-hmax < output.sas
+[t=0.001713s, 11340 KB] Search code revision: 487e33cd6
+[t=0.001828s, 11340 KB] reading input...
+[t=0.002991s, 11340 KB] done reading input!
+[t=0.003058s, 11736 KB] Simplifying 608 unary operators... done! [492 unary operators]
+[t=0.004165s, 11736 KB] time to simplify: 0.001107s
+[t=0.004235s, 11736 KB] Initializing HSP max heuristic...
+[t=0.004287s, 11736 KB] Building successor generator... done!
+[t=0.004442s, 11736 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.004502s, 11736 KB] time for successor generation creation: 0.000000s
+[t=0.004541s, 11736 KB] Variables: 17
+[t=0.004585s, 11736 KB] FactPairs: 62
+[t=0.004620s, 11736 KB] Bytes per state: 4
+[t=0.004655s, 11736 KB] Conducting best first search with reopening closed nodes, (real) bound = 2147483647
+[t=0.004693s, 11736 KB] New best heuristic value for hmax: 4
+[t=0.004758s, 11736 KB] g=0, 1 evaluated, 0 expanded
+[t=0.004791s, 11736 KB] f = 4, 1 evaluated, 0 expanded
+[t=0.004834s, 11868 KB] Initial heuristic value for hmax: 4
+[t=0.004895s, 11868 KB] pruning method: none
+[t=0.004942s, 11868 KB] f = 5, 11 evaluated, 1 expanded
+[t=0.005039s, 11868 KB] f = 6, 44 evaluated, 6 expanded
+[t=0.005232s, 11868 KB] f = 7, 143 evaluated, 24 expanded
+[t=0.005599s, 11868 KB] f = 8, 402 evaluated, 80 expanded
+[t=0.006488s, 11868 KB] f = 9, 1005 evaluated, 226 expanded
+[t=0.012412s, 11868 KB] f = 10, 2355 evaluated, 592 expanded
+[t=0.012803s, 11868 KB] New best heuristic value for hmax: 3
+[t=0.013808s, 11868 KB] g=7, 2672 evaluated, 702 expanded
+[t=0.019524s, 12044 KB] f = 11, 5130 evaluated, 1439 expanded
+[t=0.034972s, 12176 KB] f = 12, 9941 evaluated, 3105 expanded
+[t=0.058123s, 12572 KB] f = 13, 17475 evaluated, 6014 expanded
+[t=0.093099s, 12836 KB] f = 14, 28596 evaluated, 10749 expanded
+[t=0.147638s, 13492 KB] f = 15, 44591 evaluated, 18076 expanded
+[t=0.217305s, 14784 KB] f = 16, 67100 evaluated, 29061 expanded
+[t=0.311162s, 15340 KB] f = 17, 97227 evaluated, 44862 expanded
+[t=0.436362s, 17796 KB] f = 18, 135142 evaluated, 66299 expanded
+[t=0.582583s, 18384 KB] f = 19, 180048 evaluated, 93777 expanded
+[t=0.762867s, 23692 KB] f = 20, 230998 evaluated, 127465 expanded
+[t=0.766060s, 23692 KB] New best heuristic value for hmax: 2
+[t=0.767780s, 23692 KB] g=18, 232446 evaluated, 127880 expanded
+[t=0.958096s, 23692 KB] f = 21, 287064 evaluated, 167251 expanded
+[t=1.173695s, 24476 KB] f = 22, 347107 evaluated, 212342 expanded
+[t=1.397196s, 26092 KB] f = 23, 409571 evaluated, 261685 expanded
+[t=1.632295s, 35104 KB] f = 24, 471867 evaluated, 313606 expanded
+[t=1.635997s, 35104 KB] New best heuristic value for hmax: 1
+[t=1.636143s, 35104 KB] g=23, 471875 evaluated, 313609 expanded
+[t=1.855232s, 35104 KB] f = 25, 530805 evaluated, 366298 expanded
+[t=2.066864s, 35104 KB] f = 26, 585874 evaluated, 418427 expanded
+[t=2.069577s, 35104 KB] New best heuristic value for hmax: 0
+[t=2.069697s, 35104 KB] g=26, 585875 evaluated, 418428 expanded
+[t=2.069773s, 35104 KB] Solution found!
+[t=2.069828s, 35104 KB] Actual search time: 2.064886s
+fly droneb glories_tower port_depot b4 b2 b2 (2)
+pick-up-supply droneb water1 port_depot (1)
+fly droneb port_depot glories_tower b2 b2 b0 (2)
+recharge droneb glories_tower b0 b1 b6 (1)
+fly droneb glories_tower poblenou b6 b1 b5 (1)
+deliver-supply droneb water1 poblenou (1)
+fly droneb poblenou glories_tower b5 b1 b4 (1)
+pick-up-supply dronea comm1 port_depot (1)
+fly dronea port_depot glories_tower b5 b2 b3 (2)
+fly dronea glories_tower poblenou b3 b1 b2 (1)
+fly droneb glories_tower port_depot b4 b2 b2 (2)
+inspect dronea poblenou (1)
+pick-up-supply droneb kit1 port_depot (1)
+fly droneb port_depot barceloneta b2 b1 b1 (1)
+fly dronea poblenou besos_delta b2 b1 b1 (1)
+inspect dronea besos_delta (1)
+fly dronea besos_delta forum_shelter b1 b1 b0 (1)
+inspect droneb barceloneta (1)
+fly droneb barceloneta hospital_mar b1 b1 b0 (1)
+deliver-supply dronea comm1 forum_shelter (1)
+inspect droneb hospital_mar (1)
+deliver-supply droneb kit1 hospital_mar (1)
+[t=2.069894s, 35104 KB] Plan length: 22 step(s).
+[t=2.069894s, 35104 KB] Plan cost: 26
+[t=2.069894s, 35104 KB] Expanded 418429 state(s).
+[t=2.069894s, 35104 KB] Reopened 0 state(s).
+[t=2.069894s, 35104 KB] Evaluated 585875 state(s).
+[t=2.069894s, 35104 KB] Evaluations: 585875
+[t=2.069894s, 35104 KB] Generated 2514819 state(s).
+[t=2.069894s, 35104 KB] Dead ends: 69948 state(s).
+[t=2.069894s, 35104 KB] Expanded until last jump: 418427 state(s).
+[t=2.069894s, 35104 KB] Reopened until last jump: 0 state(s).
+[t=2.069894s, 35104 KB] Evaluated until last jump: 585874 state(s).
+[t=2.069894s, 35104 KB] Generated until last jump: 2514818 state(s).
+[t=2.069894s, 35104 KB] Number of registered states: 585875
+[t=2.069894s, 35104 KB] Int hash set load factor: 585875/1048576 = 0.558734
+[t=2.069894s, 35104 KB] Int hash set resizes: 20
+[t=2.069894s, 35104 KB] Search time: 2.065239s
+[t=2.069894s, 35104 KB] Total time: 2.069894s
+Solution found.
+Peak memory: 35104 KB
+Remove intermediate file output.sas
+search exit code: 0
+
+INFO     Planner time: 2.15s

@@ -1,0 +1,195 @@
+INFO     planner time limit: 300s
+INFO     planner memory limit: 4096 MB
+
+INFO     Running translator.
+INFO     translator stdin: None
+INFO     translator time limit: 299s
+INFO     translator memory limit: 4096 MB
+INFO     translator command line string: /usr/bin/python3 -m fast_downward.translate domain-B.pddl problem-medium.pddl --sas-file output.sas
+Parsing...
+Parsing: [0.000s CPU, 0.006s wall-clock]
+Normalizing task... [0.000s CPU, 0.000s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.000s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.000s CPU, 0.002s wall-clock]
+Preparing model... [0.000s CPU, 0.001s wall-clock]
+Generated 44 rules.
+Computing model... [0.000s CPU, 0.003s wall-clock]
+537 relevant atoms
+587 auxiliary atoms
+1124 final queue length
+1689 total queue pushes
+Completing instantiation... [0.010s CPU, 0.005s wall-clock]
+Instantiating: [0.010s CPU, 0.013s wall-clock]
+Computing fact groups...
+Finding invariants...
+26 initial candidates
+Finding invariants: [0.000s CPU, 0.001s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.000s CPU, 0.000s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.000s wall-clock]
+Choosing groups...
+13 uncovered facts
+Choosing groups: [0.000s CPU, 0.000s wall-clock]
+Building translation key... [0.000s CPU, 0.000s wall-clock]
+Computing fact groups: [0.000s CPU, 0.005s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Translator axioms removed by simplifying: 0
+Processing axioms: [0.000s CPU, 0.001s wall-clock]
+Translating task: [0.010s CPU, 0.005s wall-clock]
+12 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+0 axioms removed
+25 propositions removed
+Detecting unreachable propositions: [0.000s CPU, 0.003s wall-clock]
+Reordering and filtering variables...
+17 of 17 variables necessary.
+11 of 25 mutex groups necessary.
+316 of 316 operators necessary.
+0 of 0 axiom rules necessary.
+Reordering and filtering variables: [0.000s CPU, 0.001s wall-clock]
+Translator variables: 17
+Translator derived variables: 0
+Translator facts: 62
+Translator goal facts: 7
+Translator mutex groups: 11
+Translator total mutex groups size: 26
+Translator operators: 316
+Translator axioms: 0
+Translator task size: 1714
+Translator peak memory: 31108 KB
+Writing output... [0.000s CPU, 0.003s wall-clock]
+Done! [0.020s CPU, 0.041s wall-clock]
+b'Warning: :predicates specification not allowed here (cf. PDDL BNF)\n'
+translate exit code: 0
+
+INFO     Running search (release).
+INFO     search stdin: output.sas
+INFO     search time limit: 299s
+INFO     search memory limit: 4096 MB
+INFO     search command line string: /home/sonia/downward/builds/release/bin/downward --search 'astar(lmcut())' --internal-plan-file plans/.tmp_problem-medium_B_astar-lmcut < output.sas
+[t=0.000932s, 11340 KB] Search code revision: 487e33cd6
+[t=0.001031s, 11340 KB] reading input...
+[t=0.002126s, 11340 KB] done reading input!
+[t=0.002294s, 11872 KB] Initializing landmark cut heuristic...
+[t=0.003110s, 11872 KB] Building successor generator... done!
+[t=0.003277s, 11872 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.003332s, 11872 KB] time for successor generation creation: 0.000000s
+[t=0.003368s, 11872 KB] Variables: 17
+[t=0.003406s, 11872 KB] FactPairs: 62
+[t=0.003449s, 11872 KB] Bytes per state: 4
+[t=0.003490s, 11872 KB] Conducting best first search with reopening closed nodes, (real) bound = 2147483647
+[t=0.003529s, 11872 KB] New best heuristic value for lmcut: 15
+[t=0.003646s, 11872 KB] g=0, 1 evaluated, 0 expanded
+[t=0.003684s, 11872 KB] f = 15, 1 evaluated, 0 expanded
+[t=0.003727s, 11872 KB] Initial heuristic value for lmcut: 15
+[t=0.003770s, 11872 KB] pruning method: none
+[t=0.003801s, 11872 KB] New best heuristic value for lmcut: 14
+[t=0.003919s, 11872 KB] g=1, 2 evaluated, 1 expanded
+[t=0.003961s, 11872 KB] New best heuristic value for lmcut: 13
+[t=0.004614s, 11872 KB] g=2, 15 evaluated, 2 expanded
+[t=0.004651s, 11872 KB] New best heuristic value for lmcut: 12
+[t=0.005647s, 11872 KB] g=3, 37 evaluated, 5 expanded
+[t=0.006239s, 11872 KB] f = 16, 125 evaluated, 17 expanded
+[t=0.009878s, 11872 KB] New best heuristic value for lmcut: 11
+[t=0.010047s, 11872 KB] g=5, 139 evaluated, 19 expanded
+[t=0.010096s, 11872 KB] New best heuristic value for lmcut: 10
+[t=0.012389s, 11872 KB] g=5, 202 evaluated, 30 expanded
+[t=0.020859s, 11872 KB] f = 17, 425 evaluated, 66 expanded
+[t=0.021461s, 11872 KB] New best heuristic value for lmcut: 9
+[t=0.023642s, 11872 KB] g=7, 495 evaluated, 79 expanded
+[t=0.063341s, 11872 KB] f = 18, 1600 evaluated, 302 expanded
+[t=0.066256s, 11872 KB] New best heuristic value for lmcut: 8
+[t=0.066673s, 11872 KB] g=10, 1617 evaluated, 307 expanded
+[t=0.176371s, 12000 KB] f = 19, 4605 evaluated, 995 expanded
+[t=0.218397s, 12136 KB] New best heuristic value for lmcut: 7
+[t=0.220858s, 12136 KB] g=12, 6141 evaluated, 1400 expanded
+[t=0.405802s, 12260 KB] f = 20, 11483 evaluated, 2967 expanded
+[t=0.409210s, 12260 KB] New best heuristic value for lmcut: 6
+[t=0.409918s, 12260 KB] g=14, 11491 evaluated, 2970 expanded
+[t=0.847931s, 12788 KB] f = 21, 25151 evaluated, 7563 expanded
+[t=1.531007s, 13572 KB] f = 22, 47869 evaluated, 16921 expanded
+[t=2.355256s, 14884 KB] f = 23, 76902 evaluated, 31759 expanded
+[t=2.355988s, 14884 KB] New best heuristic value for lmcut: 5
+[t=2.356086s, 14884 KB] g=18, 76905 evaluated, 31760 expanded
+[t=3.351058s, 15684 KB] f = 24, 112077 evaluated, 52544 expanded
+[t=4.541127s, 17868 KB] f = 25, 153551 evaluated, 78824 expanded
+[t=5.878543s, 18860 KB] f = 26, 201151 evaluated, 110841 expanded
+[t=5.881874s, 18996 KB] New best heuristic value for lmcut: 4
+[t=5.882804s, 18996 KB] g=22, 201264 evaluated, 110907 expanded
+[t=7.465649s, 23768 KB] f = 27, 255672 evaluated, 148480 expanded
+[t=9.156388s, 23768 KB] f = 28, 313582 evaluated, 191176 expanded
+[t=10.837932s, 25076 KB] f = 29, 370681 evaluated, 238208 expanded
+[t=12.461889s, 26296 KB] f = 30, 425830 evaluated, 286861 expanded
+[t=12.462977s, 26296 KB] New best heuristic value for lmcut: 3
+[t=12.463332s, 26296 KB] g=27, 425833 evaluated, 286864 expanded
+[t=14.065819s, 34900 KB] f = 31, 479085 evaluated, 336157 expanded
+[t=14.068430s, 34900 KB] New best heuristic value for lmcut: 2
+[t=14.068644s, 34900 KB] g=29, 479095 evaluated, 336163 expanded
+[t=14.068725s, 34900 KB] New best heuristic value for lmcut: 1
+[t=14.068841s, 34900 KB] g=30, 479098 evaluated, 336164 expanded
+[t=14.068911s, 34900 KB] New best heuristic value for lmcut: 0
+[t=14.068987s, 34900 KB] g=31, 479100 evaluated, 336165 expanded
+[t=14.069026s, 34900 KB] Solution found!
+[t=14.069068s, 34900 KB] Actual search time: 14.065267s
+pick-up-supply dronea comm1 port_depot (1)
+fly dronea port_depot barceloneta b5 b1 b4 (1)
+inspect dronea barceloneta (1)
+fly dronea barceloneta hospital_mar b4 b1 b3 (1)
+inspect dronea hospital_mar (1)
+fly dronea hospital_mar poblenou b3 b1 b2 (1)
+inspect dronea poblenou (1)
+fly dronea poblenou besos_delta b2 b1 b1 (1)
+inspect dronea besos_delta (1)
+fly dronea besos_delta forum_shelter b1 b1 b0 (1)
+deliver-supply dronea comm1 forum_shelter (1)
+recharge droneb glories_tower b4 b5 (1)
+recharge droneb glories_tower b5 b6 (1)
+fly droneb glories_tower port_depot b6 b2 b4 (2)
+pick-up-supply droneb water1 port_depot (1)
+fly droneb port_depot glories_tower b4 b2 b2 (2)
+recharge droneb glories_tower b2 b3 (1)
+recharge droneb glories_tower b3 b4 (1)
+recharge droneb glories_tower b4 b5 (1)
+recharge droneb glories_tower b5 b6 (1)
+fly droneb glories_tower poblenou b6 b1 b5 (1)
+deliver-supply droneb water1 poblenou (1)
+fly droneb poblenou hospital_mar b5 b1 b4 (1)
+fly droneb hospital_mar barceloneta b4 b1 b3 (1)
+fly droneb barceloneta port_depot b3 b1 b2 (1)
+pick-up-supply droneb kit1 port_depot (1)
+fly droneb port_depot barceloneta b2 b1 b1 (1)
+fly droneb barceloneta hospital_mar b1 b1 b0 (1)
+deliver-supply droneb kit1 hospital_mar (1)
+[t=14.069110s, 34900 KB] Plan length: 29 step(s).
+[t=14.069110s, 34900 KB] Plan cost: 31
+[t=14.069110s, 34900 KB] Expanded 336166 state(s).
+[t=14.069110s, 34900 KB] Reopened 0 state(s).
+[t=14.069110s, 34900 KB] Evaluated 479100 state(s).
+[t=14.069110s, 34900 KB] Evaluations: 479100
+[t=14.069110s, 34900 KB] Generated 1939797 state(s).
+[t=14.069110s, 34900 KB] Dead ends: 65733 state(s).
+[t=14.069110s, 34900 KB] Expanded until last jump: 336157 state(s).
+[t=14.069110s, 34900 KB] Reopened until last jump: 0 state(s).
+[t=14.069110s, 34900 KB] Evaluated until last jump: 479085 state(s).
+[t=14.069110s, 34900 KB] Generated until last jump: 1939774 state(s).
+[t=14.069110s, 34900 KB] Number of registered states: 479100
+[t=14.069110s, 34900 KB] Int hash set load factor: 479100/1048576 = 0.456905
+[t=14.069110s, 34900 KB] Int hash set resizes: 20
+[t=14.069110s, 34900 KB] Search time: 14.065621s
+[t=14.069110s, 34900 KB] Total time: 14.069110s
+Solution found.
+Peak memory: 34900 KB
+Remove intermediate file output.sas
+search exit code: 0
+
+INFO     Planner time: 14.17s
