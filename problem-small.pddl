@@ -23,9 +23,12 @@
 ;;   hospital_mar(3)->ciutadella(4)), exceeding the 3 remaining levels.
 ;;   No recharge-free solution exists. One stop at montjuic_pad is unavoidable.
 ;;
-;; Optimal plan cost:
+;; Optimal plan cost: 9 in both models
+;;   (4 flights + 2 inspections + pick-up + delivery + 1 recharge)
 ;;   Model A (instant full recharge): 9
-;;   Model B (incremental +1/action):  10 (needs 2 recharge actions from b2->b4)
+;;   Model B (incremental +1/action):  9 (one recharge is enough: the drone
+;;     only lacks 1 level, e.g. aerodrome->barceloneta->montjuic_pad leaves b1
+;;     with 2 flights to go, and b1 -> b2 covers them)
 ;; ============================================================================
 
 (define (problem barcelona-flood-small)
