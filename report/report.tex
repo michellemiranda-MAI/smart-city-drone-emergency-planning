@@ -3,12 +3,20 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
-\usepackage[margin=2.5cm]{geometry}
+\usepackage[margin=2cm]{geometry}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{xltabular}
 \usepackage{float}
+% Compact spacing: lists, headings, floats and captions
+\usepackage{enumitem}\setlist{itemsep=1pt,topsep=3pt,parsep=0pt}
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{10pt}{5pt}
+\titlespacing*{\subsection}{0pt}{8pt}{4pt}
+\titlespacing*{\paragraph}{0pt}{4pt}{0.6em}
+\setlength{\textfloatsep}{8pt}\setlength{\floatsep}{6pt}\setlength{\intextsep}{6pt}
+\setlength{\abovecaptionskip}{4pt}\setlength{\belowcaptionskip}{0pt}
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{multicol}
@@ -906,6 +914,7 @@ Section~\ref{sec:literature}.
     In \emph{Proc.\ ICAPS}, pages 181--189, 2012.
 \end{thebibliography}
 
+\clearpage
 \appendix
 \section{Appendix}
 \label{app:pddl}
