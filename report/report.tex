@@ -746,20 +746,20 @@ them separately.
   \item \textbf{Heuristic strength.} Wherever blind, $h^{max}$ and LM-cut all
     finish, they return the same optimal cost and expand fewer states in that
     order (single drone, Model A: 21,639 $\to$ 13,624 $\to$ 4,456). This
-    reproduces the dominance idea of Lecture~2 on our own domain. More
-    informed is not always faster, though: on the medium instance the cheaper
+    is what dominance predicts: if an admissible heuristic is never lower than
+    another one in any state, A$^*$ with it expands at most the same states
+    (up to ties), and here LM-cut $\geq h^{max} \geq$ blind. More informed is not always faster, though: on the medium instance the cheaper
     heuristics finish first.
   \item \textbf{Battery and the delete relaxation.} The gain from $h^{max}$ to
     LM-cut is about 3 times in Model A and only about 1.6 times in Model B, on
     both the medium (3.4 vs 1.6) and the single-drone instance (3.1 vs 1.6).
     This supports our explanation that relaxed heuristics do not count
-    recharges. It is evidence from two instances, not a proof.
+    recharges, even tough this are only two instances.
   \item \textbf{Cost-aware greedy search.} Over the 10 instance and model
-    pairs (including the clustered variant), \p{gbfs-ff} finds the cheaper
-    plan in 6, LAMA-first in 3 (small B, medium B, single-drone B), and one
+    pairs, \p{gbfs-ff} finds the cheaper plan in 6, LAMA-first in 3, and one
     is a tie. On the large variants, where the edge costs vary most,
     \p{gbfs-ff} wins every case except single-drone Model B. This is in line
-    with LAMA-first ignoring action costs; when many recharges are needed,
+    with LAMA-first ignoring action costs, when many recharges are needed,
     LAMA's landmarks seem to compensate. Both finish in under 0.4\,s, and
     both are far from optimal: fast planners pay with plan quality, optimal
     planners pay with time.
@@ -767,9 +767,16 @@ them separately.
     most 588 actions and 103 facts, the same for both models. All the
     difficulty is in the search: plan depth (recharge model) and the number
     of drones.
-  \item \textbf{Measurement.} Each configuration was run once, so small
-    runtime differences (below about 0.1\,s) are not meaningful. Expanded
-    states are deterministic and are the better measure of effort.
+  \item \textbf{Drones, not map size.} LM-cut in Model A expands 16 states
+    on the small instance (1 drone), 123k on the medium (2 drones) and 115k on
+    the large (3 drones). On the same large map, one drone needs only 4.5k and
+    three clustered drones 420k. The number of drones drives the difficulty,
+    as the exponent in Section~\ref{sec:searchspace} predicts.
+  \item \textbf{When the recharge model matters.} The optimal cost of Model B
+    exceeds Model A by 0 (small), 1 (large, 3 drones), 5 (medium) and 12
+    (single drone): the gap depends on how many battery levels the drones
+    are missing, not on the size of the instance. Spreading the drones close
+    to chargers almost removes the price of the more faithful model.
   \item \textbf{Unsolved runs.} Nine runs did not finish
     (Table~\ref{tab:unsolved}). None of them means an instance is
     unsolvable: every variant has a valid plan in both models from at least
@@ -817,7 +824,7 @@ fluents, so we compiled the same idea into level objects and a
 \p{battery_after} table with one row per valid (level, cost) pair, which a
 numeric model gets for free. Their second domain adds a \p{recharge} action
 that charges ``to full capacity or up to a chosen level'', the same choice
-we split into Model A (full) and Model B (one level per action), and close to
+we split into Model A  and Model B , and close to
 the variable recharge we propose in Section~\ref{sec:limitations}. They also
 use durative actions with the anytime planner OPTIC, which supports both our
 anytime \p{--alias lama} runs on the large instance and our point that only
@@ -846,44 +853,41 @@ recharge, so our instances are only tight between chargers.
 \begin{itemize}
   \item \textbf{No time or concurrency.} Plans are sequential and the metric
     is the total cost, so the model cannot tell a mission where three drones
-    fly in parallel from one where they take turns. This is why the optimal
-    large plan gives \p{droneC} only two actions. Durative actions (PDDL~2.1)
-    with a makespan metric, solved by a temporal planner, would reward
-    sharing the work, which matters in an emergency.
+    fly in parallel from one where they take turns, which is why \p{droneC}
+    gets only two actions. Durative actions (PDDL~2.1) with a makespan metric
+    would reward sharing the work, which matters in an emergency.
   \item \textbf{Simplified energy.} Flight cost depends only on the edge, not
-    on the payload, the wind or the drone. The battery is discretised into a
-    few levels, so small differences in consumption are rounded. A numeric
-    planner (Section~\ref{sec:literature}) could use exact values and
-    payload-dependent consumption.
+    on payload, wind or drone, and the few battery levels round consumption.
+    A numeric planner (Section~\ref{sec:literature}) could use exact,
+    payload-dependent values.
   \item \textbf{Recharge cost and chargers.} In both models a recharge action
     costs 1, which in Model A undervalues a full charge. Chargers have
     unlimited capacity, so several drones can charge at the same place at
-    once. A third model could let the drone choose how many levels to charge
-    in one action, at a cost proportional to the levels, which combines the
-    realism of B with the short plans of A.
+    once. A third model could charge several levels in one action at a cost
+    proportional to the levels, combining the realism of B with the short
+    plans of A.
   \item \textbf{Capacity and supplies.} A drone carries one supply, and each
-    supply object has one fixed destination. Larger payloads would need a
-    capacity counter, encoded symbolically like the battery.
+    supply has one fixed destination. Larger payloads would need a symbolic
+    capacity counter, like the battery.
   \item \textbf{Full knowledge and no failures.} Every lock, cost and need is
     known in advance, and actions always succeed. Real emergencies involve
     unknown blockages, new requests and failing drones. Online replanning, or
-    planning under uncertainty (contingent or probabilistic planning), would
-    handle them.
+    planning under uncertainty, would handle them.
   \item \textbf{Search issues found in the experiments.} Identical drones
     create symmetric states (clustered variant), and relaxed heuristics
     ignore battery use. Symmetry reduction, or heuristics that reason about
     resources, could make the larger instances easier.
   \item \textbf{Experiment scope.} Each run was performed once, and the
     claims about start positions and battery-blind heuristics rest on a few
-    instances. Repeated runs and a family of generated maps (more drones,
-    longer distances, more battery levels) would make the conclusions
+    instances. Repeated runs and a family of generated maps would make the conclusions
     stronger.
 \end{itemize}
 
 % ===========================================================================
 \section*{Use of AI Tools}
-% TODO (Sonia): write what AI assistants were used for (statement: "state in the report what you used them for").
-\textbf{TODO}
+We used AI assistants to check the PDDL syntax, correct the English of the
+report, check the report against the requirements, build the plots and
+\LaTeX{} tables, and asistance in the finding and summarizatio of the main ideas of the papers for Section~\ref{sec:literature}.
 
 \begin{thebibliography}{9}
   \bibitem{helmert2006fd} M.~Helmert. The Fast Downward planning system.
