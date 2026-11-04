@@ -291,38 +291,17 @@ Table~\ref{tab:actions} summarises every action and its meaning.
   \label{tab:actions}
 \end{table}
 
-The \p{fly} action shows how
-the battery encoding works: each precondition fixes one unknown parameter.
-\p{(battery ?d ?b)} takes the current level from the state, \p{flight_cost}
-takes the cost from the map, and \p{battery_after} takes the remaining level
-from the table. Nobody passes parameter values, the planner keeps only the
-combinations for which every precondition is a true fact.
-
-\begin{lstlisting}
-(:action fly
-  :parameters (?drone - drone ?from_location ?to_location - location
-               ?battery_before ?cost ?battery_left - level)
-  :precondition (and (drone_at ?drone ?from_location)
-    (connected ?from_location ?to_location)
-    (accessible ?to_location)                           ; not locked
-    (battery ?drone ?battery_before)
-    (flight_cost ?from_location ?to_location ?cost)
-    (battery_after ?battery_before ?cost ?battery_left)) ; enough battery
-  :effect (and (not (drone_at ?drone ?from_location)) (drone_at ?drone ?to_location)
-    (not (battery ?drone ?battery_before)) (battery ?drone ?battery_left)
-    (increase (total-cost) (distance ?from_location ?to_location))))
-\end{lstlisting}
-
-Unlocking uses a conditional effect, in \p{inspect} and the same way in
-\p{deliver-supply}: ``for every location $y$, if this event opens $y$, add
-\p{(accessible y)}''. \p{?locked_location} exists only inside the
-\p{forall}, it is not an action parameter. If no unlock fact matches, nothing
-extra happens.
-\begin{lstlisting}
-(forall (?locked_location - location)
-  (when (unlocked_by_inspection ?location ?locked_location)
-        (accessible ?locked_location)))
-\end{lstlisting}
+The full commented code of every action is in Appendix~\ref{app:pddl}. Two
+points are worth noting. In \p{fly}, each precondition fixes one unknown
+parameter: \p{battery} gives the current level from the state,
+\p{flight_cost} the cost from the map, and \p{battery_after} the remaining
+level from the table. Nobody passes parameter values: the planner keeps only
+the combinations for which every precondition is a true fact. Unlocking, in
+\p{inspect} and \p{deliver-supply}, is a conditional effect,
+\p{(forall (?y - location) (when (unlocked_by_inspection ?l ?y) (accessible ?y)))}:
+``for every location $y$, if this event opens $y$, make it accessible''. Here
+\p{?y} exists only inside the \p{forall}. It is not an action parameter, and
+if no unlock fact matches, nothing extra happens.
 
 
 % ===========================================================================
@@ -343,7 +322,7 @@ share the same problem files. \p{max_level} is simply ignored by Model B. Both
 Table~\ref{tab:grounding} is identical for the two models.
 
 Table~\ref{tab:models} summarises the evidence from the optimal configuration
-(A$^*$ with LM-cut), the full results are in Section~\ref{sec:results}.
+(A$^*$ with LM-cut), the full results are in Section~\ref{sec:results}. We analize the differences based on 4 criteria:
 
 \begin{table}[h]
   \centering\small
@@ -369,7 +348,9 @@ Table~\ref{tab:models} summarises the evidence from the optimal configuration
     time roughly proportional to the energy restored. It also allows partial charging, so a drone can take just
     enough energy for the rest of its route. \textbf{Planning complexity.} The grounded tasks have the same size,
     so the difference comes from plan depth. In B the optimal plans are longer
-    (up to 12 extra actions), and LM-cut expands about 2--3 times more states. We think part of the reason is the delete relaxation behind the heuristics: the starting battery fact is never deleted there. The more recharge actions a plan needs, the more the heuristic underestimates, and B needs many more. \textbf{Plan quality and runtime.} The optimal costs differ exactly by
+    (up to 12 extra actions), and LM-cut expands about 2--3 times more states. We think part of the reason is the delete relaxation behind the heuristics: the starting battery fact is never deleted there. The more recharge actions a plan needs, the more the heuristic underestimates, and B needs many more. 
+    
+    \textbf{Plan quality and runtime.} The optimal costs differ exactly by
     the extra recharge actions. In the medium instance and the single-drone
     large instance the flights are the same in both models (13 and 17), and B
     adds 5 and 12 recharges. When only one level is missing (small instance) the two
@@ -389,18 +370,15 @@ Table~\ref{tab:models} summarises the evidence from the optimal configuration
 Our master is taught on campuses in Barcelona and Tarragona, so we placed the
 instances in the two cities we travel between. The small and medium instances
 are flood emergencies in Barcelona, and the large one is a chemical emergency
-in Tarragona. Each diagram shows the location graph with edge costs, depots, chargers, mission sites, drone starts with their battery level, the initial supply positions, and which event unlocks  which location. Before running the experiments we checked every file against
-Section~5 of the statement: the counts, \p{connected}, \p{flight_cost} and
-\p{distance} symmetric and equal, complete \p{battery_after} tables, every
-supply starting at a depot, and every drone start accessible.
+in Tarragona. We checked every problem file against Section~5 of the
+statement before running the experiments.
 
 \subsection{Small instance: Barcelona flood}
 A storm floods the Barceloneta district and cuts off Parc de la Ciutadella,
 used as an evacuation centre. One drone starts full (\p{b4}) at the El Prat
 aerodrome, the depot that holds \p{kit1}
-(Figure~\ref{fig:small}). The five locations form a line, all with cost 1:
-\p{hospital_viladecans} -- \p{aerodrome} -- \p{barceloneta} --
-\p{montjuic_pad} (charger) -- \p{ciutadella}. The goals are to deliver
+(Figure~\ref{fig:small}). The five locations form a line, and every edge
+costs 1. The goals are to deliver
 \p{kit1} to Hospital de Viladecans, across the Llobregat, and to inspect
 Barceloneta and Ciutadella. Ciutadella is locked until Barceloneta has been
 inspected.
@@ -425,11 +403,9 @@ the map confirmed that 5 is the minimum. The optimal cost is
 Flooding hits the coast and the Besòs basin (Figure~\ref{fig:medium}). Two
 drones start at \p{port_depot} (\p{b5}) and at the \p{glories_tower} charger
 (\p{b4}). There are 8 locations: one depot holding the three supplies, two
-chargers (\p{montjuic_pad}, \p{glories_tower}) and five mission sites. The
-capacity is \p{b6} and edges cost 1 or 2. The goals are 4 inspections
-(Barceloneta, Hospital del Mar, Poblenou, Besòs delta) and 3 deliveries of
-three different kinds: \p{kit1} to the hospital, \p{water1} to Poblenou and
-\p{comm1} to the Fòrum shelter.
+chargers and five mission sites. The capacity is \p{b6} and edges cost 1 or
+2. The goals are 4 inspections and 3 deliveries of three different kinds
+(medical kit, water, communication device).
 
 \begin{figure}[h]
   \centering
@@ -450,10 +426,9 @@ applicable, and every route to the site is blocked the same way. Inspecting \p{p
 After a leak at the petrochemical park, responders need a radio relay at
 Bonavista before drones may enter the park. The old town (Part Alta) stays
 closed until the Roman amphitheatre below it has been checked for damage
-(Figure~\ref{fig:large}). There are 12 locations: two depots (\p{port} with
-\p{comm1} and \p{water1}; \p{estacio} with \p{kit1} and \p{kit2}), three
-chargers (\p{campus}, \p{rambla}, and \p{bonavista}, which is also a delivery
-site), and mission sites on both banks of the Francolí. The capacity is
+(Figure~\ref{fig:large}). There are 12 locations: two depots, three chargers
+(one of them, \p{bonavista}, is also a delivery site) and mission sites on
+both banks of the Francolí. The capacity is
 \p{b6} and edges cost 1--3; the longest edge crosses the river. There are 8
 goals: 4 deliveries of three kinds and 4 inspections.
 
@@ -479,10 +454,7 @@ bank), \p{droneB} at \p{rambla} (city centre) and \p{droneC} at \p{campus}
 (north). Each one can serve its own group of sites.
 \p{problem-large-1drone.pddl} keeps the same map, goals, supplies and locks
 with \p{droneA} only, which must cross the whole city and recharge more often.
-As an extra experiment, \p{problem-large-clustered.pddl} starts all three
-drones at the port. This separates the gain from having more drones from the
-gain from starting them in different places. Section~\ref{sec:results}
-compares the costs.
+Section~\ref{sec:results} compares the costs.
 
 \section{Planner Setup}
 \label{sec:setup}
@@ -529,25 +501,17 @@ validates each plan with \p{Validate -v} on the same domain and problem files,
 and writes one row per run to \p{results/results.csv}. Plans, VAL outputs and
 Fast Downward logs are kept in \p{plans/}, \p{validation/} and \p{logs/}. For
 \p{lama}, which writes a cheaper plan file each time it improves, the last
-plan is validated and reported. The columns are measured as follows:
-\begin{itemize}
-  \item \emph{Runtime} is Fast Downward's ``Planner time'' (translation plus
-    search).
-  \item \emph{Expanded states} is the last ``Expanded'' value in the log.
-  \item \emph{Plan cost} is VAL's final value of \p{total-cost}.
-  \item An unsolved run is marked as a time or memory failure from the
-    planner's own message.
-\end{itemize}
-\p{lama} keeps searching after each plan. It stops early only when its last
-weighted A$^*$ iteration ($w = 1$) ends without finding a cheaper plan (the
-single-drone variant, under 1\,s). Otherwise it runs until the time limit, so
+plan is validated and reported. \emph{Runtime} is Fast Downward's ``Planner
+time'' (translation plus search), \emph{expanded states} is the last
+``Expanded'' value in the log, and \emph{plan cost} is VAL's final value of
+\p{total-cost}. An unsolved run is marked as a time or memory failure from the
+planner's own message. \p{lama} keeps searching after each plan. It stops early only when its last
+weighted A$^*$ iteration ($w = 1$) ends without finding a cheaper plan. Otherwise it runs until the time limit, so
 its runtime does not measure how long the best plan took. Its expanded states
 count only the last iteration.
-All 66 runs (including the extra instances) were run in one batch on an idle
+All 66 runs were run in one batch on an idle
 machine, so the runtimes are comparable. 57 runs found a plan and VAL accepted
-all 57; the other 9 hit a limit (8 time, 1 memory). As a sanity check, we also
-ran the example of Figure~1 in the statement (\p{test-problem.pddl}). Every
-configuration returns cost 10 in both models, as the statement says.
+all 57, the other 9 hit a limit (8 time, 1 memory).
 
 \section{Results and Analysis}
 \label{sec:results}
