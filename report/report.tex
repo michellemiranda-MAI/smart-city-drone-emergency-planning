@@ -315,7 +315,7 @@ The two models differ only in \p{recharge}. In Model A (full recharge) one actio
     \p{max_level}, whatever the current level, at cost 1. In Model B (partial recharge) each action raises the battery
     by one level through \p{next_level}, at cost 1.
 
-An optimal planner never keeps an action that only adds cost like recharging at full batery, but it would still be grounded and tried. Model B blocks it for free, because no \p{next_level} row starts at the maximum. In Model A we first used an
+An optimal planner never keeps an action that only adds cost like recharging at full battery, but it would still be grounded and tried. Model B blocks it for free, because no \p{next_level} row starts at the maximum. In Model A we first used an
 extra static predicate \p{isnotmax}. We then noticed that the starting levels
 of the \p{next_level} rows are exactly that list, so Model A also requires
 \p{(next_level ?current ?higher)}, only as a ``not full'' check. This removes one predicate and lets both domains
@@ -324,7 +324,7 @@ share the same problem files. \p{max_level} is simply ignored by Model B. Both
 Table~\ref{tab:grounding} is identical for the two models.
 
 Table~\ref{tab:models} summarises the evidence from the optimal configuration
-(A$^*$ with LM-cut), the full results are in Section~\ref{sec:results}. We analize the differences based on 4 criteria:
+(A$^*$ with LM-cut), the full results are in Section~\ref{sec:results}. We analyse the differences based on 4 criteria:
 
 \begin{table}[h]
   \centering\small
@@ -511,9 +511,9 @@ planner's own message. \p{lama} keeps searching after each plan. It stops early 
 weighted A$^*$ iteration ($w = 1$) ends without finding a cheaper plan. Otherwise it runs until the time limit, so
 its runtime does not measure how long the best plan took. Its expanded states
 count only the last iteration.
-All 66 runs were run in one batch on an idle
-machine, so the runtimes are comparable. 57 runs found a plan and VAL accepted
-all 57, the other 9 hit a limit (8 time, 1 memory).
+All 56 runs were run in one batch on an idle
+machine, so the runtimes are comparable. 47 runs found a plan and VAL accepted
+all 47, the other 9 hit a limit (8 time, 1 memory).
 
 \section{Results and Analysis}
 \label{sec:results}
@@ -647,8 +647,7 @@ results are noisy: LAMA-first is better in B (39) than in A (52), and
 \p{gbfs-ff} the other way round (33 vs 45). With costs ignored or poorly
 estimated, small changes in the model change which plateau the greedy search
 falls into. The modelling lesson is that a more faithful recharge does not
-make the task bigger, but it does make the plans deeper and the heuristic
-weaker.
+make the task bigger, but makes the plans deeper and the heuristic weaker.
 
 \subsection{Large instance}
 This is where the planners struggle. A$^*$ with LM-cut is the only optimal
@@ -657,8 +656,9 @@ they are still far from the optimum when they stop. Blind search hits the memory
 drones every level of the search multiplies the frontier, which is the exponential growth of uninformed search. The difficulty comes mostly from the number of drones, not from the size of the map. The single-drone variant
 has the same 12 locations and goals but only 196 grounded actions instead of
 588, and LM-cut solves it in 0.4\,s, even though its optimal plan is longer.
-This matches the upper bound we aproximated on Section~\ref{sec:searchspace}, where the
-number of drones is in the exponent.
+This matches the upper bound of Section~\ref{sec:searchspace}: each drone
+brings 12 positions and 7 battery levels (\p{battery_after} rows for costs
+1--3), with drones in the exponent.
 
 LAMA-first's plans cost almost twice the optimum. It ignores action costs (\p{cost_type=one}), so a cost-3
 river crossing looks as cheap as a cost-1 hop. \p{gbfs-ff} uses the real
@@ -667,8 +667,7 @@ optimal cost in both models (Table~\ref{tab:lama}) much faster than A$^*$ but wi
 
 With three drones Model B costs only one unit more than A because every drone can work close to a charger. 
 Its search is still twice as large (243k vs 115k expansions). The workload in the optimal Model A plan is uneven: \p{droneB} does 15 actions,
-\p{droneA} 9 and \p{droneC} only 2. The metric minimises total cost, not mission time, so nothing rewards sharing the work.
-(Section~\ref{sec:limitations}).
+\p{droneA} 9 and \p{droneC} only 2. The metric minimises total cost, not mission time, so nothing rewards sharing the work (Section~\ref{sec:limitations}).
 
 \begin{table}[H]
   \centering\small
@@ -684,7 +683,7 @@ Its search is still twice as large (243k vs 115k expansions). The workload in th
     clustered          & B & 64 & 33 & 1.8 s  & 31--33 \\
     \bottomrule
   \end{tabular}
-  \caption{\p{lama}: cost of the first and the best plan, and when the best plan was found (from the logs).}
+  \caption{\p{lama}: cost of the first and the best plan, and when the best plan was found.}
   \label{tab:lama}
 \end{table}
 
@@ -719,8 +718,8 @@ costs.
     B & gbfs-ff               & 82 & 44 & $-38$ & $-46.3$ \\
     \bottomrule
   \end{tabular}
-  \caption{Plan cost, large instance: one drone vs three drones (blind and
-    $h^{max}$ do not solve the three-drone variant).}
+  \caption{Plan cost, large instance: one vs three drones (blind and
+    $h^{max}$ fail on three).}
   \label{tab:onedrone}
 \end{table}
 
@@ -738,8 +737,8 @@ distances between the regions should make the start positions matter more.
 The clustered variant is also the hardest for the planner: LM-cut needs 420k
 expansions in A and does not finish in B, against 115k and 243k for the spread
 start. Three identical drones at the same location create many symmetric
-states (``A does $x$ and B does $y$'' and the reverse), and A$^*$ explores
-them separately.
+states (``A does $x$, B does $y$'' and the reverse), which A$^*$ explores
+separately.
 
 \subsection{Across instances}
 \begin{itemize}
@@ -754,7 +753,7 @@ them separately.
     LM-cut is about 3 times in Model A and only about 1.6 times in Model B, on
     both the medium (3.4 vs 1.6) and the single-drone instance (3.1 vs 1.6).
     This supports our explanation that relaxed heuristics do not count
-    recharges, even tough this are only two instances.
+    recharges, even though these are only two instances.
   \item \textbf{Cost-aware greedy search.} Over the 10 instance and model
     pairs, \p{gbfs-ff} finds the cheaper plan in 6, LAMA-first in 3, and one
     is a tie. On the large variants, where the edge costs vary most,
@@ -764,9 +763,8 @@ them separately.
     both are far from optimal: fast planners pay with plan quality, optimal
     planners pay with time.
   \item \textbf{Grounding is not the bottleneck.} The translator produces at
-    most 588 actions and 103 facts, the same for both models. All the
-    difficulty is in the search: plan depth (recharge model) and the number
-    of drones.
+    most 588 actions and 103 facts, the same for both models. The difficulty
+    is in the search: plan depth (recharge model) and number of drones.
   \item \textbf{Drones, not map size.} LM-cut in Model A expands 16 states
     on the small instance (1 drone), 123k on the medium (2 drones) and 115k on
     the large (3 drones). On the same large map, one drone needs only 4.5k and
@@ -802,9 +800,9 @@ them separately.
     clustered B, LM-cut     & time   & 345k   & 31 & 31--33 & 0.13\,GiB \\
     \bottomrule
   \end{tabular}
-  \caption{Unsolved runs: states expanded before stopping, highest $f$
-    reached (a proven lower bound) and the optimal cost. For clustered B the
-    optimum lies between that bound and the best plan found by \p{lama}.}
+  \caption{Unsolved runs: states expanded, highest $f$ reached (a proven
+    lower bound) and optimal cost. For clustered B the optimum lies between
+    that bound and the best \p{lama} plan.}
   \label{tab:unsolved}
 \end{table}
 
@@ -824,11 +822,10 @@ fluents, so we compiled the same idea into level objects and a
 \p{battery_after} table with one row per valid (level, cost) pair, which a
 numeric model gets for free. Their second domain adds a \p{recharge} action
 that charges ``to full capacity or up to a chosen level'', the same choice
-we split into Model A  and Model B , and close to
+we split into Model A and Model B, and close to
 the variable recharge we propose in Section~\ref{sec:limitations}. They also
-use durative actions with the anytime planner OPTIC, which supports both our
-anytime \p{--alias lama} runs on the large instance and our point that only
-a temporal model can reward drones flying in parallel.
+use durative actions with the temporal planner OPTIC, supporting our point
+that only a temporal model rewards parallel flights.
 
 \paragraph{Nakhost, Hoffmann and M\"uller (2012), resource-constrained
 planning~\cite{nakhost2012rcp}.}
@@ -857,9 +854,8 @@ recharge, so our instances are only tight between chargers.
     gets only two actions. Durative actions (PDDL~2.1) with a makespan metric
     would reward sharing the work, which matters in an emergency.
   \item \textbf{Simplified energy.} Flight cost depends only on the edge, not
-    on payload, wind or drone, and the few battery levels round consumption.
-    A numeric planner (Section~\ref{sec:literature}) could use exact,
-    payload-dependent values.
+    on payload or wind, and few battery levels round consumption. A numeric
+    planner (Section~\ref{sec:literature}) could use exact values.
   \item \textbf{Recharge cost and chargers.} In both models a recharge action
     costs 1, which in Model A undervalues a full charge. Chargers have
     unlimited capacity, so several drones can charge at the same place at
@@ -879,15 +875,16 @@ recharge, so our instances are only tight between chargers.
     resources, could make the larger instances easier.
   \item \textbf{Experiment scope.} Each run was performed once, and the
     claims about start positions and battery-blind heuristics rest on a few
-    instances. Repeated runs and a family of generated maps would make the conclusions
-    stronger.
+    instances. Repeated runs on generated maps would make them stronger.
 \end{itemize}
 
 % ===========================================================================
 \section*{Use of AI Tools}
-We used AI assistants to check the PDDL syntax, correct the English of the
-report, check the report against the requirements, build the plots and
-\LaTeX{} tables, and asistance in the finding and summarizatio of the main ideas of the papers for Section~\ref{sec:literature}.
+We used AI assistants to check the PDDL syntax, comment the code, correct
+the English of the report and help rewrite sections in a more formal style
+(always revised by us afterwards), check the report against the requirements, build the
+plots and \LaTeX{} tables, and help find and summarise the papers of
+Section~\ref{sec:literature}.
 
 \begin{thebibliography}{9}
   \bibitem{helmert2006fd} M.~Helmert. The Fast Downward planning system.
@@ -916,8 +913,8 @@ report, check the report against the requirements, build the plots and
 % (at least one VAL output per instance).
 
 All files are included exactly as they are given to the planner. The extra
-instances (\p{test-problem.pddl}, \p{optional_experiments/problem-large-clustered.pddl}),
-every plan, every VAL output and every log are in the submitted folder.
+instance (\p{optional_experiments/problem-large-clustered.pddl}), every plan,
+every VAL output and every log are in the submitted folder.
 
 \subsection{Domain files}
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,title={\p{domain-A.pddl}}]{../domain-A.pddl}

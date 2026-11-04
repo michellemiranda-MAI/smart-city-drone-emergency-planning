@@ -1,14 +1,4 @@
 instance,model,planner,solved,runtime_s,plan_length,plan_cost,expanded_states,val
-test-problem,A,lama-first,yes,0.12,8,10,19,valid
-test-problem,A,astar-lmcut,yes,0.08,8,10,12,valid
-test-problem,A,astar-blind,yes,0.10,8,10,647,valid
-test-problem,A,astar-hmax,yes,0.09,8,10,111,valid
-test-problem,A,gbfs-ff,yes,0.08,8,10,9,valid
-test-problem,B,lama-first,yes,0.07,8,10,19,valid
-test-problem,B,astar-lmcut,yes,0.08,8,10,12,valid
-test-problem,B,astar-blind,yes,0.08,8,10,885,valid
-test-problem,B,astar-hmax,yes,0.08,8,10,122,valid
-test-problem,B,gbfs-ff,yes,0.07,8,10,9,valid
 problem-medium,A,lama-first,yes,0.10,41,52,182,valid
 problem-medium,A,astar-lmcut,yes,7.99,24,26,123082,valid
 problem-medium,A,astar-blind,yes,1.13,21,26,690566,valid

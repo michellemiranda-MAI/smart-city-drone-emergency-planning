@@ -16,7 +16,6 @@ problem-large-1drone.pddl     Single-drone variant of the large instance
 optional_experiments/
   problem-large-clustered.pddl  Extra: large instance, all three drones start
                                 at the port depot (not a required instance)
-test-problem.pddl             Extra: tiny instance used to test the domains
 run_experiments.sh            Runs every instance x model x configuration
 validation/                   VAL output for every plan found (Validate -v)
 plans/                        Plans found by Fast Downward

@@ -179,7 +179,7 @@
     </g>
     <g transform="translate(0,523.75) scale(1.6)">
       <rect class="badge" x="2" y="-11" width="44" height="22" rx="4"/>
-      <text class="badge-t" x="24" y="4.5" text-anchor="middle">A b6</text>
+      <text class="badge-t" x="24" y="4.5" text-anchor="middle">A b5</text>
       <text class="sub" x="54" y="4.5">drone start, battery</text>
     </g>
   </g>

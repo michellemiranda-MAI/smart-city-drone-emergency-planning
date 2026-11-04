@@ -20,7 +20,7 @@ FD=${FD:-$(command -v fast-downward.py || echo "$HOME/downward/fast-downward.py"
 VALIDATE=${VALIDATE:-$(command -v Validate || find "$HOME/VAL" -name Validate -type f | head -1)}
 LIMITS="--overall-time-limit 5m --overall-memory-limit 4G"   # same for every run
 
-INSTANCES="test-problem.pddl problem-small.pddl problem-medium.pddl
+INSTANCES="problem-small.pddl problem-medium.pddl
            problem-large.pddl problem-large-1drone.pddl
            optional_experiments/problem-large-clustered.pddl"
 # --alias lama (anytime) only for the large variants, as the statement asks
