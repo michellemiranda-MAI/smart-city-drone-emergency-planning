@@ -389,12 +389,7 @@ Table~\ref{tab:models} summarises the evidence from the optimal configuration
 Our master is taught on campuses in Barcelona and Tarragona, so we placed the
 instances in the two cities we travel between. The small and medium instances
 are flood emergencies in Barcelona, and the large one is a chemical emergency
-in Tarragona, where the URV campus is one of the charging stations. The
-positions of the locations follow the real geography loosely; edge costs,
-chargers and locks are our design choices. Each diagram shows the location
-graph with edge costs, depots, chargers, mission sites, drone starts with
-their battery level, the initial supply positions, and which event unlocks
-which location. Before running the experiments we checked every file against
+in Tarragona. Each diagram shows the location graph with edge costs, depots, chargers, mission sites, drone starts with their battery level, the initial supply positions, and which event unlocks  which location. Before running the experiments we checked every file against
 Section~5 of the statement: the counts, \p{connected}, \p{flight_cost} and
 \p{distance} symmetric and equal, complete \p{battery_after} tables, every
 supply starting at a depot, and every drone start accessible.
@@ -412,27 +407,19 @@ inspected.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.72\textwidth]{small-instance.png}
+  \includegraphics[width=\textwidth]{small-instance.png}
   \caption{Small instance (Barcelona): one drone, five locations, every edge costs 1.}
   \label{fig:small}
 \end{figure}
 
 \paragraph{Why a recharge is unavoidable.} The drone starts between the two
 ends of the line, and both ends are mission sites. It must reach one end and
-come back. The cheapest way is aerodrome $\to$ hospital $\to$ aerodrome (2
-flights) and then aerodrome $\to$ barceloneta $\to$ montjuic\_pad $\to$
-ciutadella (3 flights). Every complete mission needs at least 5 flights, which
+come back. The cheapest way is aerodrome $\to$ hospital $\to$ aerodrome and then aerodrome $\to$ barceloneta $\to$ montjuic\_pad $\to$
+ciutadella. Every complete mission needs at least 5 flights, which
 is 5 levels, more than the 4 of a full battery. A breadth-first search over
-the map confirmed that 5 is the minimum. On the best route the drone reaches
-the only charger with \p{b0}, just before the last flight. The optimal cost is
-10 in both models (5 flights, 2 inspections, pick-up, delivery and one
-recharge). In Model B a single \p{b0}$\to$\p{b1} step is enough.
+the map confirmed that 5 is the minimum. The optimal cost is
+10 in both models. In Model B a single \p{b0}$\to$\p{b1} step is enough.
 
-Getting here took three versions. In the first, the recharge was forced only
-by starting the drone at \p{b3}: with a full battery a 4-flight route
-existed. We then removed two edges to form a ring, but \p{kit1} was stored at
-the charger, not at the depot as the scenario requires. Moving it to the depot
-made the ring solvable in 3 flights. The line map meets both rules at once.
 
 \subsection{Medium instance: Barcelona storm surge}
 Flooding hits the coast and the Besòs basin (Figure~\ref{fig:medium}). Two
@@ -446,7 +433,7 @@ three different kinds: \p{kit1} to the hospital, \p{water1} to Poblenou and
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.78\textwidth]{medium-instance.png}
+  \includegraphics[width=\textwidth]{medium-instance.png}
   \caption{Medium instance (Barcelona): two drones, eight locations, edge costs 1--2.}
   \label{fig:medium}
 \end{figure}
@@ -456,10 +443,7 @@ and opens when its neighbour \p{poblenou} is inspected. A sequence that fails
 is flying there first: \p{(fly droneB glories_tower besos_delta b4 b2 b2)}.
 The battery rows and the edge exist, but the precondition
 \p{(accessible besos_delta)} of \p{fly} is false, so the action is not
-applicable, and every route to the site is blocked the same way. Note that it is not
-\p{unlocked_by_inspection} that blocks it: that is a static fact, true from
-the start, and never a precondition of \p{fly}. It only tells \p{inspect}
-what to add. Inspecting \p{poblenou} fires the conditional effect and adds
+applicable, and every route to the site is blocked the same way. Inspecting \p{poblenou} fires the conditional effect and adds
 \p{(accessible besos_delta)}.
 
 \subsection{Large instance: Tarragona chemical leak}
@@ -475,7 +459,7 @@ goals: 4 deliveries of three kinds and 4 inspections.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.74\textwidth]{large-instance.png}
+  \includegraphics[width=\textwidth]{large-instance.png}
   \caption{Large instance (Tarragona): three drones, twelve locations, edge
     costs 1--3, one delivery lock and one inspection lock.}
   \label{fig:large}
