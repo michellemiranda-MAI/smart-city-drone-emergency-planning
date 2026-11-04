@@ -8,6 +8,7 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{xltabular}
+\usepackage{float}
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{multicol}
@@ -81,6 +82,7 @@ plan quality and search effort.
 We built the model from the problem statement. This section covers what we decided and learned while building it and comparing it with the templates.
 
 \subsection{State and search space}
+\label{sec:searchspace}
 A state is the set of facts that are true at a given moment. The planner only
 matches facts and does not know what a predicate means, so everything the
 search needs must be written explicitly. We split the facts into two groups:
@@ -518,8 +520,10 @@ all 57, the other 9 hit a limit (8 time, 1 memory).
 % Results table (Section 7.2) plus one analytical paragraph per instance (7.3).
 
 Table~\ref{tab:results} gives every combination of instance, domain model and
-configuration (statement, Section~7.2). Every plan found was accepted by VAL;
-the plan cost is VAL's final value of \p{total-cost}.
+configuration. As mentioned in Section~\ref{sec:models} (Table~\ref{tab:models}), we also ran
+an extra experiment: the large instance with its three drones all starting at
+the port (\p{problem-large-clustered.pddl}). It separates the gain from having
+more drones from the gain from starting them in different regions.
 
 \begin{table}[p]
   \centering\footnotesize
@@ -574,21 +578,132 @@ the plan cost is VAL's final value of \p{total-cost}.
     large-1drone & B & astar-blind & yes & 0.15 & 45 & 50 & 25321 & valid \\
     large-1drone & B & astar-hmax & yes & 0.18 & 45 & 50 & 17832 & valid \\
     large-1drone & B & gbfs-ff & yes & 0.11 & 70 & 82 & 236 & valid \\
+    \midrule
+    clustered$^\dagger$ & A & lama-first & yes & 0.15 & 42 & 52 & 118 & valid \\
+    clustered$^\dagger$ & A & astar-lmcut & yes & 202.86 & 28 & 31 & 420442 & valid \\
+    clustered$^\dagger$ & A & lama & yes & 292.28$^*$ & 29 & 32 & 155$^*$ & valid \\
+    clustered$^\dagger$ & A & astar-blind & no (time) & 292.30 & -- & -- & -- & -- \\
+    clustered$^\dagger$ & A & astar-hmax & no (time) & 292.20 & -- & -- & -- & -- \\
+    clustered$^\dagger$ & A & gbfs-ff & yes & 0.13 & 35 & 40 & 90 & valid \\
+    clustered$^\dagger$ & B & lama-first & yes & 0.13 & 54 & 64 & 112 & valid \\
+    clustered$^\dagger$ & B & astar-lmcut & no (time) & 292.14 & -- & -- & -- & -- \\
+    clustered$^\dagger$ & B & lama & yes & 292.14$^*$ & 30 & 33 & 32870$^*$ & valid \\
+    clustered$^\dagger$ & B & astar-blind & no (time) & 292.10 & -- & -- & -- & -- \\
+    clustered$^\dagger$ & B & astar-hmax & no (time) & 292.02 & -- & -- & -- & -- \\
+    clustered$^\dagger$ & B & gbfs-ff & yes & 0.13 & 43 & 49 & 248 & valid \\
     \bottomrule
   \end{tabular}
   \caption{Results for every instance, model and configuration (5 min, 4\,GB
     per run). Unsolved runs report the time at which they stopped.
+    $^\dagger$Extra variant \p{problem-large-clustered.pddl}: the large
+    instance with all three drones starting at the port.
     $^*$\p{lama}: runtime until the search stopped, not the time to the best
     plan; expanded states of the last iteration only.}
   \label{tab:results}
 \end{table}
 
-\paragraph{Single-drone comparison.} Table~\ref{tab:onedrone} compares the
-best validated plan cost of the single-drone and three-drone variants under
-the same model and configuration (statement, Section~5). The difference is
-given in absolute terms and as a percentage of the single-drone cost.
 
-\begin{table}[h]
+
+\subsection{Small instance}
+No configuration struggled: every run finishes in under 0.35\,s with at most
+106 expanded states. The battery encoding is tiny (5 levels, one flight
+cost, four \p{battery_after} rows), and there is only one drone, so the
+reachable state space is a few hundred states. Both models reach the same optimal 
+cost (10) with the same plan length,
+because the drone only needs one level to finish and one recharge provides it
+in both models. The recharge constraint holds: every plan contains a recharge at
+\p{montjuic_pad}, as the argument in Section~\ref{sec:instances} predicts.
+
+Model B still expands slightly more states with blind and
+$h^{max}$: it can stop at every intermediate level \p{b1}--\p{b4}, and those 
+partial-charge states are new states to explore, even though the optimal plan 
+does not use them. The satisficing planners show the price of ignoring costs: 
+LAMA-first returns cost 12 in Model A: it carries the kit east to Ciutadella 
+first and has to fly back across the whole line to the hospital (7 flights 
+instead of 5). \p{gbfs-ff} returns 14 in Model B. The
+lesson from the smallest instance is that the recharge model does not change
+the answer when recharging is a single step, but it already adds states to
+the search.
+
+\subsection{Medium instance}
+Every configuration solves the medium instance, but the optimal ones begin to
+work hard: 123k--782k expanded states. A useful surprise is that A$^*$ with
+LM-cut is the \emph{slowest} optimal configuration here, although it expands
+ 5.6 times fewer states than blind search. LM-cut is computed in every state and is expensive. On an
+instance this size, cheap expansions win over fewer expansions, which is the
+accuracy/cost trade-off of heuristics. 
+
+With two drones and seven battery levels each, the battery alone gives $7^2 = 49$ combinations,
+multiplied by both positions and all the cargo and mission facts. The models now differ clearly, 
+Model B needs 6 recharges instead of 1, so the plan is 5 actions longer and costs 5 more (31 vs 26). 
+LM-cut expands 2.7 times more states in B, and runtime almost doubles. The heuristics also help less in
+B, going from $h^{max}$ to LM-cut saves a factor of 3.4 in A but only 1.6 in
+B. 
+
+Our explanation is that delete-relaxation heuristics do not see the
+battery running out (Section~\ref{sec:models}), so the extra recharges of
+Model B are a part of the plan that no heuristic estimates. The satisficing
+results are noisy: LAMA-first is better in B (39) than in A (52), and
+\p{gbfs-ff} the other way round (33 vs 45). With costs ignored or poorly
+estimated, small changes in the model change which plateau the greedy search
+falls into. The modelling lesson is that a more faithful recharge does not
+make the task bigger, but it does make the plans deeper and the heuristic
+weaker.
+
+\subsection{Large instance}
+This is where the planners struggle. A$^*$ with LM-cut is the only optimal
+configuration that solves the three-drone instance. Blind search and $h^{max}$ expand 15--67 million states without finishing, and
+they are still far from the optimum when they stop. Blind search hits the memory limit in Model A: with three
+drones every level of the search multiplies the frontier, which is the exponential growth of uninformed search. The difficulty comes mostly from the number of drones, not from the size of the map. The single-drone variant
+has the same 12 locations and goals but only 196 grounded actions instead of
+588, and LM-cut solves it in 0.4\,s, even though its optimal plan is longer.
+This matches the upper bound we aproximated on Section~\ref{sec:searchspace}, where the
+number of drones is in the exponent.
+
+LAMA-first's plans cost almost twice the optimum. It ignores action costs (\p{cost_type=one}), so a cost-3
+river crossing looks as cheap as a cost-1 hop. \p{gbfs-ff} uses the real
+costs in $h^{FF}$ and does better. The anytime \p{lama} reaches the
+optimal cost in both models (Table~\ref{tab:lama}) much faster than A$^*$ but without a proof of optimality. 
+
+With three drones Model B costs only one unit more than A because every drone can work close to a charger. 
+Its search is still twice as large (243k vs 115k expansions). The workload in the optimal Model A plan is uneven: \p{droneB} does 15 actions,
+\p{droneA} 9 and \p{droneC} only 2. The metric minimises total cost, not mission time, so nothing rewards sharing the work.
+(Section~\ref{sec:limitations}).
+
+\begin{table}[H]
+  \centering\small
+  \begin{tabular}{@{}l c r r r r@{}}
+    \toprule
+    Variant & Model & First plan & Best plan & Time to best & Optimum \\
+    \midrule
+    large (3 drones)   & A & 57 & 30 & 9.5 s  & 30 \\
+    large (3 drones)   & B & 60 & 31 & 1.3 s  & 31 \\
+    large-1drone       & A & 64 & 38 & 0.36 s & 38 \\
+    large-1drone       & B & 72 & 50 & 0.41 s & 50 \\
+    clustered          & A & 52 & 32 & 0.05 s & 31 \\
+    clustered          & B & 64 & 33 & 1.8 s  & 31--33 \\
+    \bottomrule
+  \end{tabular}
+  \caption{\p{lama}: cost of the first and the best plan, and when the best plan was found (from the logs).}
+  \label{tab:lama}
+\end{table}
+
+\subsection{Single-drone comparison and clustered start}
+Three drones reduce the optimal cost by 8 (21.1\%) in Model A and by 19
+(38.0\%) in Model B (Table~\ref{tab:onedrone}). We compare cost, not length:
+the classical plan is sequential, so its length counts every drone's actions.
+The optimal single-drone plans have the same 17 flights in both models, but A
+needs 4 recharges and B 16. A lone drone carries one supply at a time, so it
+crosses the city several times between both depots and the sites, and it
+must top up its battery repeatedly. In Model B each of those top-ups is paid
+level by level, which is why the gain from extra drones is almost twice as
+large there. The three-drone plan needs only one recharge, because each drone
+starts full in its own region. The greedy configurations show the same
+direction (11--46\%), but their gaps mix the effect of the drones with the
+quality of the plan, so we base the comparison on the optimal and \p{lama}
+costs.
+
+\begin{table}[H]
   \centering\small
   \begin{tabular}{@{}l l r r r r@{}}
     \toprule
@@ -609,176 +724,6 @@ given in absolute terms and as a percentage of the single-drone cost.
     $h^{max}$ do not solve the three-drone variant).}
   \label{tab:onedrone}
 \end{table}
-
-\paragraph{Extra experiment: clustered start.} Table~\ref{tab:clustered}
-gives the variant where the three drones all start at the port, with the same
-map and goals as the large instance.
-
-\begin{table}[h]
-  \centering\small
-  \begin{tabular}{@{}c l l r r r r@{}}
-    \toprule
-    Model & Planner & Solved & Runtime (s) & Length & Cost & Expanded \\
-    \midrule
-    A & lama-first  & yes       & 0.15   & 42 & 52 & 118 \\
-    A & astar-lmcut & yes       & 202.86 & 28 & 31 & 420442 \\
-    A & lama        & yes       & 292.28$^*$ & 29 & 32 & 155$^*$ \\
-    A & astar-blind & no (time) & 292.30 & -- & -- & -- \\
-    A & astar-hmax  & no (time) & 292.20 & -- & -- & -- \\
-    A & gbfs-ff     & yes       & 0.13   & 35 & 40 & 90 \\
-    \midrule
-    B & lama-first  & yes       & 0.13   & 54 & 64 & 112 \\
-    B & astar-lmcut & no (time) & 292.14 & -- & -- & -- \\
-    B & lama        & yes       & 292.14$^*$ & 30 & 33 & 32870$^*$ \\
-    B & astar-blind & no (time) & 292.10 & -- & -- & -- \\
-    B & astar-hmax  & no (time) & 292.02 & -- & -- & -- \\
-    B & gbfs-ff     & yes       & 0.13   & 43 & 49 & 248 \\
-    \bottomrule
-  \end{tabular}
-  \caption{Extra variant \p{problem-large-clustered.pddl}: three drones, all
-    starting at the port. Every plan found is valid. $^*$ as in
-    Table~\ref{tab:results}.}
-  \label{tab:clustered}
-\end{table}
-
-\paragraph{Unsolved runs.} Nine runs did not finish (Table~\ref{tab:unsolved}).
-None of them means an instance is unsolvable: every variant has a valid plan
-in both models from at least one configuration. When A$^*$ stops, the
-largest $f$ value it has reached is a lower bound on the optimal cost, so
-each unsolved run still tells us how far it got.
-
-\begin{table}[h]
-  \centering\small
-  \begin{tabular}{@{}l l r r r r@{}}
-    \toprule
-    Run & Limit & Expanded & Lower bound & Optimum & Peak memory \\
-    \midrule
-    large A, blind          & memory & 65.9M  & 26 & 30 & 4\,GiB (limit) \\
-    large B, blind          & time   & 66.8M  & 25 & 31 & 3.67\,GiB \\
-    large A, $h^{max}$      & time   & 15.7M  & 27 & 30 & 1.57\,GiB \\
-    large B, $h^{max}$      & time   & 15.3M  & 26 & 31 & 1.52\,GiB \\
-    clustered A, blind      & time   & 62.3M  & 24 & 31 & 3.83\,GiB \\
-    clustered A, $h^{max}$  & time   & 12.6M  & 25 & 31 & 1.58\,GiB \\
-    clustered B, blind      & time   & 61.2M  & 23 & 31--33 & 3.79\,GiB \\
-    clustered B, $h^{max}$  & time   & 16.4M  & 25 & 31--33 & 1.60\,GiB \\
-    clustered B, LM-cut     & time   & 345k   & 31 & 31--33 & 0.13\,GiB \\
-    \bottomrule
-  \end{tabular}
-  \caption{Unsolved runs: states expanded before stopping, highest $f$
-    reached (a proven lower bound) and the optimal cost. For clustered B the
-    optimum lies between that bound and the best plan found by \p{lama}.}
-  \label{tab:unsolved}
-\end{table}
-
-\paragraph{Anytime LAMA.} Table~\ref{tab:lama} shows how \p{lama} improves on
-its first plan, which is the LAMA-first plan.
-
-\begin{table}[h]
-  \centering\small
-  \begin{tabular}{@{}l c r r r r@{}}
-    \toprule
-    Variant & Model & First plan & Best plan & Time to best & Optimum \\
-    \midrule
-    large (3 drones)   & A & 57 & 30 & 9.5 s  & 30 \\
-    large (3 drones)   & B & 60 & 31 & 1.3 s  & 31 \\
-    large-1drone       & A & 64 & 38 & 0.36 s & 38 \\
-    large-1drone       & B & 72 & 50 & 0.41 s & 50 \\
-    clustered          & A & 52 & 32 & 0.05 s & 31 \\
-    clustered          & B & 64 & 33 & 1.8 s  & 31--33 \\
-    \bottomrule
-  \end{tabular}
-  \caption{\p{lama}: cost of the first and the best plan, and when the best plan was found (from the logs).}
-  \label{tab:lama}
-\end{table}
-
-\subsection{Small instance}
-No configuration struggled: every run finishes in under 0.35\,s with at most
-106 expanded states. The battery encoding is tiny (5 levels, one flight
-cost, four \p{battery_after} rows), and there is only one drone, so the
-reachable state space is a few hundred states. The instance was designed to
-test the encoding, not the planner. Its interest is that the recharge
-constraint holds: every plan, optimal or not, contains a recharge at
-\p{montjuic_pad}, as the argument in Section~\ref{sec:instances} predicts.
-Both models reach the same optimal cost (10) with the same plan length,
-because the drone only needs one level to finish and one recharge provides it
-in both models. Model B still expands slightly more states with blind and
-$h^{max}$ (106 vs 73, 46 vs 37): it can stop at every intermediate level
-\p{b1}--\p{b4}, and those partial-charge states are new states to explore,
-even though the optimal plan does not use them. The satisficing planners show
-the price of ignoring costs: LAMA-first returns cost 12 in Model A: it
-carries the kit east to Ciutadella first and has to fly back across the whole
-line to the hospital (7 flights instead of 5). \p{gbfs-ff} returns 14 in
-Model B. The
-lesson from the smallest instance is that the recharge model does not change
-the answer when recharging is a single step, but it already adds states to
-the search.
-
-\subsection{Medium instance}
-Every configuration solves the medium instance, but the optimal ones begin to
-work hard: 123k--782k expanded states. A useful surprise is that A$^*$ with
-LM-cut is the \emph{slowest} optimal configuration here (8.0\,s in A, 14.2\,s
-in B), although it expands 5.6 times fewer states than blind search, which
-takes 1.1\,s. LM-cut is computed in every state and is expensive. On an
-instance this size, cheap expansions win over fewer expansions, which is the
-accuracy/cost trade-off of heuristics seen in Lecture~2. With two drones and
-seven battery levels each, the battery alone gives $7^2 = 49$ combinations,
-multiplied by both positions and all the cargo and mission facts. The models now differ clearly. The optimal plans
-have the same 13 flights, but Model B needs 6 recharges instead of 1, so the
-plan is 5 actions longer and costs 5 more (31 vs 26). LM-cut expands 2.7 times
-more states in B, and runtime almost doubles. The heuristics also help less in
-B: going from $h^{max}$ to LM-cut saves a factor of 3.4 in A but only 1.6 in
-B. Our explanation is that delete-relaxation heuristics do not see the
-battery running out (Section~\ref{sec:models}), so the extra recharges of
-Model B are a part of the plan that no heuristic estimates. The satisficing
-results are noisy: LAMA-first is better in B (39) than in A (52), and
-\p{gbfs-ff} the other way round (33 vs 45). With costs ignored or poorly
-estimated, small changes in the model change which plateau the greedy search
-falls into. The modelling lesson is that a more faithful recharge does not
-make the task bigger, but it does make the plans deeper and the heuristic
-weaker.
-
-\subsection{Large instance}
-This is where the planners struggle. A$^*$ with LM-cut is the only optimal
-configuration that solves the three-drone instance (58\,s in A, 123\,s in B).
-Blind search and $h^{max}$ expand 15--67 million states without finishing, and
-they are still far from the optimum when they stop (lower bounds 25--27
-against 30--31). Blind search hits the memory limit in Model A: with three
-drones every level of the search multiplies the frontier, which is the
-exponential growth of uninformed search. The difficulty comes mostly from
-the number of drones, not from the size of the map. The single-drone variant
-has the same 12 locations and goals but only 196 grounded actions instead of
-588, and LM-cut solves it in 0.4\,s, even though its optimal plan is longer
-(33 vs 26 actions). Each drone adds a position, a battery level (7 values,
-with \p{battery_after} rows for costs 1, 2 and 3) and a cargo slot to every
-state, so the state space grows as a power of the number of drones. With
-three drones Model B costs only one unit more than A (31 vs 30, one recharge
-each), because every drone can work close to a charger. Its search is still
-twice as large (243k vs 115k expansions). The satisficing results show why
-the statement asks for \p{lama}: LAMA-first's plans cost almost twice the
-optimum (57 and 60). It ignores action costs (\p{cost_type=one}), so a cost-3
-river crossing looks as cheap as a cost-1 hop. \p{gbfs-ff} uses the real
-costs in $h^{FF}$ and does better (44). The anytime \p{lama} reaches the
-optimal cost in both models (Table~\ref{tab:lama}), in 9.5\,s for A and 1.3\,s
-for B, which is much faster than A$^*$ but without a proof of optimality. The
-workload in the optimal Model A plan is uneven: \p{droneB} does 15 actions,
-\p{droneA} 9 and \p{droneC} only 2 (one flight and one inspection). The metric
-minimises total cost, not mission time, so nothing rewards sharing the work
-(Section~\ref{sec:limitations}).
-
-\subsection{Single-drone comparison and clustered start}
-Three drones reduce the optimal cost by 8 (21.1\%) in Model A and by 19
-(38.0\%) in Model B (Table~\ref{tab:onedrone}). We compare cost, not length:
-the classical plan is sequential, so its length counts every drone's actions.
-The optimal single-drone plans have the same 17 flights in both models, but A
-needs 4 recharges and B 16. A lone drone carries one supply at a time, so it
-crosses the city several times between both depots and the sites, and it
-must top up its battery repeatedly. In Model B each of those top-ups is paid
-level by level, which is why the gain from extra drones is almost twice as
-large there. The three-drone plan needs only one recharge, because each drone
-starts full in its own region. The greedy configurations show the same
-direction (11--46\%), but their gaps mix the effect of the drones with the
-quality of the plan, so we base the comparison on the optimal and \p{lama}
-costs.
 
 The statement's hint suggests that starting the drones in different regions
 produces the advantage. We tested this with the clustered variant, where all
@@ -826,7 +771,36 @@ them separately.
   \item \textbf{Measurement.} Each configuration was run once, so small
     runtime differences (below about 0.1\,s) are not meaningful. Expanded
     states are deterministic and are the better measure of effort.
+  \item \textbf{Unsolved runs.} Nine runs did not finish
+    (Table~\ref{tab:unsolved}). None of them means an instance is
+    unsolvable: every variant has a valid plan in both models from at least
+    one configuration. When A$^*$ stops, the largest $f$ value it has reached
+    is a lower bound on the optimal cost, so each unsolved run still tells us
+    how far it got.
 \end{itemize}
+
+\begin{table}[H]
+  \centering\small
+  \begin{tabular}{@{}l l r r r r@{}}
+    \toprule
+    Run & Limit & Expanded & Lower bound & Optimum & Peak memory \\
+    \midrule
+    large A, blind          & memory & 65.9M  & 26 & 30 & 4\,GiB (limit) \\
+    large B, blind          & time   & 66.8M  & 25 & 31 & 3.67\,GiB \\
+    large A, $h^{max}$      & time   & 15.7M  & 27 & 30 & 1.57\,GiB \\
+    large B, $h^{max}$      & time   & 15.3M  & 26 & 31 & 1.52\,GiB \\
+    clustered A, blind      & time   & 62.3M  & 24 & 31 & 3.83\,GiB \\
+    clustered A, $h^{max}$  & time   & 12.6M  & 25 & 31 & 1.58\,GiB \\
+    clustered B, blind      & time   & 61.2M  & 23 & 31--33 & 3.79\,GiB \\
+    clustered B, $h^{max}$  & time   & 16.4M  & 25 & 31--33 & 1.60\,GiB \\
+    clustered B, LM-cut     & time   & 345k   & 31 & 31--33 & 0.13\,GiB \\
+    \bottomrule
+  \end{tabular}
+  \caption{Unsolved runs: states expanded before stopping, highest $f$
+    reached (a proven lower bound) and the optimal cost. For clustered B the
+    optimum lies between that bound and the best plan found by \p{lama}.}
+  \label{tab:unsolved}
+\end{table}
 
 % ===========================================================================
 \section{Literature Connection}
