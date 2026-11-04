@@ -6,6 +6,8 @@
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xltabular}
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{multicol}
@@ -56,9 +58,9 @@
 \section{Introduction}
 % Motivation and scenario summary.
 
-After an emergency in a city, a fleet of autonomous drones has to bring
-supplies such as medical kits, water and communication equipment from depots to
-the affected locations. Each drone carries one item at a time, and its battery
+After an emergency in a city, a fleet of autonomous drones has to inspect
+damaged locations and bring supplies such as medical kits, water and
+communication equipment from depots to the affected locations. Each drone carries one item at a time, and its battery
 limits how far it can fly before it needs a charging station. Some areas are
 blocked at first and only become reachable once a nearby site has been
 inspected or has received its supply. The goal is to
@@ -76,13 +78,7 @@ plan quality and search effort.
 \section{Problem Analysis}
 \label{sec:analysis}
 % Search space, types, predicates, actions and design decisions.
-
-We did not start from the statement's template. Our first draft had a ternary
-\p{connected(n1, n2, cost)}, a \p{locked(node)} predicate, one predicate per
-battery level (\p{batteryb1(drone)} \ldots{} \p{batterybn(drone)}) and a
-\p{charge(drone)} action. This section follows the order in which we revised
-that draft. Each step is a decision, together with the reason that made us
-change (or keep) it.
+We built the model from the problem statement. This section covers what we decided and learned while building it and comparing it with the templates.
 
 \subsection{State and search space}
 A state is the set of facts that are true at a given moment. The planner only
@@ -96,10 +92,18 @@ search needs must be written explicitly. We split the facts into two groups:
     level, cargo, supply positions, accessibility, pending inspections and
     pending deliveries.
 \end{itemize}
-The search space is the set of reachable combinations of dynamic facts. For
-$D$ drones, $L$ locations, battery levels $b_0 \ldots b_N$, $S$ supplies,
-$K$ locked locations and $I$ inspections, it is bounded by roughly
-$\big(L\,(N{+}1)\,(S{+}1)\big)^{D}\cdot 3^{S}\cdot 2^{K+I}$. The exponent $D$ is
+The search space is the set of reachable combinations of dynamic facts. An
+approximate \textbf{upper bound} on its size is
+\[
+  \big(L\,(N{+}1)\big)^{D}\cdot (D{+}2)^{S}\cdot 2^{I},
+\]
+where $D$ is the number of drones, $L$ the number of locations, $b_0 \ldots
+b_N$ the battery levels, $S$ the number of supplies and $I$ the number of
+inspection goals. The first term counts, for every drone, its position ($L$
+values) and its battery level ($N{+}1$ values). The second term gives each
+supply $D{+}2$ possible states: still at its depot, delivered, or carried by
+one of the $D$ drones. The last term records whether each inspection has been
+done. The exponent $D$ is
 why adding drones costs much more than adding locations, which the large
 instance shows clearly (Section~\ref{sec:results}).
 Table~\ref{tab:grounding} gives the size of the grounded task that Fast
@@ -123,10 +127,9 @@ Downward builds for each instance. These numbers are identical in both models.
 The base types are \p{drone}, \p{location}, \p{supply} and \p{level}. Supply
 kinds are \textbf{subtypes} (\p{medical_kit}, \p{water_package},
 \p{communication_device}): the kind of a supply never changes and every supply
-has exactly one, so it fits a type. It also makes the requirement of ``at least
-two different kinds'' visible in \p{:objects}. Location roles (charging
+has exactly one, so it fits a type. Location roles (charging
 station, mission site, locked) are \textbf{predicates} instead: one location
-can play several roles at once, an object has only one type, and some roles
+can play several roles at once, and some roles
 change during the plan, which a type cannot do. We added no \p{depot}
 predicate, following one rule: a predicate is only needed if a precondition or
 the goal tests it. No action asks whether a location is a depot. The depot is
@@ -156,64 +159,52 @@ location cannot be entered until one specific event happens: inspecting some
 location $X$, or delivering some supply $S$. The problem designer chooses these
 pairs, so they are static facts in the problem file:
 \p{unlocked_by_inspection(X, Y)} and \p{unlocked_by_delivery(S, Y)}.
-\begin{itemize}
-  \item \textbf{Delivery is keyed by the supply, not by the location.} Keyed by
-    location, the first delivery of \emph{anything} to a site that needs two
-    supplies would open the door. Adding the location as an extra argument is
-    redundant: each supply object is needed by exactly one location, so the
-    supply already fixes where it is delivered.
-  \item \textbf{Rejected alternative:} blocking the \emph{exit} of the
-    unlocking location (a drone cannot leave $X$ until $X$ is inspected). It
-    depends on the map shape (one extra edge bypasses it), it traps drones
-    that only pass through $X$, and it cannot express a delivery that unlocks
-    a location. We kept the check on the \emph{destination},
-    \p{(accessible ?to)} in \p{fly}.
-\end{itemize}
 
-\subsection{Symbolic battery}
-Fast Downward has no numeric fluents, so battery levels are objects
-\p{b0} \ldots{} \p{bN} and one dynamic fact \p{battery(?d, ?l)} gives the
-current level. Our first idea, one predicate per level, works, but \p{fly}
-then needs one action per (start level, cost) pair. With capacity 6 and costs
-1--2 that is 11 actions, and the domain changes with every problem. Those
-actions differ only in three names (start level, cost, end level), so we made
-them parameters.
+\textbf{Delivery is keyed by the supply, not by the location.} If it was only keyed by
+location, if a site needed two supplies, the first one would open the door. Adding the location as an extra argument is
+redundant: each supply object is needed by exactly one location, so the
+supply already fixes where it is delivered.
+    
+\textbf{Rejected alternative:} blocking the exit of the
+unlocking location (a precondition to fly along the lines of "a drone at X can only leave if X is inspected"). It
+depends on the map shape, it traps drones
+that only pass through $X$, and it cannot express a delivery that unlocks
+a location. We kept the check on the \emph{destination},
+\p{(accessible ?to)} in \p{fly}.
+
+\subsection{Symbolic battery and plan cost}
+Fast Downward has no numeric fluents, so the battery must be symbolic. Our
+first idea was one predicate per battery level
+(\p{batteryb1(drone)} \ldots \p{batterybn(drone)}), which needs a separate
+\p{fly} action for every (start level, cost) pair and changes the domain with
+every capacity. Instead, battery levels are objects $b_0 \ldots b_N$ and the
+current level is \p{(battery ?d ?l)}, as in the template. One \p{fly} action
+then covers every level, and the domain does not depend on the capacity.
+
+We separate \p{connected} (the route exists) from \p{flight_cost} (how many
+levels it consumes, as a level object). The plan cost needs a number:
+\p{(increase (total-cost) ?c)} is invalid, because \p{b2} is a name and not a
+number, and the planner cannot convert one into the other. The same cost is
+therefore stored again in the static numeric function \p{distance}. \p{fly}
+adds the distance to \p{total-cost} and every other action adds 1. The two
+values must match: otherwise the battery drains one amount while the plan cost
+counts another, and VAL still accepts the plan. We checked both lists against
+the location diagrams, and every edge is written in both directions, because
+the planner only matches facts that are declared.
 
 The planner knows nothing about the order of the levels, so subtraction is a
-static lookup table \p{battery_after(before, cost, left)}. We only write the
-rows where $\mathit{before} \geq \mathit{cost}$, which gives $N-c+1$ rows per
-flight cost $c$. A drone without enough battery has no matching row, so the
-flight is not applicable: illegal flights are not checked, they do not exist.
-Without this precondition, \p{?left} would be a free parameter and the drone
-could ``fly'' from \p{b3} to \p{b6}.
-
-The ternary \p{connected(n1, n2, cost)} from our draft cannot work as it
-stands, because a predicate argument must be an object, not a number. We split
-it into \p{connected} (the edge exists) and \p{flight_cost} (its cost as a
-level object). Movement is two-way in the city, but the planner only matches
-facts, so both directions are declared.
-
-\subsection{Plan cost}
-\p{(increase (total-cost) ?c)} with a level object is invalid, because
-\p{b2} is a name and not a number. The cost of each edge is therefore written
-twice: \p{flight_cost} (a level object, used to update the battery) and the
-static function \p{distance} (a number, added to \p{total-cost}). The planner
-cannot convert one into the other. If the two values differ, the battery
-drains by one amount while the score counts another, and VAL still accepts the
-plan. We checked both lists against the location diagrams in both directions.
-\p{fly} adds the distance and every other action adds 1.
+static lookup table \p{battery_after(before, cost, left)}, with rows only where
+$\mathit{before} \geq \mathit{cost}$. A flight with too little battery has no
+matching row, so it is never applicable. The table also fixes \p{?left}:
+without it, \p{?left} would be a free parameter and a drone could gain battery
+while flying. Illegal movements are automatically excluded by the absence of a matching fact.
 
 \subsection{Actions and goal}
 The five actions are \p{fly}, \p{inspect}, \p{pick-up-supply},
-\p{deliver-supply} and \p{recharge}. \p{charge(drone)} became
-\p{recharge(drone, location, ...)}: a precondition can only refer to the
-action's parameters, so ``the drone is at a location with a charger'' needs the
-location as a parameter. \p{deliver-supply} does not put the supply back on
+\p{deliver-supply} and \p{recharge}.  \p{deliver-supply} does not put the supply back on
 the map at the destination. Otherwise another empty drone could pick it up
 again, which is unrealistic (the supply is used up) and adds pointless
-branches to the search. \p{delivered(?s, ?l)} has no drone argument: the goal
-lists exact facts, so naming the drone would fix \emph{who} delivers and stop
-the planner from choosing the cheapest drone. The goal contains only the
+branches to the search. The goal contains only the
 mission (\p{inspected}, \p{delivered}), not \p{accessible}: unlocking is a
 means, not a mission.
 
@@ -230,77 +221,52 @@ problem files serve both models without changes.
 \paragraph{Requirements.}
 \p{:strips} (add and delete effects), \p{:typing}, \p{:conditional-effects}
 (the \p{forall}/\p{when} unlocking) and \p{:action-costs} (\p{total-cost},
-\p{distance}). We do not need \p{:negative-preconditions}, because a \p{not}
-inside an effect is a delete effect, which is part of STRIPS.
+\p{distance}). We do not need \p{:negative-preconditions}.
 
 \paragraph{Predicates.}
-Table~\ref{tab:predicates} lists every predicate.
+Table~\ref{tab:predicates} lists every predicate and its meaning.
 
-\begin{table}[h]
-  \centering\small
-  \begin{tabular}{@{}l p{8.2cm} c@{}}
-    \toprule
-    Predicate & Meaning & S/D \\
-    \midrule
-    \p{drone_at ?d ?l}                    & drone \p{?d} is at location \p{?l} & D \\
-    \p{carrying ?d ?s}                    & drone \p{?d} carries supply \p{?s} & D \\
-    \p{cargo_empty ?d}                    & \p{?d} carries nothing (capacity one supply) & D \\
-    \p{connected ?from ?to}               & direct flight possible (both directions declared) & S \\
-    \p{has_charging_station ?l}           & \p{?l} has a charger & S \\
-    \p{accessible ?l}                     & \p{?l} can currently be entered & D \\
-    \p{unlocked_by_inspection ?x ?y}      & inspecting \p{?x} makes \p{?y} accessible & S \\
-    \p{unlocked_by_delivery ?s ?y}        & delivering supply \p{?s} makes \p{?y} accessible & S \\
-    \p{needs_inspection ?l}               & \p{?l} still has to be inspected (guard of \p{inspect}) & D \\
-    \p{inspected ?l}                      & \p{?l} has been inspected (goal) & D \\
-    \p{needs_supply ?l ?s}                & \p{?l} is waiting for supply object \p{?s} & D \\
-    \p{supply_at ?s ?l}                   & \p{?s} lies at \p{?l} and is not carried & D \\
-    \p{delivered ?s ?l}                   & \p{?s} has been delivered to \p{?l} (goal) & D \\
-    \p{battery ?d ?b}                     & current battery level of \p{?d} & D \\
-    \p{flight_cost ?from ?to ?c}          & the flight costs \p{?c} levels & S \\
-    \p{battery_after ?b ?c ?left}         & $b - c = \mathit{left}$, only listed if $b \geq c$ & S \\
-    \p{next_level ?b ?up}                 & $\mathit{up} = b + 1$; no row starts at the maximum & S \\
-    \p{max_level ?b}                      & full capacity (read by Model A only) & S \\
-    \bottomrule
-  \end{tabular}
-  \caption{Predicates (S = static, D = dynamic). Functions: \p{total-cost} and static \p{distance ?from ?to}.}
+{\small
+\begin{xltabular}{\textwidth}{@{}l X c@{}}
+  \toprule
+  Predicate & Meaning & S/D \\
+  \midrule
+  \endfirsthead
+  \multicolumn{3}{@{}l}{\footnotesize\emph{Table~\ref{tab:predicates} (continued)}}\\
+  \toprule
+  Predicate & Meaning & S/D \\
+  \midrule
+  \endhead
+  \bottomrule
+  \multicolumn{3}{@{}l}{\footnotesize $^{*}$Each drone carries at most one supply at a time.}\\
+  \caption{Predicates (S = static, D = dynamic). Functions: \p{total-cost} and static \p{distance ?from ?to-location}.}
   \label{tab:predicates}
-\end{table}
+  \endlastfoot
+    \p{drone_at ?d-drone ?l-location} & drone \p{?d} is at location \p{?l} & D \\
+    \p{carrying ?d-drone ?s-supply} & drone \p{?d} carries supply \p{?s} & D \\
+    \p{cargo_empty ?d-drone} & \p{?d} carries nothing$^{*}$ & D \\
+    \p{connected ?from ?to-location} & direct flight possible (both directions declared) & S \\
+    \p{has_charging_station ?l-location} & \p{?l} has a charger & S \\
+    \p{accessible ?l-location} & \p{?l} can currently be entered & D \\
+    \p{unlocked_by_inspection ?x ?y-location} & inspecting \p{?x} makes \p{?y} accessible & S \\
+    \p{unlocked_by_delivery ?s-supply ?y-location} & delivering supply \p{?s} makes \p{?y} accessible & S \\
+    \p{needs_inspection ?l-location} & \p{?l} still has to be inspected & D \\
+    \p{inspected ?l-location} & \p{?l} has been inspected (goal) & D \\
+    \p{needs_supply ?l-location ?s-supply} & \p{?l} is waiting for supply object \p{?s} & D \\
+    \p{supply_at ?s-supply ?l-location} & \p{?s} lies at \p{?l} and is not carried & D \\
+    \p{delivered ?s-supply ?l-location} & \p{?s} has been delivered to \p{?l} (goal) & D \\
+    \p{battery ?d-drone ?b-level} & current battery level of \p{?d} & D \\
+    \p{flight_cost ?from ?to-location ?c-level} & the flight costs \p{?c} levels & S \\
+    \p{battery_after ?b ?c ?left-level} & $b - c = \mathit{left}$, only listed if $b \geq c$ & S \\
+    \p{next_level ?b ?up-level} & $\mathit{up}=b+1$, no row starts at max & S \\
+    \p{max_level ?b-level} & full capacity (read by Model A only) & S \\
+\end{xltabular}
+}
 
 \paragraph{Actions.}
-Table~\ref{tab:actions} summarises every action. The \p{fly} action shows how
-the battery encoding works: each precondition fixes one unknown parameter.
-\p{(battery ?d ?b)} takes the current level from the state, \p{flight_cost}
-takes the cost from the map, and \p{battery_after} takes the remaining level
-from the table. Nobody passes parameter values; the planner keeps only the
-combinations for which every precondition is a true fact.
+Table~\ref{tab:actions} summarises every action and its meaning.
 
-\begin{lstlisting}
-(:action fly
-  :parameters (?drone - drone ?from_location ?to_location - location
-               ?battery_before ?cost ?battery_left - level)
-  :precondition (and (drone_at ?drone ?from_location)
-    (connected ?from_location ?to_location)
-    (accessible ?to_location)                           ; not locked
-    (battery ?drone ?battery_before)
-    (flight_cost ?from_location ?to_location ?cost)
-    (battery_after ?battery_before ?cost ?battery_left)) ; enough battery
-  :effect (and (not (drone_at ?drone ?from_location)) (drone_at ?drone ?to_location)
-    (not (battery ?drone ?battery_before)) (battery ?drone ?battery_left)
-    (increase (total-cost) (distance ?from_location ?to_location))))
-\end{lstlisting}
-
-Unlocking uses a conditional effect, in \p{inspect} and the same way in
-\p{deliver-supply}: ``for every location $y$, if this event opens $y$, add
-\p{(accessible y)}''. \p{?locked_location} exists only inside the
-\p{forall}; it is not an action parameter. If no unlock fact matches, nothing
-extra happens.
-\begin{lstlisting}
-(forall (?locked_location - location)
-  (when (unlocked_by_inspection ?location ?locked_location)
-        (accessible ?locked_location)))
-\end{lstlisting}
-
-\begin{table}[h]
+\begin{table}[!h]
   \centering\small
   \begin{tabular}{@{}p{2.6cm} p{5.3cm} p{5.6cm} l@{}}
     \toprule
@@ -325,46 +291,59 @@ extra happens.
   \label{tab:actions}
 \end{table}
 
-\paragraph{Problem files.}
-Each problem declares the level objects, the \p{battery_after},
-\p{next_level} and \p{max_level} facts, \p{flight_cost} and \p{distance} for
-every edge in both directions, \p{(= (total-cost) 0)}, the unlock relations,
-and \p{(:metric minimize (total-cost))}. For capacity 4 with every flight
-costing 1 (the small instance), the subtraction table has four rows,
-\p{(battery_after b4 b1 b3)} down to \p{(battery_after b1 b1 b0)}, and no row
-starts at \p{b0}.
+The \p{fly} action shows how
+the battery encoding works: each precondition fixes one unknown parameter.
+\p{(battery ?d ?b)} takes the current level from the state, \p{flight_cost}
+takes the cost from the map, and \p{battery_after} takes the remaining level
+from the table. Nobody passes parameter values, the planner keeps only the
+combinations for which every precondition is a true fact.
+
+\begin{lstlisting}
+(:action fly
+  :parameters (?drone - drone ?from_location ?to_location - location
+               ?battery_before ?cost ?battery_left - level)
+  :precondition (and (drone_at ?drone ?from_location)
+    (connected ?from_location ?to_location)
+    (accessible ?to_location)                           ; not locked
+    (battery ?drone ?battery_before)
+    (flight_cost ?from_location ?to_location ?cost)
+    (battery_after ?battery_before ?cost ?battery_left)) ; enough battery
+  :effect (and (not (drone_at ?drone ?from_location)) (drone_at ?drone ?to_location)
+    (not (battery ?drone ?battery_before)) (battery ?drone ?battery_left)
+    (increase (total-cost) (distance ?from_location ?to_location))))
+\end{lstlisting}
+
+Unlocking uses a conditional effect, in \p{inspect} and the same way in
+\p{deliver-supply}: ``for every location $y$, if this event opens $y$, add
+\p{(accessible y)}''. \p{?locked_location} exists only inside the
+\p{forall}, it is not an action parameter. If no unlock fact matches, nothing
+extra happens.
+\begin{lstlisting}
+(forall (?locked_location - location)
+  (when (unlocked_by_inspection ?location ?locked_location)
+        (accessible ?locked_location)))
+\end{lstlisting}
+
 
 % ===========================================================================
 \section{Alternative Models}
 \label{sec:models}
 % Description and structured comparison of Model A and Model B.
 
-The two models differ only in \p{recharge}:
-\begin{itemize}
-  \item \textbf{Model A (full recharge):} one action sets the battery to
-    \p{max_level}, whatever the current level, at cost 1.
-  \item \textbf{Model B (partial recharge):} each action raises the battery
-    by one level through \p{next_level}, at cost 1. Reaching full capacity
-    takes several actions.
-\end{itemize}
+The two models differ only in \p{recharge}. In Model A (full recharge) one action sets the battery to
+    \p{max_level}, whatever the current level, at cost 1. In Model B (partial recharge) each action raises the battery
+    by one level through \p{next_level}, at cost 1.
 
-\paragraph{Blocking a useless recharge.}
-At full battery, recharging would delete and re-add the same fact and only
-add cost. An optimal planner never keeps such an action, but it would still be
-grounded and tried in every full-at-charger state. Model B blocks it for free,
-because no \p{next_level} row starts at the maximum. Model A first used an
+An optimal planner never keeps an action that only adds cost like recharging at full batery, but it would still be grounded and tried. Model B blocks it for free, because no \p{next_level} row starts at the maximum. In Model A we first used an
 extra static predicate \p{isnotmax}. We then noticed that the starting levels
 of the \p{next_level} rows are exactly that list, so Model A also requires
-\p{(next_level ?current ?higher)}, only as a ``not full'' check: \p{?higher}
-is not used in the effect. This removes one predicate and lets both domains
-share the same problem files. \p{next_level} keeps the same meaning (+1) in
-both models, and \p{max_level} is simply ignored by Model B. Both
+\p{(next_level ?current ?higher)}, only as a ``not full'' check. This removes one predicate and lets both domains
+share the same problem files. \p{max_level} is simply ignored by Model B. Both
 \p{recharge} actions have the same number of groundings, which is why
 Table~\ref{tab:grounding} is identical for the two models.
 
-\paragraph{Comparison.}
 Table~\ref{tab:models} summarises the evidence from the optimal configuration
-(A$^*$ with LM-cut); the full results are in Section~\ref{sec:results}.
+(A$^*$ with LM-cut), the full results are in Section~\ref{sec:results}.
 
 \begin{table}[h]
   \centering\small
@@ -386,36 +365,22 @@ Table~\ref{tab:models} summarises the evidence from the optimal configuration
   \label{tab:models}
 \end{table}
 
-\begin{itemize}
-  \item \textbf{Expressiveness.} Model B is more realistic. Charging takes
-    time roughly proportional to the energy restored, and B charges that cost
-    level by level. It also allows partial charging, so a drone can take just
-    enough energy for the rest of its route (in the small instance one level,
-    \p{b0}$\to$\p{b1}, is enough). Model A charges the same for an empty and an
-    almost full battery, which undervalues the recharge in the plan cost.
-  \item \textbf{Planning complexity.} The grounded tasks have the same size,
+  \textbf{Expressiveness.} Model B is more realistic as charging takes
+    time roughly proportional to the energy restored. It also allows partial charging, so a drone can take just
+    enough energy for the rest of its route. \textbf{Planning complexity.} The grounded tasks have the same size,
     so the difference comes from plan depth. In B the optimal plans are longer
-    (up to 12 extra actions), and LM-cut expands about 2--3 times more states.
-    In the extra clustered experiment, B does not finish within the time
-    limit. We think part of the reason is the delete relaxation behind the
-    heuristics: the starting battery fact is never deleted there, so flights
-    always look affordable and the heuristics hardly see the need to recharge.
-    The more recharge actions a plan needs, the more the heuristic
-    underestimates, and B needs many more.
-  \item \textbf{Plan quality and runtime.} The optimal costs differ exactly by
+    (up to 12 extra actions), and LM-cut expands about 2--3 times more states. We think part of the reason is the delete relaxation behind the heuristics: the starting battery fact is never deleted there. The more recharge actions a plan needs, the more the heuristic underestimates, and B needs many more. \textbf{Plan quality and runtime.} The optimal costs differ exactly by
     the extra recharge actions. In the medium instance and the single-drone
     large instance the flights are the same in both models (13 and 17), and B
-    adds 5 and 12 recharges. B's plans are not worse routes; the cost model
-    counts the energy. When only one level is missing (small instance) the two
+    adds 5 and 12 recharges. When only one level is missing (small instance) the two
     models coincide. Runtime follows the expanded states, roughly doubling
-    in B.
-  \item \textbf{Trade-offs.} Model A gains shorter plans and faster search, at
+    in B. \textbf{Trade-offs.} Model A gains shorter plans and faster search, at
     the cost of a less faithful cost model. Recharging is cheap whatever the
     battery level, so the planner has no incentive to save energy. Model B
     gains realism and plan costs that reflect energy use, at the cost of deeper
     search, which becomes the bottleneck when several drones need several
     levels each.
-\end{itemize}
+
 
 \section{Problem Instances}
 \label{sec:instances}
