@@ -692,8 +692,7 @@ Its search is still twice as large (243k vs 115k expansions). The workload in th
 Three drones reduce the optimal cost by 8 (21.1\%) in Model A and by 19
 (38.0\%) in Model B (Table~\ref{tab:onedrone}). We compare cost, not length:
 the classical plan is sequential, so its length counts every drone's actions.
-The optimal single-drone plans have the same 17 flights in both models, but A
-needs 4 recharges and B 16. A lone drone carries one supply at a time, so it
+A drone alone carries one supply at a time, so it
 crosses the city several times between both depots and the sites, and it
 must top up its battery repeatedly. In Model B each of those top-ups is paid
 level by level, which is why the gain from extra drones is almost twice as
@@ -707,7 +706,7 @@ costs.
   \centering\small
   \begin{tabular}{@{}l l r r r r@{}}
     \toprule
-    Model & Planner & 1 drone & 3 drones & Difference & \% \\
+    Model & Planner & 1 drone plan cost & 3 drones plan cost & Difference & \% \\
     \midrule
     A & astar-lmcut (optimal) & 38 & 30 & $-8$  & $-21.1$ \\
     A & lama                  & 38 & 30 & $-8$  & $-21.1$ \\
@@ -730,12 +729,12 @@ produces the advantage. We tested this with the clustered variant, where all
 three drones start at the port. In Model A, going from one drone to three
 clustered drones already saves 7 of the 8 units (38 $\to$ 31), and spreading
 them saves only 1 more (31 $\to$ 30). In Model B, clustering saves between 17
-and 19 of the 19 units (the optimum is between 31 and 33). On our map, most
-of the gain comes from having more batteries and cargo slots, not from where
+and 19 of the 19 units. On our map, most of the gain comes from having more batteries and cargo slots, not from where
 the drones start. Our explanation is that the centre of the map (\p{estacio},
 \p{rambla}) keeps every region within a few levels of both depots, so a
 clustered drone loses little by flying to its region first. A map with longer
 distances between the regions should make the start positions matter more.
+
 The clustered variant is also the hardest for the planner: LM-cut needs 420k
 expansions in A and does not finish in B, against 115k and 243k for the spread
 start. Three identical drones at the same location create many symmetric
