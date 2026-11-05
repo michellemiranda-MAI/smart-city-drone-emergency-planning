@@ -1,40 +1,12 @@
 ;; ============================================================================
-;; problem-small.pddl : Barcelona Flood Emergency - Small Instance
-;;
-;; Scenario: A DANA storm brings torrential rain and a Mediterranean storm surge,
-;;   flooding Barcelona's coastal Barceloneta district and cutting off access to
-;;   Parc de la Ciutadella, which is being used as an evacuation centre. The
-;;   flooded Llobregat cuts the road to Hospital de Viladecans, south-west of
-;;   El Prat. One drone (droneA) is dispatched from El Prat emergency
-;;   aerodrome, the central depot where the medical kit is stored.
-;;
-;; Objects:
-;;   1 drone  : droneA  (starts at aerodrome, full battery b4)
-;;   5 locations, a line from south-west to north-east:
-;;     hospital_viladecans - aerodrome - barceloneta - montjuic_pad - ciutadella
-;;     hospital_viladecans - Hospital de Viladecans, across the Llobregat (deliver kit1)
-;;     aerodrome           - El Prat emergency drone base   (DEPOT, kit1 here, no charger)
-;;     barceloneta         - flooded beach district         (inspect -> unlocks ciutadella)
-;;     montjuic_pad        - Montjuic hilltop charging pad  (CHARGING STATION)
-;;     ciutadella          - Parc de la Ciutadella hub      (LOCKED, inspect)
-;;   1 supply: kit1 (medical_kit) at the depot (aerodrome)
-;;
-;; Design constraint (mandatory recharge):
-;;   droneA starts FULL (b4), so the map itself forces the recharge.
-;;   The map is a line and the drone starts between its two ends:
-;;   hospital_viladecans (one side) and ciutadella (other side) must both be visited.
-;;   So the drone must reach one end and come back: the cheapest way is
-;;   aerodrome->hospital_viladecans->aerodrome (2 flights), then
-;;   aerodrome->barceloneta->montjuic_pad->ciutadella (3 flights).
-;;   Every complete mission needs at least 5 flights = 5 levels > 4.
-;;   No recharge-free solution exists. On the best route the drone reaches
-;;   montjuic_pad (the only charger) with b0, just before the last flight.
-;;
-;; Optimal plan cost: 10 in both models
-;;   (5 flights + 2 inspections + pick-up + delivery + 1 recharge)
-;;   Model A (instant full recharge): 10
-;;   Model B (incremental +1/action):  10 (one recharge is enough: b0 -> b1
-;;     covers the last flight montjuic_pad->ciutadella)
+;; problem-small.pddl : Instance 1 (small) - Barcelona flood emergency
+;; 1 drone (droneA) starting at aerodrome.
+;; Scenario: storm surge and flooding cut off road access across Barcelona.
+;; Parc de la Ciutadella stays locked until Barceloneta is inspected.
+;; 5 locations, 1 depot (aerodrome), 1 charging station (montjuic_pad),
+;; battery capacity 4 (b0-b4), flight cost 1 level per edge.
+;; 3 goals: 1 delivery + 2 inspections.
+;; Map forces at least one recharge at montjuic_pad (5 flights needed > b4).
 ;; ============================================================================
 
 (define (problem barcelona-flood-small)
