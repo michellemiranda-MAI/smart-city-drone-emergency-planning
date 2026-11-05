@@ -114,8 +114,8 @@ values) and its battery level ($N{+}1$ values). The second term gives each
 supply $D{+}2$ possible states: still at its depot, delivered, or carried by
 one of the $D$ drones. The last term records whether each inspection has been
 done. The exponent $D$ is
-why adding drones costs much more than adding locations, which the large
-instance shows clearly (Section~\ref{sec:results}).
+why adding drones costs much more than adding locations, which the single-drone
+and three-drone variants of the large instance show (Section~\ref{sec:results}).
 Table~\ref{tab:grounding} gives the size of the grounded task that Fast
 Downward builds for each instance. These numbers are identical in both models.
 
@@ -357,7 +357,8 @@ Table~\ref{tab:models} summarises the evidence from the optimal configuration
   \textbf{Expressiveness.} Model B is more realistic as charging takes
     time roughly proportional to the energy restored. It also allows partial charging, so a drone can take just
     enough energy for the rest of its route. \textbf{Planning complexity.} The grounded tasks have the same size,
-    so the difference comes from plan depth. In B the optimal plans are longer
+    so the difference comes from the search: B reaches more states
+    (intermediate battery levels) and needs deeper plans. In B the optimal plans are longer
     (up to 12 extra actions), and LM-cut expands about 2--3 times more states. The reason is the delete relaxation behind the heuristics: battery facts are never deleted, so a drone that starts full never needs a recharge in the relaxed task. The heuristic therefore misses the recharges of the optimal plan, and B needs more of them. The logs confirm it: the initial LM-cut value $h(s_0)$ is identical in both models (8, 15, 22, 25), so the gap to the optimum grows by exactly the extra recharges (by 5 on medium, by 12 on the single-drone instance).
     
     \textbf{Plan quality and runtime.} In the medium and single-drone large
@@ -523,7 +524,8 @@ its runtime does not measure how long the best plan took. Its expanded states
 count only the last iteration.
 All 56 runs were run in one batch on an idle
 machine, so the runtimes are comparable. 47 runs found a plan and VAL accepted
-all 47, the other 9 hit a limit (8 time, 1 memory).
+all 47, the other 9 hit a limit (8 time, 1 memory). The capacity experiment
+(Section~\ref{sec:results}) adds 12 runs with the same limits.
 
 \section{Results and Analysis}
 \label{sec:results}
@@ -615,6 +617,7 @@ more drones from the gain from starting them in different regions.
 
 
 \subsection{Small instance}
+\label{sec:res-small}
 No configuration struggled: every run finishes in under 0.35\,s with at most
 106 expanded states. The battery encoding is tiny (5 levels, one flight
 cost, four \p{battery_after} rows), and there is only one drone, so the
@@ -658,7 +661,8 @@ results are noisy: LAMA-first is better in B (39) than in A (52), and
 \p{gbfs-ff} the other way round (33 vs 45). With costs ignored or poorly
 estimated, small changes in the model change which plateau the greedy search
 falls into. The modelling lesson is that a more faithful recharge does not
-make the task bigger, but makes the plans deeper and the heuristic weaker.
+make the grounded task bigger (same facts and actions), but it enlarges the
+reachable state space (Section~\ref{sec:res-small}), makes the plans deeper and the heuristic weaker.
 
 \subsection{Large instance}
 This is where the planners struggle. A$^*$ with LM-cut is the only optimal
@@ -775,19 +779,34 @@ separately.
   \item \textbf{Cost-aware greedy search.} Over the 10 instance and model
     pairs, \p{gbfs-ff} finds the cheaper plan in 6, LAMA-first in 3, and one
     is a tie. On the large variants, where the edge costs vary most,
-    \p{gbfs-ff} wins every case except single-drone Model B. This is in line
-    with LAMA-first ignoring action costs, when many recharges are needed,
-    LAMA's landmarks seem to compensate. Both finish in under 0.4\,s, and
+    \p{gbfs-ff} wins every case except single-drone Model B. This fits
+    LAMA-first ignoring action costs. The three cases where LAMA-first wins
+    are all Model B instances (small, medium and single-drone large). In the
+    last two the plans contain many recharges, and there its landmarks seem
+    to compensate for the missing cost information. Both finish in under 0.4\,s, and
     both are far from optimal: fast planners pay with plan quality, optimal
     planners pay with time.
   \item \textbf{Grounding is not the bottleneck.} The translator produces at
     most 588 actions and 103 facts, the same for both models. The difficulty
     is in the search: plan depth (recharge model) and number of drones.
-  \item \textbf{Drones, not map size.} LM-cut in Model A expands 16 states
-    on the small instance (1 drone), 123k on the medium (2 drones) and 115k on
-    the large (3 drones). On the same large map, one drone needs only 4.5k and
-    three clustered drones 420k. The number of drones drives the difficulty,
-    as the exponent in Section~\ref{sec:searchspace} predicts.
+  \item \textbf{Drones, on the same map.} Across instances the trend is not
+    monotone: LM-cut in Model A expands 16 states on the small instance (1
+    drone), 123k on the medium (2 drones) and only 115k on the large (3
+    drones). The instances also differ in goals, locks, edge costs and start
+    positions, so this comparison is confounded. The clean evidence is the
+    large map with everything else fixed: one drone needs 4.5k expansions,
+    three spread drones 115k and three clustered drones 420k. There, the
+    number of drones drives the difficulty, as the exponent in
+    Section~\ref{sec:searchspace} predicts, and where they start matters too.
+  \item \textbf{Number of battery levels.} We reran the single-drone instance
+    with capacity 8 and 10 (same map and goals, \p{optional_experiments/}).
+    Each extra level adds flight groundings (196 $\to$ 262 $\to$ 328 actions)
+    and reachable states: LM-cut expands 4.5k $\to$ 6.0k $\to$ 6.7k states in
+    A and 11.4k $\to$ 15.4k $\to$ 18.3k in B, close to the linear growth in
+    $N{+}1$ that the bound of Section~\ref{sec:searchspace} predicts for one
+    drone ($\times$1.57). Plans get cheaper (A: 38 $\to$ 36, B: 50 $\to$ 46)
+    because fewer recharges are needed, but $h(s_0)$ stays at 25: the
+    heuristic sees neither the capacity nor the recharges.
   \item \textbf{When the recharge model matters.} The optimal cost of Model B
     exceeds Model A by 0 (small), 1 (large, 3 drones), 5 (medium) and 12
     (single drone): the gap depends on how many battery levels the drones
@@ -894,7 +913,8 @@ recharge, so our instances are only tight between chargers.
     resources, could make the larger instances easier.
   \item \textbf{Experiment scope.} Each run was performed once, and the
     claims about start positions and battery-blind heuristics rest on a few
-    instances. Repeated runs on generated maps would make them stronger.
+    instances, and the cross-instance comparison is confounded by different
+    maps and goals. Repeated runs on generated maps would make them stronger.
 \end{itemize}
 
 % ===========================================================================
