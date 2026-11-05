@@ -34,6 +34,8 @@
   basicstyle=\ttfamily\small,
   columns=fullflexible,
   breaklines=true,
+  % mark wrapped lines so they are not read as new PDDL lines
+  postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space},
   frame=single,
   commentstyle=\color{gray},
   morecomment=[l]{;},
@@ -722,8 +724,8 @@ A drone alone carries one supply at a time, so it
 crosses the city several times between both depots and the sites, and it
 must top up its battery repeatedly. In Model B each of those top-ups is paid
 level by level, which is why the gain from extra drones is almost twice as
-large there. The three-drone plan needs only one recharge, because each drone
-starts full in its own region. The greedy configurations show the same
+large there. With three drones the optimal plan needs only one recharge instead
+of 4 (A) or 16 (B): three full batteries cover most of the flying. The greedy configurations show the same
 direction (11--46\%), but their gaps mix the effect of the drones with the
 quality of the plan, so we base the comparison on the optimal and \p{lama}
 costs.
@@ -773,10 +775,11 @@ separately.
   \item \textbf{Heuristic strength.} Wherever blind, $h^{max}$ and LM-cut all
     finish, they return the same optimal cost and expand fewer states in that
     order (single drone, Model A: 21,639 $\to$ 13,624 $\to$ 4,456). This
-    is what dominance predicts: if an admissible heuristic is never lower than
-    another one in any state, A$^*$ with it expands at most the same states
-    (up to ties), and here LM-cut $\geq h^{max} \geq$ blind. More informed is not always faster, though: on the medium instance the cheaper
-    heuristics finish first.
+    matches what dominance would predict: LM-cut $\geq h^{max} \geq$ blind in
+    every state, and for consistent heuristics A$^*$ with the larger one
+    expands at most the same states (up to ties). $h^{max}$ is consistent but
+    LM-cut is not in general, so for LM-cut this is an observation, not a
+    guarantee.
   \item \textbf{Battery and the delete relaxation.} The gain from $h^{max}$ to
     LM-cut is about 3 times in Model A and only about 1.6 times in Model B, on
     both the medium (3.4 vs 1.6) and the single-drone instance at capacity 6,
@@ -926,10 +929,11 @@ recharge, so our instances are only tight between chargers.
 % ===========================================================================
 \section*{Use of AI Tools}
 We used AI assistants to check the PDDL syntax, comment the code, correct
-the English of the report and help rewrite sections in a more formal style
-(always revised by us afterwards), check the report against the requirements, build the
-plots and \LaTeX{} tables, and help find and summarise the papers of
-Section~\ref{sec:literature}.
+the English and formalise the style of the report, check it against the
+requirements, build the plots and \LaTeX{} tables, write the experiment
+scripts and the README, and shortlist candidate papers for
+Section~\ref{sec:literature}. We revised all of it, ran the scripts
+ourselves, and read the chosen papers in detail.
 
 \begin{thebibliography}{9}
   \bibitem{helmert2006fd} M.~Helmert. The Fast Downward planning system.
@@ -959,7 +963,8 @@ Section~\ref{sec:literature}.
 % (at least one VAL output per instance).
 
 {\sloppy
-All files are included exactly as they are given to the planner. Every plan,
+All files are included exactly as they are given to the planner; a grey
+$\hookrightarrow$ marks a long line wrapped to fit the page. Every plan,
 VAL output and log is in the submitted folder. The extra instances are in
 \p{optional_experiments/}: the clustered start
 (\p{problem-large-clustered.pddl}) and the two capacity variants
