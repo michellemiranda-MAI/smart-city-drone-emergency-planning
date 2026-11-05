@@ -16,6 +16,11 @@ problem-large-1drone.pddl     Single-drone variant of the large instance
 optional_experiments/
   problem-large-clustered.pddl  Extra: large instance, all three drones start
                                 at the port depot (not a required instance)
+  problem-large-1drone-b8.pddl  Extra: single-drone variant with battery
+  problem-large-1drone-b10.pddl capacity 8 / 10 (only the battery facts change)
+  gen_capacity.sh               Generates the two capacity variants above
+  run_capacity.sh               Runs the capacity experiment
+  capacity/                     Its logs, plans, VAL outputs and capacity.csv
 run_experiments.sh            Runs every instance x model x configuration
 validation/                   VAL output for every plan found (Validate -v)
 plans/                        Plans found by Fast Downward
@@ -57,6 +62,19 @@ FORCE=1 bash run_experiments.sh
 
 If the tools are not on PATH:
 FD=/path/to/fast-downward.py VALIDATE=/path/to/Validate bash run_experiments.sh
+
+Extra experiment: number of battery levels (report, Section 7.6)
+bash optional_experiments/gen_capacity.sh 8 10
+bash optional_experiments/run_capacity.sh
+  The first command writes problem-large-1drone-b8.pddl and -b10.pddl from
+  problem-large-1drone.pddl (already included, so this step is optional).
+  The second runs A* with blind, hmax and LM-cut, models A and B, at
+  capacity 6, 8 and 10, with the same limits, and validates every plan.
+  Output: optional_experiments/capacity/ (capacity.csv has one row per run).
+  The VAL outputs for capacity 8 and 10 are also copied to validation/ as
+  problem-large-1drone-b8_* and problem-large-1drone-b10_*.
+  A single run, for example:
+fast-downward.py --overall-time-limit 5m --overall-memory-limit 4G --plan-file sas_plan domain-A.pddl optional_experiments/problem-large-1drone-b10.pddl --search "astar(lmcut())"
 
 
 3. Exact commands (what run_experiments.sh runs)

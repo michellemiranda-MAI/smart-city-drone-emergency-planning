@@ -359,10 +359,10 @@ Table~\ref{tab:models} summarises the evidence from the optimal configuration
     enough energy for the rest of its route. \textbf{Planning complexity.} The grounded tasks have the same size,
     so the difference comes from the search: B reaches more states
     (intermediate battery levels) and needs deeper plans. In B the optimal plans are longer
-    (up to 12 extra actions), and LM-cut expands about 2--3 times more states. The reason is the delete relaxation behind the heuristics: battery facts are never deleted, so a drone that starts full never needs a recharge in the relaxed task. The heuristic therefore misses the recharges of the optimal plan, and B needs more of them. The logs confirm it: the initial LM-cut value $h(s_0)$ is identical in both models (8, 15, 22, 25), so the gap to the optimum grows by exactly the extra recharges (by 5 on medium, by 12 on the single-drone instance).
+    (up to 12 extra actions), and LM-cut expands about 2--3 times more states on the medium and large instances. The reason is the delete relaxation behind the heuristics: battery facts are never deleted, so a drone that starts full never needs a recharge in the relaxed task. The heuristic therefore misses the recharges of the optimal plan, and B needs more of them. The logs confirm it: the initial LM-cut value $h(s_0)$ is identical in both models (8, 15, 22, 25), so the gap to the optimum grows by exactly the extra recharges (by 5 on medium, by 12 on the single-drone instance).
     
     \textbf{Plan quality and runtime.} In the medium and single-drone large
-    instances the flights are the same in both models (13 and 17), and B only
+    instances the flights are the same in both models (13 and 17 flights), and B only
     adds 5 and 12 recharges. With three drones both optimal plans recharge
     once, and the extra unit comes from flying: B reassigns work so that no
     drone runs low (Section~\ref{sec:results}). When only one level is missing (small instance) the two
@@ -665,6 +665,7 @@ make the grounded task bigger (same facts and actions), but it enlarges the
 reachable state space (Section~\ref{sec:res-small}), makes the plans deeper and the heuristic weaker.
 
 \subsection{Large instance}
+\label{sec:res-large}
 This is where the planners struggle. A$^*$ with LM-cut is the only optimal
 configuration that solves the three-drone instance. Blind search and $h^{max}$ expand 15--67 million states without finishing, and
 they are still far from the optimum when they stop. Blind search hits the memory limit in Model A: with three
@@ -673,7 +674,7 @@ has the same 12 locations and goals but only 196 grounded actions instead of
 588, and LM-cut solves it in 0.4\,s, even though its optimal plan is longer.
 This matches the upper bound of Section~\ref{sec:searchspace}: each drone
 brings 12 positions and 7 battery levels (\p{battery_after} rows for costs
-1--3), with drones in the exponent.
+1--3), with drones in the exponent. More levels per drone also enlarge the search (Section~\ref{sec:across}).
 
 LAMA-first's plans cost almost twice the optimum. It ignores action costs (\p{cost_type=one}), so a cost-3
 river crossing looks as cheap as a cost-1 hop. \p{gbfs-ff} uses the real
@@ -687,7 +688,7 @@ full recharge), \p{droneA} 9 and \p{droneC} only 2. Run under Model B, that
 same plan would need 4 single-level recharges and cost 33. The Model B optimum
 instead gives the \p{part_alta} delivery to \p{droneC}: flights cost one more
 (18 vs 17), but only one level is ever recharged, and the split becomes
-10/9/7. So Model A rewards nothing for sharing the work, while Model B rewards
+10/9/8. So Model A rewards nothing for sharing the work, while Model B rewards
 spreading energy use. Neither model rewards a shorter mission time
 (Section~\ref{sec:limitations}).
 
@@ -763,6 +764,7 @@ states (``A does $x$, B does $y$'' and the reverse), which A$^*$ explores
 separately.
 
 \subsection{Across instances}
+\label{sec:across}
 \begin{itemize}
   \item \textbf{Heuristic strength.} Wherever blind, $h^{max}$ and LM-cut all
     finish, they return the same optimal cost and expand fewer states in that
@@ -773,9 +775,9 @@ separately.
     heuristics finish first.
   \item \textbf{Battery and the delete relaxation.} The gain from $h^{max}$ to
     LM-cut is about 3 times in Model A and only about 1.6 times in Model B, on
-    both the medium (3.4 vs 1.6) and the single-drone instance (3.1 vs 1.6).
-    This supports our explanation that relaxed heuristics do not count
-    recharges, even though these are only two instances.
+    both the medium (3.4 vs 1.6) and the single-drone instance at capacity 6,
+    8 and 10 (3.1--4.0 vs 1.6). This supports our explanation that relaxed
+    heuristics do not count recharges.
   \item \textbf{Cost-aware greedy search.} Over the 10 instance and model
     pairs, \p{gbfs-ff} finds the cheaper plan in 6, LAMA-first in 3, and one
     is a tie. On the large variants, where the edge costs vary most,
@@ -788,7 +790,8 @@ separately.
     planners pay with time.
   \item \textbf{Grounding is not the bottleneck.} The translator produces at
     most 588 actions and 103 facts, the same for both models. The difficulty
-    is in the search: plan depth (recharge model) and number of drones.
+    is in the search: reachable states and plan depth (recharge model,
+    battery levels) and number of drones.
   \item \textbf{Drones, on the same map.} Across instances the trend is not
     monotone: LM-cut in Model A expands 16 states on the small instance (1
     drone), 123k on the medium (2 drones) and only 115k on the large (3
@@ -810,14 +813,13 @@ separately.
   \item \textbf{When the recharge model matters.} The optimal cost of Model B
     exceeds Model A by 0 (small), 1 (large, 3 drones), 5 (medium) and 12
     (single drone): the gap depends on how many battery levels the drones
-    are missing, not on the size of the instance. Spreading the drones close
-    to chargers almost removes the price of the more faithful model.
+    are missing (it shrinks to 10 at capacity 10), not on the size of the
+    instance, and on whether the work can be spread so that no drone runs
+    low (large instance, Section~\ref{sec:res-large}).
   \item \textbf{Unsolved runs.} Nine runs did not finish
-    (Table~\ref{tab:unsolved}). None of them means an instance is
-    unsolvable: every variant has a valid plan in both models from at least
-    one configuration. When A$^*$ stops, the largest $f$ value it has reached
-    is a lower bound on the optimal cost, so each unsolved run still tells us
-    how far it got.
+    (Table~\ref{tab:unsolved}), but every variant has a valid plan in both
+    models. The largest $f$ value A$^*$ reached is a lower bound on the
+    optimal cost.
 \end{itemize}
 
 \begin{table}[H]
@@ -952,9 +954,13 @@ Section~\ref{sec:literature}.
 % Full PDDL source code, example generated plans, VAL output
 % (at least one VAL output per instance).
 
-All files are included exactly as they are given to the planner. The extra
-instance (\p{optional_experiments/problem-large-clustered.pddl}), every plan,
-every VAL output and every log are in the submitted folder.
+{\sloppy
+All files are included exactly as they are given to the planner. Every plan,
+VAL output and log is in the submitted folder. The extra instances are in
+\p{optional_experiments/}: the clustered start
+(\p{problem-large-clustered.pddl}) and the two capacity variants
+(\p{problem-large-1drone-b8.pddl}, \p{problem-large-1drone-b10.pddl}), which
+are generated by \p{gen_capacity.sh} and run by \p{run_capacity.sh}.\par}
 
 \subsection{Domain files}
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,title={\p{domain-A.pddl}}]{../domain-A.pddl}
