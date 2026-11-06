@@ -880,18 +880,20 @@ that only a temporal model rewards parallel flights.
 
 \paragraph{Nakhost, Hoffmann and M\"uller (2012), resource-constrained
 planning~\cite{nakhost2012rcp}.}
-This paper studies planning when the resource supply is close to the minimum
-a plan needs. Its main finding is that planners guided by delete-relaxation
-heuristics get much worse as resources get tighter, because relaxed plans
-act as if a resource value, once reached, persists forever. This explains
-our observation that heuristics guide Model B poorly. Whether the battery is
-a number or a set of level facts, the relaxed problem never runs out of
-energy, so recharges stay invisible to the heuristic. In their study, LM-cut
-worked best with the propositional encoding (resource levels as facts) and
-LAMA with that encoding plus action costs, which supports our choice to
-compile the battery into levels for Fast Downward. The connection is
-partial: their resources cannot be replenished, while our drones can
-recharge, so our instances are only tight between chargers.
+This paper studies planning with resources that cannot be replenished,
+measuring tightness by $C$, the largest factor by which the initial supply can
+be scaled down while the task stays solvable. It shows that planners guided by
+delete-relaxation heuristics get much worse as resources get scarce, because a
+relaxed action adds the new resource value without deleting the old one.
+Our results show the same effect. With the battery compiled into level facts,
+a relaxed flight never deletes the full level the drone started with, so the
+drone never needs to recharge: the initial LM-cut value is identical in
+Models A and B on every instance and, on the single-drone instance, stays at
+25 as the capacity grows from 6 to 10. Their planner Arvand2, which evaluates
+$h^{FF}$ only at the ends of random walks and adds on-path search
+continuation and smart restarts, did best when resources were scarce, making
+it a natural candidate for Model B. The connection is partial, since our
+drones can recharge.
 
 % ===========================================================================
 \section{Limitations and Future Work}
@@ -914,9 +916,6 @@ recharge, so our instances are only tight between chargers.
     once. A third model could charge several levels in one action at a cost
     proportional to the levels, combining the realism of B with the short
     plans of A.
-  \item \textbf{Capacity and supplies.} A drone carries one supply, and each
-    supply has one fixed destination. Larger payloads would need a symbolic
-    capacity counter, like the battery.
   \item \textbf{Full knowledge and no failures.} Every lock, cost and need is
     known in advance, and actions always succeed. Real emergencies involve
     unknown blockages, new requests and failing drones. Online replanning, or
