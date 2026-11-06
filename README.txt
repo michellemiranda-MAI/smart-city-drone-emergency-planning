@@ -55,10 +55,11 @@ source ~/.bashrc
 
 2. Run everything
 -----------------
-bash run_experiments.sh
-
-Runs that already have a log are skipped. To re-run everything from scratch:
 FORCE=1 bash run_experiments.sh
+
+The submitted logs are already included, and runs that already have a log
+are skipped, so without FORCE=1 nothing is re-run. To run only missing runs:
+bash run_experiments.sh
 
 If the tools are not on PATH:
 FD=/path/to/fast-downward.py VALIDATE=/path/to/Validate bash run_experiments.sh

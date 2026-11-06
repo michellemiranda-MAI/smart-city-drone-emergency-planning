@@ -11,7 +11,7 @@ FD=${FD:-$(command -v fast-downward.py || echo "$HOME/downward/fast-downward.py"
 VALIDATE=${VALIDATE:-$(command -v Validate || find "$HOME/VAL" -name Validate -type f | head -1)}
 LIMITS="--overall-time-limit 5m --overall-memory-limit 4G"
 OUT=optional_experiments/capacity
-mkdir -p "$OUT"
+mkdir -p "$OUT" validation
 CSV=$OUT/capacity.csv
 echo "capacity,model,planner,solved,runtime_s,plan_length,plan_cost,recharges,expanded_states,h_init,val" > "$CSV"
 
@@ -34,6 +34,8 @@ for N in 6 8 10; do
         rech=$(grep -c '^(recharge' "$OUT/$id.plan")
         "$VALIDATE" -v "domain-$model.pddl" "$prob" "$OUT/$id.plan" > "$OUT/$id.val.txt" 2>&1
         if grep -q "Plan valid" "$OUT/$id.val.txt"; then val=valid; else val=INVALID; fi
+        # capacity 8 and 10 are extra instances: keep their VAL output in validation/ too
+        [ "$N" != 6 ] && cp "$OUT/$id.val.txt" "validation/problem-large-1drone-b${N}_${model}_astar-$h.val.txt"
         cost=$(grep -oP 'Final value: \K[0-9.]+' "$OUT/$id.val.txt" | tail -1)
       fi
       echo "$N,$model,astar-$h,$solved,$runtime,$length,$cost,$rech,$expanded,$hinit,$val" >> "$CSV"
