@@ -862,21 +862,23 @@ separately.
 
 \paragraph{Bernardini, Fox and Long (2014), quadcopter
 surveillance~\cite{bernardini2014quadcopter}.}
-This paper plans the missions of a real low-cost quadcopter in PDDL, which
-searches for a moving target it has lost sight of. The battery is the main limit
-on the mission, and the authors model it in two ways: without recharging, so
-the whole mission must fit in one charge, or split into parts with a recharge
-in between, either to full capacity or up to a chosen level. This is the same
-choice we split into Model A and Model B, and it is close to the variable
-recharge we propose in Section~\ref{sec:limitations}. Their battery is a
-numeric fluent, which Fast Downward cannot handle, so we compiled the same
-idea into level objects and a \p{battery_after} table. They also treat the
-drone's uncertainty about its own position as a resource: it grows with every
-flight and is reset only by re-localising at a known landmark. This would be
-a natural extension of our model, encoded with the same level objects as the
-battery and with landmarks playing the role of chargers. Finally, they use
-durative actions with the temporal planner OPTIC, which supports our point
-that only a temporal model rewards parallel flights.
+This paper plans the missions of a real low-cost quadcopter in PDDL, searching
+for a moving target it has lost sight of. Battery life is the main limit, and
+the authors model it in two ways: without recharging, so the whole mission
+must fit in one charge, or split into parts with a recharge in between,
+either to full capacity or up to a chosen level. This is the same choice we
+split into Model A and Model B, but their battery is a numeric fluent, which
+Fast Downward cannot handle, so we compiled it into level objects and a
+\p{battery_after} table. Their recharge is a durative action that only
+releases the charge when it ends, and in their example plan it takes
+1200\,s against at most 110\,s for any other action, which supports our view
+that charging takes time and that a unit-cost recharge undervalues it in
+Model A. They also treat the drone's uncertainty about its own position as a
+resource that grows with every manoeuvre and is reset by re-localising at
+points where its vision system works well, which our model could encode with
+the same level objects, with those points playing the role of chargers.
+Their temporal model with durative actions and OPTIC is the kind of
+extension we propose in Section~\ref{sec:limitations}.
 
 \paragraph{Nakhost, Hoffmann and M\"uller (2012), resource-constrained
 planning~\cite{nakhost2012rcp}.}
@@ -932,13 +934,13 @@ drones can recharge.
 
 % ===========================================================================
 \section*{Use of AI Tools}
-We used AI assistants to check the PDDL syntax, comment the code, correct
-the English and formalise the style of the report, check it against the
-requirements, build the plots and \LaTeX{} tables, write the experiment
-scripts and the README, and shortlist candidate papers for
-Section~\ref{sec:literature}. We came up with the ideas, wrote the PDDL code
-and the report, carefully reviewed all AI-generated output, ran the scripts,
-analysed the results and read the selected papers in detail.
+We used AI assistants for support: checking PDDL syntax, commenting the
+code, correcting the English, building the plots and \LaTeX{} tables, helping
+write the shell scripts that run the experiments, and shortlisting candidate
+papers for Section~\ref{sec:literature}. We designed the model, wrote the
+PDDL domains and problems, ran and analysed every experiment, wrote the
+report and read the selected papers in detail, and reviewed all AI-assisted
+output.
 
 \begin{thebibliography}{9}\setlength{\itemsep}{0pt}
   \bibitem{helmert2006fd} M.~Helmert. The Fast Downward planning system.
