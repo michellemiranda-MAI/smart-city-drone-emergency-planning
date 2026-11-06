@@ -353,7 +353,8 @@ Table~\ref{tab:models} summarises the evidence from the optimal configuration
     Large clustered$^\dagger$ & 31 & -- & 1 / 28 & -- & 420k (203 s) & time limit \\
     \bottomrule
   \end{tabular}
-  \caption{Model A vs Model B, A$^*$ + LM-cut, 5 min / 4 GB. $^\dagger$Clustered
+  \caption{Model A vs Model B, A$^*$ + LM-cut, 5 min / 4 GB. ``--'' means the
+    search did not finish within these limits. $^\dagger$Clustered
     variant (Section~\ref{sec:inst-large}).}
   \label{tab:models}
 \end{table}
@@ -363,7 +364,7 @@ Table~\ref{tab:models} summarises the evidence from the optimal configuration
     enough energy for the rest of its route. \textbf{Planning complexity.} The grounded tasks have the same size,
     so the difference comes from the search: B reaches more states
     (intermediate battery levels) and needs deeper plans. In B the optimal plans are longer
-    (up to 12 extra actions), and LM-cut expands about 2--3 times more states on the medium and large instances. The reason is the delete relaxation behind the heuristics: battery facts are never deleted, so a drone that starts with enough battery for any single flight never needs a recharge in the relaxed task. The heuristic therefore misses the recharges of the optimal plan, and B needs more of them. The logs confirm it: the initial LM-cut value $h(s_0)$ is identical in both models (8, 15, 22, 25), so the gap to the optimum grows by exactly the extra recharges (by 5 on medium, by 12 on the single-drone instance).
+    (up to 12 extra actions), and LM-cut expands about 2--3 times more states on the medium and large instances. The reason is the delete relaxation behind the heuristics: battery facts are never deleted, so a drone that starts with enough battery for any single flight never needs a recharge in the relaxed task. The heuristic therefore misses the recharges of the optimal plan, and B needs more of them. The logs confirm it: the initial LM-cut value $h(s_0)$ is identical in both models on all five instances (8, 15, 22, 25 and 23 for small, medium, large, single-drone and clustered), so the gap to the optimum grows by exactly the extra recharges (by 5 on medium, by 12 on the single-drone instance).
     
     \textbf{Plan quality and runtime.} In the medium and single-drone large
     instances the flights are the same in both models (13 and 17 flights), and B only
@@ -776,6 +777,32 @@ separately.
 \subsection{Across instances}
 \label{sec:across}
 \begin{itemize}
+  \item \textbf{Grounding is not the bottleneck.} The translator produces at
+    most 588 actions and 103 facts, the same for both models. The difficulty
+    is in the search: reachable states and plan depth (recharge model,
+    battery levels) and number of drones.
+  \item \textbf{Number of drones and start positions.} Across instances the trend is not
+    monotone: LM-cut in Model A expands 16 states on the small instance (1
+    drone), 123k on the medium (2 drones) and only 115k on the large (3
+    drones). The instances also differ in goals, locks, edge costs and start
+    positions, so this comparison is confounded. The clean evidence is the
+    large map with everything else fixed: one drone needs 4.5k expansions,
+    three spread drones 115k and three clustered drones 420k. There, the
+    number of drones drives the difficulty, as the exponent in
+    Section~\ref{sec:searchspace} predicts, and where they start matters too.
+  \item \textbf{Number of battery levels.} In the capacity variants, every two extra levels add flight groundings (196 $\to$ 262 $\to$ 328 actions)
+    and reachable states: LM-cut expands 4.5k $\to$ 6.0k $\to$ 6.7k states in
+    A and 11.4k $\to$ 15.4k $\to$ 18.3k in B, close to the linear growth in
+    $N{+}1$ that the bound of Section~\ref{sec:searchspace} predicts for one
+    drone ($\times$1.57). Plans get cheaper (A: 38 $\to$ 36, B: 50 $\to$ 46)
+    because fewer recharges are needed, but $h(s_0)$ stays at 25: the
+    heuristic sees neither the capacity nor the recharges.
+  \item \textbf{When the recharge model matters.} The optimal cost of Model B
+    exceeds Model A by 0 (small), 1 (large, 3 drones), 5 (medium) and 12
+    (single drone): the gap depends on how many battery levels the drones
+    are missing (it shrinks to 10 at capacity 10), not on the size of the
+    instance, and on whether the work can be spread so that no drone runs
+    low (large instance, Section~\ref{sec:res-large}).
   \item \textbf{Heuristic strength.} Wherever blind, $h^{max}$ and LM-cut all
     finish, they return the same optimal cost and expand fewer states in that
     order (single drone, Model A: 21,639 $\to$ 13,624 $\to$ 4,456). This
@@ -799,32 +826,6 @@ separately.
     to compensate for the missing cost information. Both finish in under 0.4\,s, and
     both are far from optimal: fast planners pay with plan quality, optimal
     planners pay with time.
-  \item \textbf{Grounding is not the bottleneck.} The translator produces at
-    most 588 actions and 103 facts, the same for both models. The difficulty
-    is in the search: reachable states and plan depth (recharge model,
-    battery levels) and number of drones.
-  \item \textbf{Drones, on the same map.} Across instances the trend is not
-    monotone: LM-cut in Model A expands 16 states on the small instance (1
-    drone), 123k on the medium (2 drones) and only 115k on the large (3
-    drones). The instances also differ in goals, locks, edge costs and start
-    positions, so this comparison is confounded. The clean evidence is the
-    large map with everything else fixed: one drone needs 4.5k expansions,
-    three spread drones 115k and three clustered drones 420k. There, the
-    number of drones drives the difficulty, as the exponent in
-    Section~\ref{sec:searchspace} predicts, and where they start matters too.
-  \item \textbf{Number of battery levels.} In the capacity variants, every two extra levels add flight groundings (196 $\to$ 262 $\to$ 328 actions)
-    and reachable states: LM-cut expands 4.5k $\to$ 6.0k $\to$ 6.7k states in
-    A and 11.4k $\to$ 15.4k $\to$ 18.3k in B, close to the linear growth in
-    $N{+}1$ that the bound of Section~\ref{sec:searchspace} predicts for one
-    drone ($\times$1.57). Plans get cheaper (A: 38 $\to$ 36, B: 50 $\to$ 46)
-    because fewer recharges are needed, but $h(s_0)$ stays at 25: the
-    heuristic sees neither the capacity nor the recharges.
-  \item \textbf{When the recharge model matters.} The optimal cost of Model B
-    exceeds Model A by 0 (small), 1 (large, 3 drones), 5 (medium) and 12
-    (single drone): the gap depends on how many battery levels the drones
-    are missing (it shrinks to 10 at capacity 10), not on the size of the
-    instance, and on whether the work can be spread so that no drone runs
-    low (large instance, Section~\ref{sec:res-large}).
   \item \textbf{Unsolved runs.} Nine runs did not finish
     (Table~\ref{tab:unsolved}), but every variant has a valid plan in both
     models. The largest $f$ value A$^*$ reached is a lower bound on the
@@ -861,18 +862,20 @@ separately.
 
 \paragraph{Bernardini, Fox and Long (2014), quadcopter
 surveillance~\cite{bernardini2014quadcopter}.}
-This paper plans the missions of a real low-cost quadcopter in PDDL, and
-names its short battery life as the main limit on what the drone can do.
-The battery is a numeric fluent: each manoeuvre requires
-\p{(>= (batteryLevel) ...)} and applies a \p{decrease}, with the energy of
-each manoeuvre measured in flight tests. Fast Downward cannot handle numeric
-fluents, so we compiled the same idea into level objects and a
-\p{battery_after} table with one row per valid (level, cost) pair, which a
-numeric model gets for free. Their second domain adds a \p{recharge} action
-that charges ``to full capacity or up to a chosen level'', the same choice
-we split into Model A and Model B, and close to
-the variable recharge we propose in Section~\ref{sec:limitations}. They also
-use durative actions with the temporal planner OPTIC, supporting our point
+This paper plans the missions of a real low-cost quadcopter in PDDL, which
+searches for a moving target it has lost sight of. The battery is the main limit
+on the mission, and the authors model it in two ways: without recharging, so
+the whole mission must fit in one charge, or split into parts with a recharge
+in between, either to full capacity or up to a chosen level. This is the same
+choice we split into Model A and Model B, and it is close to the variable
+recharge we propose in Section~\ref{sec:limitations}. Their battery is a
+numeric fluent, which Fast Downward cannot handle, so we compiled the same
+idea into level objects and a \p{battery_after} table. They also treat the
+drone's uncertainty about its own position as a resource: it grows with every
+flight and is reset only by re-localising at a known landmark. This would be
+a natural extension of our model, encoded with the same level objects as the
+battery and with landmarks playing the role of chargers. Finally, they use
+durative actions with the temporal planner OPTIC, which supports our point
 that only a temporal model rewards parallel flights.
 
 \paragraph{Nakhost, Hoffmann and M\"uller (2012), resource-constrained
@@ -934,10 +937,11 @@ We used AI assistants to check the PDDL syntax, comment the code, correct
 the English and formalise the style of the report, check it against the
 requirements, build the plots and \LaTeX{} tables, write the experiment
 scripts and the README, and shortlist candidate papers for
-Section~\ref{sec:literature}. We revised all of it, ran the scripts
-ourselves, and read the chosen papers in detail.
+Section~\ref{sec:literature}. We came up with the ideas, wrote the PDDL code
+and the report, carefully reviewed all AI-generated output, ran the scripts,
+analysed the results and read the selected papers in detail.
 
-\begin{thebibliography}{9}
+\begin{thebibliography}{9}\setlength{\itemsep}{0pt}
   \bibitem{helmert2006fd} M.~Helmert. The Fast Downward planning system.
     \emph{Journal of Artificial Intelligence Research}, 26:191--246, 2006.
   \bibitem{howey2004val} R.~Howey, D.~Long and M.~Fox. VAL: Automatic plan
