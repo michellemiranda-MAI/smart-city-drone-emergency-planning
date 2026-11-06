@@ -1,37 +1,13 @@
+
 ;; ============================================================================
-;; problem-medium.pddl : Barcelona Flood Emergency - Medium Instance
-;;
-;; Scenario: Severe storm surge and flash flooding strike Barcelona along the
-;;   coastal strip and the Besos river basin. Two drones are coordinated:
-;;   - droneA starts at Port Vell Emergency Depot (port_depot) with battery b5.
-;;   - droneB starts at Torre Glories Tech District Charging Hub (glories_tower) with battery b4.
-;;
-;; Objects:
-;;   2 drones: droneA, droneB
-;;   8 locations:
-;;     1 depot:
-;;       port_depot      - Port Vell emergency logistics center (stores all supplies)
-;;     2 charging stations:
-;;       montjuic_pad    - Montjuic hilltop telecommunications & solar charging pad
-;;       glories_tower   - Torre Glories charging hub / electrical substation
-;;     5 mission sites:
-;;       barceloneta     - Flooded beachside district (needs inspection)
-;;       hospital_mar    - Coastal hospital cut off by floodwaters (needs kit1 & inspection)
-;;       poblenou        - Industrial & residential district with flooded sewers (needs water1 & inspection)
-;;       forum_shelter   - Parc del Forum coastal evacuation center (needs comm1)
-;;       besos_delta     - Besos river delta & flood barrier (LOCKED until poblenou inspected; needs inspection)
-;;
-;;   3 supplies (3 different types):
-;;     kit1   - medical_kit          (staged at port_depot, needed at hospital_mar)
-;;     water1 - water_package        (staged at port_depot, needed at poblenou)
-;;     comm1  - communication_device (staged at port_depot, needed at forum_shelter)
-;;
-;; Design constraint (locking precondition):
-;;   besos_delta cannot be entered initially because (accessible besos_delta) is false.
-;;   Inspecting poblenou unlocks besos_delta via (unlocked_by_inspection poblenou besos_delta).
-;;   Any action sequence attempting to fly directly to besos_delta beforehand (e.g.
-;;   from glories_tower, poblenou, or forum_shelter) fails because the (accessible besos_delta)
-;;   precondition in the 'fly' action is not satisfied.
+;; problem-medium.pddl : Instance 2 (medium) - Barcelona flood emergency
+;; 2 drones (droneA, droneB) starting at port_depot and glories_tower.
+;; Scenario: coastal storm surge and Besos river basin flash flooding.
+;; Besos delta flood barrier stays locked until Poblenou is inspected.
+;; 8 locations, 1 depot (port_depot), 2 charging stations,
+;; battery capacity 6 (b0-b6), flight costs 1-2 levels per edge.
+;; 7 goals: 3 deliveries + 4 inspections.
+;; Multi-drone coordination with 3 distinct supply types and edge costs.
 ;; ============================================================================
 
 (define (problem barcelona-flood-medium)
